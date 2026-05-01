@@ -1,0 +1,23 @@
+{
+  "name": "rigweda-technologies-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.1.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.1",
+    "three": "^0.181.2",
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.59.1"
+  }
+}
