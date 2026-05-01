@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rigwedatechnologies.com/sitemap.xml
+Sitemap: https://rigweda.com/sitemap.xml

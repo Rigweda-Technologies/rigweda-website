@@ -141,7 +141,7 @@ function HeadMeta({ title, description, keywords, path = '/' }) {
     document.title = title;
     setMeta('description', description);
     setMeta('keywords', keywords);
-    setCanonical(`https://rigwedatechnologies.com${path}`);
+    setCanonical(`https://rigweda.com${path}`);
   }, [title, description, keywords, path]);
   return null;
 }
