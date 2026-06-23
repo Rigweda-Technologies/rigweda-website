@@ -7,15 +7,15 @@ import './styles.css';
 const logoLockup = '/assets/rigweda-logo.png';
 
 const renderImages = {
-  website: '/renders/website-3d.png',
-  interface: '/renders/uiux-3d.png',
-  cms: '/renders/cms-3d.png',
-  commerce: '/renders/ecommerce-3d.png',
+  website: '/renders/webapplication.png',
+  interface: '/renders/ui-ux-img.png',
+  cms: '/renders/wordpressdevelopment.png',
+  commerce: '/renders/ecommerce.png',
   mobile: '/renders/mobile-3d.png',
-  marketing: '/renders/marketing-seo-3d.png',
-  seo: '/renders/marketing-seo-3d.png',
-  ads: '/renders/ppc-3d.png',
-  smm: '/renders/smm-3d.png',
+  marketing: '/renders/digitalmarketing.png',
+  seo: '/renders/seo.png',
+  ads: '/renders/ppc.png',
+  smm: '/renders/smm.png',
   cloud: '/renders/hosting-3d.png',
   ai: '/renders/cloud-ai-data-3d.png',
   data: '/renders/cloud-ai-data-3d.png',
@@ -23,9 +23,9 @@ const renderImages = {
   database: '/renders/database-3d.png',
   security: '/renders/security-network-3d.png',
   network: '/renders/networking-3d.png',
-  software: '/renders/software-enterprise-3d.png',
+  software: '/renders/software-development.png',
   enterprise: '/renders/software-enterprise-3d.png',
-  strategy: '/renders/software-enterprise-3d.png'
+  strategy: '/renders/software-development.png'
 };
 
 const projects = [
@@ -36,7 +36,11 @@ const projects = [
   { title: 'Golden Ratio Market', category: 'Business', industry: 'Trading', image: '/work/golden-ratio.webp', url: 'https://goldenratioprofile.com/', tags: ['Web Development', 'SEO'] },
   { title: 'VibrantPropMart', category: 'Real Estate', industry: 'Property', image: '/work/vibrantpropmart.png', url: 'https://vibrantpropmart.com/', tags: ['Web Development', 'Lead Generation'] },
   { title: 'Dental Clinic Website', category: 'Healthcare', industry: 'Clinic', image: '/work/dental.webp', url: 'https://dental.wasmer.app/', tags: ['Healthcare Website', 'SEO'] },
-  { title: 'Flower Bouquet Website', category: 'Ecommerce', industry: 'Retail', image: '/work/flowershop.webp', url: 'https://flower.wasmer.app/', tags: ['Ecommerce', 'UI/UX'] }
+  { title: 'Flower Bouquet Website', category: 'Ecommerce', industry: 'Retail', image: '/work/flowershop.webp', url: 'https://flower.wasmer.app/', tags: ['Ecommerce', 'UI/UX'] },
+  { title: 'Sree Tourism', category: 'Travel', industry: 'Tourism', image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D', url: '#', tags: ['Travel Website', 'UI/UX', 'Web Development'] },
+  { title: 'Sri Kanchi Banaras Silks', category: 'Ecommerce', industry: 'Textiles', image: 'https://images.unsplash.com/photo-1759630814559-f9fffe187384?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: '#', tags: ['Textile Store', 'Ecommerce', 'Brand Website'] },
+  { title: 'Samskruti Designer Store', category: 'Ecommerce', industry: 'Fashion', image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHJldGFpbCUyMHN0b3JlfGVufDB8fDB8fHww', url: 'https://unsplash.com/photos/a-clothing-rack-with-clothes-hanging-on-it-28P04A4wkTI', tags: ['Designer Store', 'UI/UX', 'Ecommerce'] },
+  { title: 'Ridhira Decors', category: 'Corporate', industry: 'Interiors', image: 'https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: 'https://unsplash.com/photos/beige-couch-and-armchair-tHkJAMcO3QE', tags: ['Decor Brand', 'UI/UX', 'Web Development'] }
 ];
 
 const services = [
@@ -68,10 +72,10 @@ const services = [
 ];
 
 const applications = [
-  { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/marketing-seo-3d.png', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
-  { title: 'Operations Dashboard', visual: 'analytics', image: '/renders/cloud-ai-data-3d.png', text: 'Role-based dashboards for tracking leads, inventory, tasks, sales, and support workflows.' },
-  { title: 'AI Service Desk', visual: 'ai', image: '/renders/cloud-ai-data-3d.png', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
-  { title: 'Marketing Intelligence Hub', visual: 'seo', image: '/renders/marketing-seo-3d.png', text: 'SEO, campaign, enquiry, and conversion reporting in one growth workspace.' }
+  { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/retail-commerce.png', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
+  { title: 'Operations Dashboard', visual: 'analytics', image: '/renders/operation-dashboard.png', text: 'Role-based dashboards for tracking leads, inventory, tasks, sales, and support workflows.' },
+  { title: 'AI Service Desk', visual: 'ai', image: '/renders/service-desk.png', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
+  { title: 'Marketing Intelligence Hub', visual: 'seo', image: '/renders/marketing-intelligence.png', text: 'SEO, campaign, enquiry, and conversion reporting in one growth workspace.' }
 ];
 
 const serviceGroups = [
@@ -753,7 +757,7 @@ function Home() {
   return (
     <>
       <HeadMeta title="Rigweda Technologies | IT Services, Applications, Web, AI & Cloud" description="Rigweda Technologies builds SEO-friendly websites, applications, mobile apps, AI automation, cloud systems, data analytics, cybersecurity, and digital marketing engines." keywords="Rigweda Technologies, IT services, web development, applications, mobile app development, AI automation" />
-      <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image={undefined} featured />
+      <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image="/renders/heroimg-transparent.png" featured />
       <section className="trust-strip"><span>SEO-ready websites</span><span>Applications</span><span>Mobile apps</span><span>AI automation</span><span>Cloud & security</span><span>Portfolio-proven delivery</span></section>
       <section className="section">
         <SectionHeading kicker="Services" title="A full IT services map, built as one connected experience." text="Customers should feel confidence quickly. Every Rigweda page connects clear content, visible proof, technical depth, and immersive 3D visuals." />
@@ -766,7 +770,51 @@ function Home() {
 }
 
 function ServiceCard({ service }) {
-  return <article className="service-card"><Visual3D type={service.visual} image={undefined} /><span>{service.group}</span><h3>{service.title}</h3><p>{service.summary}</p><Link to={`/${service.slug}`}>Explore service</Link></article>;
+  const serviceImage =
+    service.slug === 'web-development'
+      ? '/renders/webapplication.png'
+      : service.slug === 'webdesign'
+        ? '/renders/web-design.png'
+      : service.slug === 'wordpress-development'
+        ? '/renders/wordpressdevelopment.png'
+      : service.slug === 'ecommerce-development'
+          ? '/renders/ecommerce.png'
+          : service.slug === 'digital-marketing'
+            ? '/renders/digitalmarketing.png'
+            : service.slug === 'seo-services'
+              ? '/renders/seo.png'
+              : service.slug === 'smm-services'
+                ? '/renders/smm.png'
+              : service.slug === 'ppc-services'
+                ? '/renders/ppc.png'
+              : service.slug === 'powerbi-services'
+              ? '/renders/powerbi.png'
+              : service.slug === 'ai-services'
+                ? '/renders/service-desk.png'
+              : service.slug === 'mobile-development'
+                ? '/renders/mobile-3d.png'
+                : service.slug === 'hosting-services'
+                  ? '/renders/hosting-3d.png'
+                  : service.slug === 'aws-services'
+                    ? '/renders/cloud-ai-data-3d.png'
+                    : service.slug === 'networking-solutions-services'
+                      ? '/renders/networking-3d.png'
+                      : service.slug === 'security-services'
+                        ? '/renders/security-network-3d.png'
+                        : service.slug === 'data-services'
+                          ? '/renders/database-3d.png'
+                          : service.slug === 'retail-services'
+                            ? '/renders/ecommerce-3d.png'
+                            : service.slug === 'database-maintenance'
+                              ? '/renders/database-3d.png'
+                              : service.slug === 'data-analytics'
+                                ? '/renders/analytics-bi-3d.png'
+                                : service.slug === 'custom-development'
+                                  ? '/renders/software-development.png'
+                                  : service.slug === 'it-consulting'
+                                    ? '/renders/software-enterprise-3d.png'
+            : undefined;
+  return <article className="service-card"><Visual3D type={service.visual} image={serviceImage} /><span>{service.group}</span><h3>{service.title}</h3><p>{service.summary}</p><Link to={`/${service.slug}`}>Explore service</Link></article>;
 }
 
 function ServicesPage() {
@@ -786,7 +834,7 @@ function ServicePage() {
   return (
     <>
       <HeadMeta title={`${service.title} | Rigweda Technologies`} description={`${service.summary} Rigweda Technologies delivers professional ${service.title.toLowerCase()} for businesses that need reliable digital outcomes.`} keywords={service.keywords} path={`/${service.slug}`} />
-      <Hero eyebrow={service.group} title={service.title} text={service.summary} visual={service.visual} action="Request Consultation" actionTo="/contactus" image={undefined} />
+      <Hero eyebrow={service.group} title={service.title} text={service.summary} visual={service.visual} action="Request Consultation" actionTo="/contactus" image={service.slug === 'ai-services' ? '/renders/ai-development.png' : undefined} />
       <section className="section split">
         <div className="content-block"><p className="section-kicker">Professional Delivery</p><h2>Built with clarity, performance, and long-term value.</h2><p>{service.summary} We shape each engagement around the business goal, the user journey, the technology stack, and the measurable result expected after launch.</p><p>Every Rigweda service page is designed to be SEO-friendly and customer-friendly: clear title, useful content, structured sections, internal links, and visible proof through projects and applications.</p></div>
         <ul className="rich-list">{service.bullets.map((bullet) => <li key={bullet}><strong>{bullet}</strong><p>Planned with practical implementation steps, clean communication, and maintainable delivery.</p></li>)}</ul>
@@ -1034,7 +1082,6 @@ function App() {
     <BrowserRouter>
       <SceneBackground />
       <Navigation />
-      <RobotCompanion />
       <AnimatedRoutes />
       <Footer />
     </BrowserRouter>
