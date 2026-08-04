@@ -29,18 +29,18 @@ const renderImages = {
 };
 
 const projects = [
-  { title: 'Vagtha Women Fashion', category: 'Ecommerce', industry: 'Fashion', image: '/work/vagtha.webp', url: 'https://www.vagtha.com/', tags: ['UI/UX', 'Web Development', 'Ecommerce'] },
-  { title: 'Sumanaa Fashion', category: 'Ecommerce', industry: 'Fashion', image: '/work/sumanaa.webp', url: 'http://sumanaaclothing.com/', tags: ['Web Development', 'Brand Website'] },
-  { title: 'PTR Infracons', category: 'Corporate', industry: 'Construction', image: '/work/ptrinfracons.png', url: 'https://ptrinfracons.com/', tags: ['Corporate Website', 'SEO'] },
-  { title: 'Sona Interiors', category: 'Corporate', industry: 'Interiors', image: '/work/sona.png', url: 'https://www.sonainteriors.co.in/', tags: ['UI/UX', 'Web Development'] },
-  { title: 'Golden Ratio Market', category: 'Business', industry: 'Trading', image: '/work/golden-ratio.webp', url: 'https://goldenratioprofile.com/', tags: ['Web Development', 'SEO'] },
-  { title: 'VibrantPropMart', category: 'Real Estate', industry: 'Property', image: '/work/vibrantpropmart.png', url: 'https://vibrantpropmart.com/', tags: ['Web Development', 'Lead Generation'] },
-  { title: 'Dental Clinic Website', category: 'Healthcare', industry: 'Clinic', image: '/work/dental.webp', url: 'https://dental.wasmer.app/', tags: ['Healthcare Website', 'SEO'] },
-  { title: 'Flower Bouquet Website', category: 'Ecommerce', industry: 'Retail', image: '/work/flowershop.webp', url: 'https://flower.wasmer.app/', tags: ['Ecommerce', 'UI/UX'] },
-  { title: 'Sree Tourism', category: 'Travel', industry: 'Tourism', image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D', url: '#', tags: ['Travel Website', 'UI/UX', 'Web Development'] },
-  { title: 'Sri Kanchi Banaras Silks', category: 'Ecommerce', industry: 'Textiles', image: 'https://images.unsplash.com/photo-1759630814559-f9fffe187384?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: '#', tags: ['Textile Store', 'Ecommerce', 'Brand Website'] },
-  { title: 'Samskruti Designer Store', category: 'Ecommerce', industry: 'Fashion', image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHJldGFpbCUyMHN0b3JlfGVufDB8fDB8fHww', url: 'https://unsplash.com/photos/a-clothing-rack-with-clothes-hanging-on-it-28P04A4wkTI', tags: ['Designer Store', 'UI/UX', 'Ecommerce'] },
-  { title: 'Ridhira Decors', category: 'Corporate', industry: 'Interiors', image: 'https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: 'https://unsplash.com/photos/beige-couch-and-armchair-tHkJAMcO3QE', tags: ['Decor Brand', 'UI/UX', 'Web Development'] }
+  // { title: 'Vagtha Women Fashion', category: 'Ecommerce', industry: 'Fashion', image: '/work/vagtha.webp', url: 'https://www.vagtha.com/', tags: ['UI/UX', 'Web Development', 'Ecommerce'] },
+  // { title: 'Sumanaa Fashion', category: 'Ecommerce', industry: 'Fashion', image: '/work/sumanaa.webp', url: 'http://sumanaaclothing.com/', tags: ['Web Development', 'Brand Website'] },
+  // { title: 'PTR Infracons', category: 'Corporate', industry: 'Construction', image: '/work/ptrinfracons.png', url: 'https://ptrinfracons.com/', tags: ['Corporate Website', 'SEO'] },
+  // { title: 'Sona Interiors', category: 'Corporate', industry: 'Interiors', image: '/work/sona.png', url: 'https://www.sonainteriors.co.in/', tags: ['UI/UX', 'Web Development'] },
+  // { title: 'Golden Ratio Market', category: 'Business', industry: 'Trading', image: '/work/golden-ratio.webp', url: 'https://goldenratioprofile.com/', tags: ['Web Development', 'SEO'] },
+  // { title: 'VibrantPropMart', category: 'Real Estate', industry: 'Property', image: '/work/vibrantpropmart.png', url: 'https://vibrantpropmart.com/', tags: ['Web Development', 'Lead Generation'] },
+  // { title: 'Dental Clinic Website', category: 'Healthcare', industry: 'Clinic', image: '/work/dental.webp', url: 'https://dental.wasmer.app/', tags: ['Healthcare Website', 'SEO'] },
+  // { title: 'Flower Bouquet Website', category: 'Ecommerce', industry: 'Retail', image: '/work/flowershop.webp', url: 'https://flower.wasmer.app/', tags: ['Ecommerce', 'UI/UX'] },
+  // { title: 'Sree Tourism', category: 'Travel', industry: 'Tourism', image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D', url: '#', tags: ['Travel Website', 'UI/UX', 'Web Development'] },
+  // { title: 'Sri Kanchi Banaras Silks', category: 'Ecommerce', industry: 'Textiles', image: 'https://images.unsplash.com/photo-1759630814559-f9fffe187384?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: '#', tags: ['Textile Store', 'Ecommerce', 'Brand Website'] },
+  // { title: 'Samskruti Designer Store', category: 'Ecommerce', industry: 'Fashion', image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHJldGFpbCUyMHN0b3JlfGVufDB8fDB8fHww', url: 'https://unsplash.com/photos/a-clothing-rack-with-clothes-hanging-on-it-28P04A4wkTI', tags: ['Designer Store', 'UI/UX', 'Ecommerce'] },
+  // { title: 'Ridhira Decors', category: 'Corporate', industry: 'Interiors', image: 'https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', url: 'https://unsplash.com/photos/beige-couch-and-armchair-tHkJAMcO3QE', tags: ['Decor Brand', 'UI/UX', 'Web Development'] }
 ];
 
 const services = [
