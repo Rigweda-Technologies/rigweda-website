@@ -55,21 +55,23 @@ const services = [
   { slug: 'ppc-services', title: 'PPC Services', group: 'Digital Marketing', visual: 'ads', keywords: 'PPC services, Google Ads management', summary: 'Paid search and social ad campaigns focused on measurable enquiries, landing page quality, and efficient spend.', bullets: ['Google Ads and social ad setup', 'Conversion tracking and remarketing', 'Campaign optimization and reporting'] },
   { slug: 'software-development', title: 'Software Development', group: 'Software Development', visual: 'software', keywords: 'software development company, custom software', summary: 'Custom software systems for businesses that need workflow automation, operational control, and reliable reporting.', bullets: ['Planning, architecture, and modular builds', 'Business workflow and admin systems', 'Integrations, reporting, and support'] },
   { slug: 'powerbi-services', title: 'Power BI Services', group: 'Software Development', visual: 'analytics', keywords: 'Power BI services, business intelligence dashboards', summary: 'Business intelligence dashboards that turn scattered data into useful decisions for leadership and teams.', bullets: ['KPI dashboards and executive reports', 'Data modeling and visualization', 'Scheduled reporting and insights'] },
-  { slug: 'ai-services', title: 'AI Development Services', group: 'Software Development', visual: 'ai', keywords: 'AI development services, AI automation', summary: 'AI assistants and automations that reduce repetitive work, improve response time, and make knowledge easier to use.', bullets: ['Chatbots and internal knowledge assistants', 'Document and workflow automation', 'AI integrations with business systems'] },
-  { slug: 'sap-services', title: 'SAP Consulting Services', group: 'Software Development', visual: 'enterprise', keywords: 'SAP consulting services, ERP consulting', summary: 'SAP and ERP consulting support for process mapping, reporting, integrations, and business system improvements.', bullets: ['Process discovery and roadmap planning', 'ERP reporting and integration support', 'Operational workflow consultation'] },
-  { slug: 'data-science-services', title: 'Data Science Services', group: 'Software Development', visual: 'data', keywords: 'data science services, predictive analytics', summary: 'Data science services for forecasting, segmentation, pattern discovery, and decision support.', bullets: ['Data preparation and modeling', 'Predictive analytics and reporting', 'Insights for marketing, sales, and operations'] },
-  { slug: 'mobile-development', title: 'Mobile App Development', group: 'Mobile APP Development', visual: 'mobile', keywords: 'mobile app development, Android iOS app development', summary: 'Android, iOS, and cross-platform mobile applications with secure APIs, admin panels, analytics, and release support.', bullets: ['Customer apps and business apps', 'Push notifications, payments, and maps', 'Backend APIs and app store readiness'] },
-  { slug: 'hosting-services', title: 'Hosting Services', group: 'Hosting Services', visual: 'cloud', keywords: 'hosting services, managed hosting', summary: 'Managed hosting, deployment, backup, monitoring, and performance support for business-critical websites and apps.', bullets: ['Hosting setup and migration', 'SSL, backups, uptime monitoring', 'Performance and maintenance support'] },
-  { slug: 'aws-services', title: 'AWS Managed Services', group: 'Hosting Services', visual: 'cloud', keywords: 'AWS managed services, cloud hosting', summary: 'AWS architecture, deployment, monitoring, cost awareness, and managed cloud operations.', bullets: ['Cloud architecture and migration', 'Server monitoring and backups', 'Deployment pipelines and scaling plans'] },
-  { slug: 'networking-solutions-services', title: 'Networking Solutions', group: 'Hosting Services', visual: 'network', keywords: 'networking solutions, IT network services', summary: 'Network planning and support for teams that need dependable connectivity, access control, and infrastructure clarity.', bullets: ['Network design and documentation', 'Access control and troubleshooting', 'Infrastructure consultation'] },
-  { slug: 'security-services', title: 'Security (VAPT)', group: 'Security', visual: 'security', keywords: 'VAPT services, cybersecurity testing', summary: 'Security reviews, VAPT support, hardening, monitoring, and maintenance practices that reduce digital risk.', bullets: ['Vulnerability assessment and remediation guidance', 'Web and infrastructure hardening', 'Backup, SSL, access, and monitoring checks'] },
-  { slug: 'data-services', title: 'Data Services', group: 'Data', visual: 'data', keywords: 'data services, data management', summary: 'Data collection, cleanup, integration, and reporting support for operations that depend on trustworthy information.', bullets: ['Data pipelines and migration', 'Data quality and transformation', 'Reports and operational dashboards'] },
-  { slug: 'retail-services', title: 'Retail Services', group: 'Industry', visual: 'commerce', keywords: 'retail IT services, ecommerce retail solutions', summary: 'Retail websites, ecommerce workflows, inventory visibility, campaign tracking, and customer engagement systems.', bullets: ['Online stores and product catalogs', 'Inventory and order workflows', 'Promotions, analytics, and customer journeys'] },
-  { slug: 'database-maintenance', title: 'Database Maintenance', group: 'Data', visual: 'database', keywords: 'database maintenance, database support', summary: 'Database health, backups, performance tuning, structure cleanup, and reliability support.', bullets: ['Backup and recovery planning', 'Query and performance review', 'Data hygiene and access practices'] },
-  { slug: 'data-analytics', title: 'Data Analytics', group: 'Data', visual: 'analytics', keywords: 'data analytics services, business analytics', summary: 'Analytics systems that show what is happening across sales, marketing, operations, finance, and customer behavior.', bullets: ['KPI planning and dashboards', 'Campaign and operational analytics', 'Insights for smarter decisions'] },
-  { slug: 'custom-development', title: 'Custom Development', group: 'Software Development', visual: 'software', keywords: 'custom development, custom software solutions', summary: 'Custom applications, integrations, and workflow tools built around your exact business process.', bullets: ['Requirement discovery and solution design', 'Custom modules and integrations', 'Maintainable code and support'] },
-  { slug: 'it-consulting', title: 'IT Consulting', group: 'Consulting', visual: 'strategy', keywords: 'IT consulting services, technology consulting', summary: 'Technology audits, roadmaps, vendor guidance, product planning, and architecture support for better decisions.', bullets: ['Digital roadmap and audit', 'Architecture and vendor recommendations', 'Implementation planning'] }
+  { slug: 'ai-services', title: 'AI Development Services', group: 'Software Development', visual: 'ai', keywords: 'AI development services, AI automation', summary: 'AI assistants and automations that reduce repetitive work, improve response time, and make knowledge easier to use.', bullets: ['Chatbots and internal knowledge assistants', 'Document and workflow automation', 'AI integrations with business systems'] }
 ];
+
+const serviceArtwork = {
+  'ui-ux-solutions': '/renders/ui-ux-img.png',
+  webdesign: '/renders/web-design.png',
+  'web-development': '/renders/webapplication.png',
+  'wordpress-development': '/renders/wordpressdevelopment.png',
+  'ecommerce-development': '/renders/ecommerce.png',
+  'digital-marketing': '/renders/digitalmarketing.png',
+  'seo-services': '/renders/seo.png',
+  'smm-services': '/renders/smm.png',
+  'ppc-services': '/renders/ppc.png',
+  'software-development': '/renders/software-development.png',
+  'powerbi-services': '/renders/powerbi.png',
+  'ai-services': '/renders/service-desk.png'
+};
 
 const applications = [
   { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/retail-commerce.png', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
@@ -80,12 +82,10 @@ const applications = [
 
 const serviceGroups = [
   { name: 'UI/UX Solutions', path: '/ui-ux-solutions' },
-  { name: 'Web Development', path: '/web-development', submenu: ['wordpress-development', 'ecommerce-development', 'webdesign'] },
+  { name: 'Web Design', path: '/webdesign' },
+  { name: 'Web Application Development', path: '/web-development', submenu: ['wordpress-development', 'ecommerce-development'] },
   { name: 'Digital Marketing', path: '/digital-marketing', submenu: ['seo-services', 'smm-services', 'ppc-services'] },
-  { name: 'Software Development', path: '/software-development', submenu: ['powerbi-services', 'ai-services', 'sap-services', 'data-science-services', 'custom-development'] },
-  { name: 'Mobile APP Development', path: '/mobile-development' },
-  { name: 'Hosting Services', path: '/hosting-services', submenu: ['aws-services', 'networking-solutions-services'] },
-  { name: 'Security (VAPT)', path: '/security-services' }
+  { name: 'Software Development', path: '/software-development', submenu: ['powerbi-services', 'ai-services'] }
 ];
 
 const getService = (slug) => services.find((service) => service.slug === slug);
@@ -753,17 +753,69 @@ function SectionHeading({ kicker, title, text }) {
   return <div className="section-heading"><div><p className="section-kicker">{kicker}</p><h2>{title}</h2></div><p>{text}</p></div>;
 }
 
+function TeamSection() {
+  const teamAreas = [
+    { initials: 'ST', role: 'Strategy & Leadership', title: 'Business-first direction', text: 'We connect customer goals to clear roadmaps, useful products, and measurable outcomes.' },
+    { initials: 'EN', role: 'Engineering', title: 'Thoughtful technology', text: 'Our engineering practice builds reliable websites, applications, and digital platforms.' },
+    { initials: 'UX', role: 'Product & Design', title: 'Experiences made clear', text: 'Research and design help make complex services intuitive and accessible.' },
+    { initials: 'CD', role: 'Cloud & Data', title: 'Systems that scale', text: 'Cloud, analytics, and automation help teams work with more confidence.' },
+    { initials: 'GR', role: 'Growth', title: 'Digital growth', text: 'SEO and marketing connect useful products with the people who need them.' },
+    { initials: 'DL', role: 'Delivery & Support', title: 'Care beyond launch', text: 'Ongoing support keeps products secure, useful, and ready to evolve.' },
+  ];
+
+  return (
+    <section className="section team-section">
+      <div className="team-heading"><SectionHeading kicker="Our Team" title={<>Meet Our <span>Team</span></>} text="A multidisciplinary team bringing strategy, design, engineering, and support together to build better digital experiences." /></div>
+      <div className="team-grid">{teamAreas.map((area) => <article className="team-card" key={area.role}>
+        <div className="team-avatar" aria-hidden="true"><span>{area.initials}</span></div>
+        <div className="team-info"><span className="team-role">{area.role}</span><h3>{area.title}</h3><div className="team-rule" /><p>{area.text}</p></div>
+      </article>)}</div>
+      <div className="center-action"><Link className="primary-action" to="/careers">Join Our Team <span aria-hidden="true">→</span></Link></div>
+    </section>
+  );
+}
+
 function Home() {
   return (
     <>
       <HeadMeta title="Rigweda Technologies | IT Services, Applications, Web, AI & Cloud" description="Rigweda Technologies builds SEO-friendly websites, applications, mobile apps, AI automation, cloud systems, data analytics, cybersecurity, and digital marketing engines." keywords="Rigweda Technologies, IT services, web development, applications, mobile app development, AI automation" />
-      <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image="/renders/heroimg-transparent.png" featured />
+      <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image="/renders/herosecimg.png" featured />
+      <section className="home-about" aria-labelledby="home-about-title">
+        <div className="home-about-copy">
+          <p className="home-about-eyebrow">ABOUT RIGWEDA</p>
+          <h2 id="home-about-title">Turning Ideas Into<br /><span>Digital Reality</span></h2>
+          <p>Rigweda Technologies is a technology-driven company focused on building modern digital solutions that help businesses grow, adapt, and stay ahead in a rapidly evolving digital world.</p>
+          <p>From high-performance websites and custom applications to AI-powered solutions, cloud technologies, and digital growth strategies, we combine technology, creativity, and business understanding to turn ideas into impactful digital experiences.</p>
+          <blockquote>Our approach is simple — understand the problem, build the right solution, and create technology that delivers real value.</blockquote>
+          <Link className="home-about-action" to="/aboutus">Learn More <span aria-hidden="true">→</span></Link>
+        </div>
+        <div className="home-about-visual" aria-label="Rigweda digital workspace">
+          <div className="home-about-glow" />
+          <img src="/renders/herosecimg.png" alt="Laptop and modern digital workspace" />
+          <div className="home-about-card home-about-card-one"><span className="about-card-icon">✦</span>Innovative Solutions</div>
+          <div className="home-about-card home-about-card-two"><span className="about-card-icon">↗</span>Scalable Technology</div>
+          <div className="home-about-card home-about-card-three"><span className="about-card-icon">◎</span>Business-Focused Approach</div>
+        </div>
+      </section>
       <section className="trust-strip"><span>SEO-ready websites</span><span>Applications</span><span>Mobile apps</span><span>AI automation</span><span>Cloud & security</span><span>Portfolio-proven delivery</span></section>
-      <section className="section">
-        <SectionHeading kicker="Services" title="A full IT services map, built as one connected experience." text="Customers should feel confidence quickly. Every Rigweda page connects clear content, visible proof, technical depth, and immersive 3D visuals." />
-        <div className="service-grid">{services.slice(0, 12).map((service) => <ServiceCard key={service.slug} service={service} />)}</div>
+      <section className="services-showcase services-home">
+        <section className="services-intro">
+          <div className="services-intro-copy">
+            <p className="services-kicker">OUR SERVICES <span /></p>
+            <h1>Digital solutions<br />for business <span>growth.</span></h1>
+            <p className="services-intro-lede">Design, development, and marketing to move your business forward.</p>
+            <Link className="services-cta" to="#home-services-catalog">Explore All Services <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className="services-intro-art" aria-label="Digital workspace illustration">
+            <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" loading="lazy" />
+          </div>
+        </section>
+        <ServiceShowcaseCards id="home-services-catalog" limit={6} />
+        <div className="services-more-link"><Link className="services-cta" to="/services">Explore All Services <span aria-hidden="true">→</span></Link></div>
+        <ServicesPromises />
       </section>
       <ProjectsSection limit={4} />
+      <TeamSection />
       <ApplicationsSection compact />
     </>
   );
@@ -820,10 +872,53 @@ function ServiceCard({ service }) {
 function ServicesPage() {
   return (
     <>
-      <HeadMeta title="IT Services | Rigweda Technologies" description="Explore Rigweda Technologies services including UI UX, web development, ecommerce, mobile apps, AI, cloud, data, cybersecurity, hosting, SEO, PPC, SMM, SAP, and IT consulting." keywords="IT services, web development, SEO, mobile apps, AI, VAPT, AWS, SAP, Power BI" path="/services" />
-      <Hero eyebrow="All Services" title="Everything a serious digital business needs." text="Rigweda brings design, engineering, infrastructure, data, security, and marketing into a single delivery model." visual="enterprise" action="Talk to Rigweda" actionTo="/contactus" image={undefined} />
-      <section className="section"><div className="service-grid">{services.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+      <HeadMeta title="Our Services | Rigweda Technologies" description="Explore Rigweda Technologies services: UI/UX, web design and development, WordPress, ecommerce, digital marketing, SEO, SMM, PPC, software, Power BI, and AI development." keywords="UI UX, web design, web development, WordPress, ecommerce, digital marketing, SEO, SMM, PPC, Power BI, AI development" path="/services" />
+      <div className="services-showcase">
+        <section className="services-intro">
+          <div className="services-intro-copy">
+            <p className="services-kicker">OUR SERVICES <span /></p>
+            <h1>Digital solutions<br />for business <span>growth.</span></h1>
+            <p className="services-intro-lede">Design, development, and marketing to move your business forward.</p>
+            <Link className="services-cta" to="#all-services">Explore All Services <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className="services-intro-art" aria-label="Digital workspace illustration">
+            <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" />
+          </div>
+        </section>
+        <ServiceShowcaseCards id="all-services" />
+        <ServicesPromises />
+      </div>
     </>
+  );
+}
+
+function ServiceShowcaseCards({ id, limit }) {
+  return (
+    <section className="services-catalog" id={id} aria-label="All services">
+      {services.slice(0, limit ?? services.length).map((service, index) => (
+        <article className="showcase-service-card" key={service.slug}>
+          <div className="showcase-service-copy">
+            <span className="showcase-service-icon" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h2>{service.title}</h2>
+            <p>{service.summary}</p>
+            <ul>{service.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+            <Link to={`/${service.slug}`}>Learn more <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className="showcase-service-art"><img src={serviceArtwork[service.slug]} alt="" loading="lazy" /></div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function ServicesPromises() {
+  return (
+    <section className="services-promises" aria-label="Why work with Rigweda">
+      <article><span className="promise-icon">✓</span><div><h3>Trusted by growing businesses</h3><p>Practical digital solutions for teams at every stage.</p></div></article>
+      <article><span className="promise-icon">⌁</span><div><h3>Secure and reliable</h3><p>Thoughtful delivery with privacy and quality in mind.</p></div></article>
+      <article><span className="promise-icon">◎</span><div><h3>Expert support</h3><p>Real people to help you plan, launch, and improve.</p></div></article>
+      <article><span className="promise-icon">↗</span><div><h3>Ready to scale</h3><p>Technology that can grow along with your business.</p></div></article>
+    </section>
   );
 }
 
@@ -844,13 +939,79 @@ function ServicePage() {
   );
 }
 
+const aboutIconPaths = {
+  spark: <><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Z"/><path d="m19 14 1.1 2.9L23 18l-2.9 1.1L19 22l-1.1-2.9L15 18l2.9-1.1L19 14Z"/></>,
+  heart: <path d="M20.8 8.7c0 5.2-8.8 10.1-8.8 10.1S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3Z"/>,
+  check: <><path d="M20 6 9 17l-5-5"/><path d="M21 12a9 9 0 1 1-3-6.7"/></>,
+  shield: <><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/></>,
+  users: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></>,
+  refresh: <><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 2M4 16l2 2a7 7 0 0 0 12.4-3"/></>,
+  target: <><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></>,
+  layers: <><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></>,
+  scale: <><path d="M12 3v18M5 7h14M7 7l-4 7h8L7 7ZM17 7l-4 7h8l-4-7ZM8 21h8"/></>,
+  support: <><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13h3v6H6a2 2 0 0 1-2-2v-4ZM20 13h-3v6h1a2 2 0 0 0 2-2v-4ZM12 21h3"/></>,
+  code: <><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></>,
+  cloud: <path d="M7 18h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 9.3 4.5 4.5 0 0 0 7 18Z"/>,
+  plug: <><path d="M9 7v4M15 7v4M7 11h10v2a5 5 0 0 1-5 5v3M12 18v3M9 3v4M15 3v4"/></>,
+  search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
+  layout: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></>,
+  pen: <><path d="m4 20 4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z"/><path d="m14.5 6.5 3 3"/></>,
+  send: <><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></>
+};
+
+function AboutIcon({ name }) {
+  return <svg className="about-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{aboutIconPaths[name] ?? aboutIconPaths.spark}</svg>;
+}
+
 function About() {
+  const values = [
+    ['spark', 'Innovation', 'We explore better ways to solve real business problems with thoughtful technology.'],
+    ['heart', 'Customer success', 'We keep customer goals and the people using each product at the center of our work.'],
+    ['check', 'Quality', 'We care about clear details, dependable performance, and maintainable solutions.'],
+    ['shield', 'Integrity', 'We communicate openly, set practical expectations, and take responsibility for our work.'],
+    ['users', 'Collaboration', 'We work closely with customers and across disciplines to make good ideas stronger.'],
+    ['refresh', 'Continuous improvement', 'We learn from feedback and keep improving products as business needs evolve.']
+  ];
+  const strengths = [
+    ['target', 'Customer-focused solutions', 'We start with your goals, users, and day-to-day challenges.'],
+    ['check', 'Quality-driven development', 'Careful planning and implementation support a dependable result.'],
+    ['scale', 'Scalable technology', 'We make choices that can adapt as your products and operations grow.'],
+    ['support', 'Reliable support', 'We stay available to help maintain and improve the solutions we build.'],
+    ['code', 'Modern development practices', 'We use current tools and clear engineering practices suited to each project.'],
+    ['layers', 'Business-oriented approach', 'We connect technical decisions to useful outcomes for your organization.']
+  ];
+  const expertise = [
+    ['code', 'Custom Software Development', 'Purpose-built software for business workflows, operations, and reporting.', '/software-development'],
+    ['layout', 'Web Application Development', 'Web platforms, portals, dashboards, and business applications.', '/web-development'],
+    ['layers', 'Mobile Application Development', 'Mobile experiences connected to the services and systems your business needs.', '/applications'],
+    ['plug', 'API Integration', 'Connected services and integrations that help business systems work together.', '/software-development'],
+    ['cloud', 'Cloud Solutions', 'Cloud hosting, deployment, and infrastructure support for digital products.', '/services'],
+    ['target', 'Business Software Solutions', 'Practical tools for customer management, team workflows, and insight.', '/software-development']
+  ];
+  const process = [
+    ['search', 'Discover', 'We learn about your goals, users, requirements, and constraints.'],
+    ['target', 'Plan', 'We agree on scope, priorities, approach, and delivery milestones.'],
+    ['pen', 'Design', 'We shape the experience and technical direction before development.'],
+    ['code', 'Develop', 'We build in focused steps and share progress along the way.'],
+    ['check', 'Test', 'We review functionality, usability, and quality before release.'],
+    ['send', 'Deliver', 'We launch the solution and help your team move into the next stage.']
+  ];
+
   return (
-    <>
-      <HeadMeta title="About Rigweda Technologies | IT Consulting & Digital Engineering" description="Rigweda Technologies is an IT services company delivering websites, applications, mobile apps, AI, cloud, data, cybersecurity, and digital growth systems." keywords="about Rigweda Technologies, IT consulting, digital engineering" path="/aboutus" />
-      <Hero eyebrow="About Rigweda" title="A technology partner built for belief." text="Customers trust a company when the message is clear, the work looks mature, and the process feels dependable. Rigweda Technologies is built around that standard." visual="strategy" action="See Services" image={undefined} />
-      <section className="section split"><div className="content-block"><p className="section-kicker">Our Approach</p><h2>We design for confidence, then engineer for scale.</h2><p>Rigweda combines discovery, user experience, development, automation, cloud, security, analytics, and marketing. That means a website can become a platform, an app can become an operating system, and campaigns can be measured properly.</p></div><ul className="rich-list"><li><strong>Business-first planning</strong><p>We map goals, users, workflows, and risks before selecting tools.</p></li><li><strong>Original presentation</strong><p>We use Rigweda’s own white, gold, and copper visual language with 3D interactions.</p></li><li><strong>Long-term support</strong><p>We think beyond launch with maintenance, analytics, SEO, and security.</p></li></ul></section>
-    </>
+    <div className="about-page">
+      <HeadMeta title="About Rigweda Technologies | Digital Solutions & Software Development" description="Meet Rigweda Technologies: a technology partner building custom software, web and mobile applications, cloud solutions, and business-focused digital products." keywords="about Rigweda Technologies, software development, web applications, mobile applications, cloud solutions" path="/aboutus" />
+      <section className="about-hero" aria-labelledby="about-title">
+        <div className="about-hero-copy"><p className="about-eyebrow"><span /> TECHNOLOGY WITH PURPOSE</p><h1 id="about-title">Building Digital Solutions That <span>Drive Innovation</span></h1><p className="about-hero-lede">Rigweda Technologies helps businesses turn ideas into useful digital products through software, applications, cloud solutions, and thoughtful engineering.</p><div className="about-hero-actions"><Link className="primary-action" to="/services">Explore Our Services <span aria-hidden="true">→</span></Link><Link className="secondary-action" to="/contactus">Contact Us</Link></div><div className="about-hero-note"><span className="about-note-dot" /> From business challenge to dependable digital solution</div></div>
+        <div className="about-hero-visual"><div className="about-visual-orbit about-orbit-one"/><div className="about-visual-orbit about-orbit-two"/><div className="about-image-frame"><img src="/renders/aboutsec.png" alt="Rigweda Technologies digital solutions illustration"/></div><div className="about-visual-tag"><AboutIcon name="layers"/><span>Ideas into<br/><strong>digital products</strong></span></div></div>
+      </section>
+      <section className="about-section about-who" aria-labelledby="about-who-title"><div className="about-who-visual"><img src="/renders/webapplication.png" alt="Web application interface representing digital product development" loading="lazy"/><span className="about-who-caption">Technology shaped around your business</span></div><div className="about-who-copy"><p className="about-eyebrow">WHO WE ARE</p><h2 id="about-who-title">A technology partner for what comes next.</h2><p>Rigweda Technologies works with businesses to plan and build digital solutions that make work clearer, services more accessible, and ideas easier to bring to life.</p><p>We bring software development, web and mobile applications, integrations, and cloud capabilities together around each project’s needs. Our approach pairs practical business understanding with thoughtful design and reliable engineering.</p><Link className="about-inline-link" to="/services">Explore our capabilities <span aria-hidden="true">→</span></Link></div></section>
+      <section className="about-section about-purpose" aria-label="Our mission and vision"><article className="about-purpose-card"><div className="about-card-icon"><AboutIcon name="target"/></div><p className="about-eyebrow">OUR MISSION</p><h2>Make technology useful.</h2><p>We create accessible, dependable digital solutions that help businesses solve meaningful problems and serve people better.</p></article><article className="about-purpose-card about-vision-card"><div className="about-card-icon"><AboutIcon name="spark"/></div><p className="about-eyebrow">OUR VISION</p><h2>Build for lasting progress.</h2><p>We aim to be a trusted technology partner, helping organizations adapt and grow through considered digital innovation.</p></article></section>
+      <section className="about-section" aria-labelledby="about-values-title"><div className="about-section-heading"><div><p className="about-eyebrow">WHAT GUIDES US</p><h2 id="about-values-title">Our core values</h2></div><p>The principles behind how we think, collaborate, and deliver.</p></div><div className="about-value-grid">{values.map(([icon, title, text]) => <article className="about-value-card" key={title}><AboutIcon name={icon}/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+      <section className="about-section about-why" aria-labelledby="about-why-title"><div className="about-section-heading"><div><p className="about-eyebrow">THE RIGWEDA APPROACH</p><h2 id="about-why-title">Why choose Rigweda?</h2></div><p>Clear communication and thoughtful delivery keep the work connected to what matters to your business.</p></div><div className="about-strength-grid">{strengths.map(([icon, title, text], index) => <article className="about-strength-card" key={title}><span className="about-index">0{index + 1}</span><AboutIcon name={icon}/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+      <section className="about-section" aria-labelledby="about-expertise-title"><div className="about-section-heading"><div><p className="about-eyebrow">WHAT WE DO</p><h2 id="about-expertise-title">Our expertise</h2></div><p>Connected capabilities to help move a digital product from the first idea to everyday use.</p></div><div className="about-expertise-grid">{expertise.map(([icon, title, text, to]) => <Link className="about-expertise-card" to={to} key={title}><AboutIcon name={icon}/><h3>{title}</h3><p>{text}</p><span className="about-card-link">Learn more <span aria-hidden="true">→</span></span></Link>)}</div></section>
+      <section className="about-section about-process" aria-labelledby="about-process-title"><div className="about-section-heading"><div><p className="about-eyebrow">HOW WE WORK</p><h2 id="about-process-title">A clear path from idea to impact</h2></div><p>Each project follows a collaborative process, shaped to fit its goals and scope.</p></div><ol className="about-process-grid">{process.map(([icon, title, text], index) => <li className="about-process-step" key={title}><div className="about-step-top"><span className="about-step-number">0{index + 1}</span><AboutIcon name={icon}/></div><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
+      <section className="about-cta" aria-labelledby="about-cta-title"><div><p className="about-eyebrow">LET’S START A CONVERSATION</p><h2 id="about-cta-title">Let’s Build Something Great Together</h2><p>Let’s turn your ideas into meaningful digital solutions.</p></div><Link className="primary-action" to="/contactus">Contact Us <span aria-hidden="true">→</span></Link></section>
+    </div>
   );
 }
 
@@ -1025,18 +1186,23 @@ function Footer() {
     ['Privacy Policy', '/privacy-policy']
   ];
   const footerServices = [
-    ['Web Development', '/web-development'],
-    ['Mobile Apps', '/mobile-development'],
+    ['UI/UX Solutions', '/ui-ux-solutions'],
+    ['Web Design', '/webdesign'],
+    ['Web Application Development', '/web-development'],
+    ['WordPress Development', '/wordpress-development'],
+    ['Ecommerce Development', '/ecommerce-development'],
     ['Digital Marketing', '/digital-marketing'],
-    ['Data Services', '/data-services'],
-    ['Data Analytics', '/data-analytics'],
-    ['Database Maintenance', '/database-maintenance'],
-    ['Retail Services', '/retail-services']
+    ['SEO Services', '/seo-services'],
+    ['SMM Services', '/smm-services'],
+    ['PPC Services', '/ppc-services'],
+    ['Software Development', '/software-development'],
+    ['Power BI Services', '/powerbi-services'],
+    ['AI Development Services', '/ai-services']
   ];
   const socialLinks = [
     ['mail', 'Email', 'mailto:sales@rigweda.com'],
-    ['call', 'Call', 'tel:+917989676809'],
-    ['wa', 'WhatsApp', 'https://wa.me/917989676809']
+    ['call', 'Call', 'tel:+917989076809'],
+    ['wa', 'WhatsApp', 'https://wa.me/917989076809']
   ];
 
   return (
@@ -1051,7 +1217,7 @@ function Footer() {
       <div className="footer-grid">
         <div className="footer-about">
           <Link className="footer-brand" to="/" aria-label="Rigweda Technologies home"><img src={logoLockup} alt="" /></Link>
-          <p>Rigweda Technologies delivers UI/UX design, web and mobile application development, digital marketing, cloud, and security services across India and globally.</p>
+          <p>Rigweda Technologies delivers UI/UX, web design and development, ecommerce, software, AI, analytics, and digital marketing services across India and globally.</p>
           <div className="footer-socials">
             {socialLinks.map(([short, label, href]) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>{short}</a>)}
           </div>
@@ -1066,9 +1232,9 @@ function Footer() {
         </nav>
         <address className="footer-column footer-contact">
           <h3>Contact Us</h3>
-          <div><span>Phone</span><a href="tel:+917989676809">+91 7989676809</a></div>
-          <div><span>Email</span><a href="mailto:sales@rigweda.com">sales@rigweda.com</a></div>
-          <div><span>Address</span><a href="https://maps.app.goo.gl/EDpHMEyHhx76gvW26" target="_blank" rel="noreferrer">Flat No: 202, Anasuyaa Nilayam, Plot No: 10, Vivekananda Nagar Colony, Kukatpally, Hyderabad - 500072</a></div>
+          <div><span>Phone</span><a href="tel:+917989076809">+91 7989076809</a></div>
+          <div><span>Email</span><a href="mailto:info@rigweda.com">info@rigweda.com</a></div>
+          <div><span>Address</span><a href="https://maps.app.goo.gl/8cmbyhq9cmPx6Dj28?g_st=aw" target="_blank" rel="noreferrer">Flat No: 202, Sivaram Life style Pragati Nagar Main Road, Pragati Nagar Hyderabad,Telangana State-500 090</a></div>
           <div><span>Remote</span><p>Remote Services Worldwide</p></div>
         </address>
       </div>
