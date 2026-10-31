@@ -70,13 +70,13 @@ const serviceArtwork = {
   'ppc-services': '/renders/ppc.png',
   'software-development': '/renders/software-development.png',
   'powerbi-services': '/renders/powerbi.png',
-  'ai-services': '/renders/service-desk.png'
+  'ai-services': '/renders/ai-servicedesk.png'
 };
 
 const applications = [
   { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/retail-commerce.png', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
   { title: 'Operations Dashboard', visual: 'analytics', image: '/renders/operation-dashboard.png', text: 'Role-based dashboards for tracking leads, inventory, tasks, sales, and support workflows.' },
-  { title: 'AI Service Desk', visual: 'ai', image: '/renders/service-desk.png', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
+  { title: 'AI Service Desk', visual: 'ai', image: '/renders/ai-servicedesk.png', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
   { title: 'Marketing Intelligence Hub', visual: 'seo', image: '/renders/marketing-intelligence.png', text: 'SEO, campaign, enquiry, and conversion reporting in one growth workspace.' }
 ];
 
@@ -268,7 +268,7 @@ function PageEffects({ routeKey = '' }) {
     let observer: IntersectionObserver | null = null;
     const timer = window.setTimeout(() => {
       const elements = document.querySelectorAll(
-        '.hero-copy, .hero-launch-panel, .visual3d, .trust-strip, .section-heading, .service-card, .rich-card, .application-card, .project-card, .gallery-card, .content-block, .rich-list li, .contact-form'
+        '.hero-copy, .hero-launch-panel, .visual3d, .trust-strip, .section-heading, .service-card, .rich-card, .application-card, .project-card, .gallery-card, .content-block, .rich-list li, .contact-form, .team-heading-copy, .team-orbit-graphic, .team-card, .team-section .center-action'
       );
 
       observer = new IntersectionObserver(
@@ -685,8 +685,11 @@ function Navigation() {
       <nav className={`nav-links ${open ? 'is-open' : ''}`} aria-label="Primary navigation">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/aboutus">About</NavLink>
-        <div className="nav-dropdown" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
-          <NavLink to="/services">Services</NavLink>
+        <div className="nav-dropdown" onMouseEnter={() => { if (window.matchMedia('(min-width: 1241px)').matches) setServicesOpen(true); }} onMouseLeave={() => { if (window.matchMedia('(min-width: 1241px)').matches) setServicesOpen(false); }}>
+          <div className="services-nav-row">
+            <NavLink to="/services">Services</NavLink>
+            <button className="services-menu-toggle" type="button" aria-label="Toggle services menu" aria-expanded={servicesOpen} onClick={() => setServicesOpen((value) => !value)}>{servicesOpen ? '−' : '+'}</button>
+          </div>
           <div className={`mega-menu ${servicesOpen ? 'show' : ''}`}>
             {serviceGroups.map((group) => (
               <div className="mega-item" key={group.name}>
@@ -755,23 +758,52 @@ function SectionHeading({ kicker, title, text }) {
 
 function TeamSection() {
   const teamAreas = [
-    { initials: 'ST', role: 'Strategy & Leadership', title: 'Business-first direction', text: 'We connect customer goals to clear roadmaps, useful products, and measurable outcomes.' },
-    { initials: 'EN', role: 'Engineering', title: 'Thoughtful technology', text: 'Our engineering practice builds reliable websites, applications, and digital platforms.' },
-    { initials: 'UX', role: 'Product & Design', title: 'Experiences made clear', text: 'Research and design help make complex services intuitive and accessible.' },
-    { initials: 'CD', role: 'Cloud & Data', title: 'Systems that scale', text: 'Cloud, analytics, and automation help teams work with more confidence.' },
-    { initials: 'GR', role: 'Growth', title: 'Digital growth', text: 'SEO and marketing connect useful products with the people who need them.' },
-    { initials: 'DL', role: 'Delivery & Support', title: 'Care beyond launch', text: 'Ongoing support keeps products secure, useful, and ready to evolve.' },
+    { name: 'Lokesh Reddy', role: 'UI Developer' },
+    { name: 'Sravani', role: 'Full Stack Developer' },
+    { name: 'Srinivas', role: 'Digital Marketing' },
+    { name: 'Sowmya', role: 'Backend Developer' },
+    { name: 'Chaitanya', role: 'Full Stack Developer' },
+    { name: 'Pavan', role: 'Designer' },
+    { name: 'Sivaramakrishna', role: 'Full Stack Developer' },
   ];
 
   return (
     <section className="section team-section">
-      <div className="team-heading"><SectionHeading kicker="Our Team" title={<>Meet Our <span>Team</span></>} text="A multidisciplinary team bringing strategy, design, engineering, and support together to build better digital experiences." /></div>
-      <div className="team-grid">{teamAreas.map((area) => <article className="team-card" key={area.role}>
-        <div className="team-avatar" aria-hidden="true"><span>{area.initials}</span></div>
-        <div className="team-info"><span className="team-role">{area.role}</span><h3>{area.title}</h3><div className="team-rule" /><p>{area.text}</p></div>
+      <div className="team-showcase-heading">
+        <div className="team-heading-copy">
+          <p className="team-showcase-kicker"><span /> MEET OUR TEAM</p>
+          <h2>Meet <span>Our Team</span></h2>
+          <p>A passionate team of professionals dedicated to delivering innovative IT solutions.</p>
+        </div>
+        <TeamOrbitGraphic />
+      </div>
+      <div className="team-grid">{teamAreas.map((member) => <article className="team-card" key={member.name}>
+        <div className="team-info"><h3>{member.name}</h3><span className="team-role">{member.role}</span></div>
+        <span className="team-card-arrow" aria-hidden="true">→</span>
       </article>)}</div>
       <div className="center-action"><Link className="primary-action" to="/careers">Join Our Team <span aria-hidden="true">→</span></Link></div>
     </section>
+  );
+}
+
+function TeamOrbitGraphic() {
+  return (
+    <div className="team-orbit-graphic" role="img" aria-label="Illustration of a connected team">
+      <svg viewBox="0 0 360 220" fill="none" aria-hidden="true">
+        <defs><linearGradient id="team-people-fill" x1="80" y1="62" x2="280" y2="194" gradientUnits="userSpaceOnUse"><stop stopColor="#12B8E8"/><stop offset="1" stopColor="#087FF5"/></linearGradient></defs>
+        <circle cx="180" cy="112" r="94" fill="#12B8E8" fillOpacity=".08"/>
+        <path d="M43 125c31-81 97-115 178-98 44 9 79 37 97 73" stroke="#76DFF8" strokeOpacity=".42" strokeWidth="2"/>
+        <path d="M57 151c41 48 112 63 177 36 29-12 51-31 67-54" stroke="#12B8E8" strokeOpacity=".4" strokeWidth="2"/>
+        <g fill="url(#team-people-fill)">
+          <circle cx="180" cy="65" r="25"/><path d="M132 142c0-26 21-47 48-47s48 21 48 47v28h-96v-28Z"/>
+          <circle cx="94" cy="91" r="18"/><path d="M61 151c0-20 15-36 34-36 13 0 25 8 30 20-6 10-10 22-10 36v4H61v-24Z"/>
+          <circle cx="266" cy="91" r="18"/><path d="M235 135c5-12 17-20 30-20 19 0 34 16 34 36v24h-54v-4c0-14-4-26-10-36Z"/>
+          <circle cx="49" cy="120" r="13" fillOpacity=".78"/><path d="M27 163c0-13 10-23 22-23 9 0 16 5 20 13-4 7-6 15-6 24v3H27v-17Z" fillOpacity=".78"/>
+          <circle cx="311" cy="120" r="13" fillOpacity=".78"/><path d="M291 153c4-8 11-13 20-13 12 0 22 10 22 23v17h-36v-3c0-9-2-17-6-24Z" fillOpacity=".78"/>
+        </g>
+        <path d="M58 176c63 33 178 34 246-2" stroke="#39C8F0" strokeWidth="5" strokeLinecap="round"/>
+      </svg>
+    </div>
   );
 }
 
@@ -791,7 +823,7 @@ function Home() {
         </div>
         <div className="home-about-visual" aria-label="Rigweda digital workspace">
           <div className="home-about-glow" />
-          <img src="/renders/herosecimg.png" alt="Laptop and modern digital workspace" />
+          <img src="/renders/home-aboutsec.png" alt="Digital workspace with technology solutions and business growth" />
           <div className="home-about-card home-about-card-one"><span className="about-card-icon">✦</span>Innovative Solutions</div>
           <div className="home-about-card home-about-card-two"><span className="about-card-icon">↗</span>Scalable Technology</div>
           <div className="home-about-card home-about-card-three"><span className="about-card-icon">◎</span>Business-Focused Approach</div>
@@ -807,10 +839,10 @@ function Home() {
             <Link className="services-cta" to="#home-services-catalog">Explore All Services <span aria-hidden="true">→</span></Link>
           </div>
           <div className="services-intro-art" aria-label="Digital workspace illustration">
-            <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" loading="lazy" />
+            <img src="/renders/our-services.png" alt="Digital services workspace illustration" loading="lazy" />
           </div>
         </section>
-        <ServiceShowcaseCards id="home-services-catalog" limit={6} />
+        <ServiceShowcaseCards id="home-services-catalog" />
         <div className="services-more-link"><Link className="services-cta" to="/services">Explore All Services <span aria-hidden="true">→</span></Link></div>
         <ServicesPromises />
       </section>
@@ -842,7 +874,7 @@ function ServiceCard({ service }) {
               : service.slug === 'powerbi-services'
               ? '/renders/powerbi.png'
               : service.slug === 'ai-services'
-                ? '/renders/service-desk.png'
+                ? '/renders/ai-servicedesk.png'
               : service.slug === 'mobile-development'
                 ? '/renders/mobile-3d.png'
                 : service.slug === 'hosting-services'
@@ -882,7 +914,7 @@ function ServicesPage() {
             <Link className="services-cta" to="#all-services">Explore All Services <span aria-hidden="true">→</span></Link>
           </div>
           <div className="services-intro-art" aria-label="Digital workspace illustration">
-            <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" />
+            {/* <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" /> */}
           </div>
         </section>
         <ServiceShowcaseCards id="all-services" />
@@ -892,19 +924,30 @@ function ServicesPage() {
   );
 }
 
-function ServiceShowcaseCards({ id, limit }) {
+const featuredServiceCards = [
+  { slug: 'ui-ux-solutions', title: 'UI/UX Solutions', icon: 'pen', description: 'User-focused designs that create meaningful experiences.' },
+  { slug: 'webdesign', title: 'Web Design', icon: 'layout', description: 'Modern, responsive websites shaped around your brand.' },
+  { slug: 'web-development', title: 'Web Application Development', icon: 'code', description: 'Scalable and secure web applications for your business.' },
+  { slug: 'applications', title: 'Mobile App Development', icon: 'smartphone', description: 'High-performance mobile apps for iOS and Android.' },
+  { slug: 'wordpress-development', title: 'WordPress Development', icon: 'layers', description: 'Custom and SEO-friendly WordPress websites.' },
+  { slug: 'ecommerce-development', title: 'Ecommerce Development', icon: 'cart', description: 'Online stores that deliver a seamless shopping experience.' },
+  { slug: 'digital-marketing', title: 'Digital Marketing', icon: 'megaphone', description: 'Data-driven strategies to grow your brand.' },
+  { slug: 'seo-services', title: 'SEO Services', icon: 'chart', description: 'Improve rankings and drive quality organic traffic.' },
+  { slug: 'smm-services', title: 'Social Media Marketing', icon: 'users', description: 'Build brand visibility and connect with your audience.' },
+  { slug: 'ppc-services', title: 'PPC Advertising', icon: 'target', description: 'Reach the right customers with measurable paid campaigns.' },
+  { slug: 'software-development', title: 'Software Development', icon: 'plug', description: 'Custom software that supports your business workflows.' },
+  { slug: 'ai-services', title: 'AI Development Services', icon: 'spark', description: 'Practical AI tools and automation for everyday work.' }
+];
+
+function ServiceShowcaseCards({ id }) {
   return (
     <section className="services-catalog" id={id} aria-label="All services">
-      {services.slice(0, limit ?? services.length).map((service, index) => (
+      {featuredServiceCards.map((service) => (
         <article className="showcase-service-card" key={service.slug}>
-          <div className="showcase-service-copy">
-            <span className="showcase-service-icon" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            <h2>{service.title}</h2>
-            <p>{service.summary}</p>
-            <ul>{service.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
-            <Link to={`/${service.slug}`}>Learn more <span aria-hidden="true">→</span></Link>
-          </div>
-          <div className="showcase-service-art"><img src={serviceArtwork[service.slug]} alt="" loading="lazy" /></div>
+          <div className="showcase-service-icon" aria-hidden="true"><AboutIcon name={service.icon} /></div>
+          <h2>{service.title}</h2>
+          <p>{service.description}</p>
+          <Link className="showcase-service-arrow" to={service.slug === 'applications' ? '/applications' : `/${service.slug}`} aria-label={`Explore ${service.title}`}><span aria-hidden="true">↗</span></Link>
         </article>
       ))}
     </section>
@@ -952,6 +995,10 @@ const aboutIconPaths = {
   support: <><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13h3v6H6a2 2 0 0 1-2-2v-4ZM20 13h-3v6h1a2 2 0 0 0 2-2v-4ZM12 21h3"/></>,
   code: <><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></>,
   cloud: <path d="M7 18h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 9.3 4.5 4.5 0 0 0 7 18Z"/>,
+  smartphone: <><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M10 5h4M11 18h2"/></>,
+  cart: <><path d="M3 4h2l2.4 11h10.9L21 8H6"/><circle cx="10" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></>,
+  megaphone: <><path d="m3 11 16-6v14L3 13v-2Z"/><path d="m7 14 2 6h4l-2-5M19 10h2a2 2 0 0 1 0 4h-2"/></>,
+  chart: <><path d="M4 19V5M4 19h17"/><path d="m7 15 4-4 3 2 6-7"/><path d="M16 6h4v4"/></>,
   plug: <><path d="M9 7v4M15 7v4M7 11h10v2a5 5 0 0 1-5 5v3M12 18v3M9 3v4M15 3v4"/></>,
   search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
   layout: <><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></>,
@@ -1159,8 +1206,42 @@ function Contact() {
   return (
     <>
       <HeadMeta title="Contact Rigweda Technologies | Start Your IT Project" description="Contact Rigweda Technologies for websites, apps, applications, AI, cloud, data, SEO, digital marketing, cybersecurity, and IT consulting." keywords="contact Rigweda Technologies, IT project enquiry, website quote, app quote" path="/contactus" />
-      <Hero eyebrow="Contact" title="Let’s shape your next digital move." text="Tell us what you want to build, improve, automate, or market. Rigweda can plan the roadmap and deliver the system." visual="strategy" action="View Services" image={undefined} />
-      <section className="section contact"><div><p className="section-kicker">Start a Conversation</p><h2>Send a project enquiry.</h2><p>Use this form for websites, apps, ecommerce, AI automation, data dashboards, SEO, campaigns, cloud, or security support.</p></div><form id="contact-form" className="contact-form" onSubmit={submitEnquiry} noValidate><label>Name<input name="name" placeholder="Your name" autoComplete="name" minLength={2} maxLength={80} pattern="[A-Za-z][A-Za-z .'-]{1,79}" aria-invalid={Boolean(formErrors.name)} required />{formErrors.name && <span className="field-error">{formErrors.name}</span>}</label><label>Email<input name="email" type="email" placeholder="you@example.com" autoComplete="email" maxLength={120} aria-invalid={Boolean(formErrors.email)} required />{formErrors.email && <span className="field-error">{formErrors.email}</span>}</label><label>Phone Number<input name="phone" type="tel" inputMode="tel" placeholder="+91 98765 43210" autoComplete="tel" minLength={8} maxLength={20} pattern="[+]?[0-9\\s()\\-]{8,20}" aria-invalid={Boolean(formErrors.phone)} required />{formErrors.phone && <span className="field-error">{formErrors.phone}</span>}</label><label>Project Need<select name="need" aria-invalid={Boolean(formErrors.need)} required>{enquiryNeeds.map((need) => <option key={need}>{need}</option>)}</select>{formErrors.need && <span className="field-error">{formErrors.need}</span>}</label><label>Message<textarea name="message" rows={5} placeholder="Share a short project brief" minLength={20} maxLength={1000} aria-invalid={Boolean(formErrors.message)} required />{formErrors.message && <span className="field-error">{formErrors.message}</span>}</label>{submitStatus && <p className="form-status" role="alert">{submitStatus}</p>}<button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending...' : 'Send Enquiry'}</button></form></section>
+      <div className="contact-page">
+        <section className="contact-hero">
+          <div className="contact-hero-copy">
+            <p className="contact-kicker"><span /> CONTACT RIGWEDA</p>
+            <h1>Let's build your next <span>digital solution.</span></h1>
+            <p>From websites and applications to AI, cloud, and business automation, our team can help you plan the right technology for your next stage.</p>
+            <div className="contact-hero-actions">
+              <a className="contact-primary-action" href="#contact-form">Tell us about your project <span aria-hidden="true">→</span></a>
+              <Link className="contact-secondary-action" to="/services">Explore services</Link>
+            </div>
+          </div>
+        </section>
+        <section className="section contact contact-layout">
+          <div className="contact-intro">
+            <p className="section-kicker">START A CONVERSATION</p>
+            <h2>Tell us what you want to build.</h2>
+            <p>Share your goals and our team will get back to you to discuss the best next step.</p>
+            <div className="contact-methods">
+              <a className="contact-method" href="tel:+917989076809"><span className="contact-method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h3l1.5 4-2 1.5a15 15 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 5 7.2 2 2 0 0 1 7 5Z"/></svg></span><span><small>CALL OUR TEAM</small><strong>+91 79890 76809</strong></span><span className="contact-method-arrow" aria-hidden="true">↗</span></a>
+              <a className="contact-method" href="mailto:info@rigweda.com"><span className="contact-method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span><span><small>EMAIL US</small><strong>info@rigweda.com</strong></span><span className="contact-method-arrow" aria-hidden="true">↗</span></a>
+              <a className="contact-method" href="https://wa.me/917989076809" target="_blank" rel="noreferrer"><span className="contact-method-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L4 20l1.2-3.8a8.2 8.2 0 1 1 15-4.5Z"/><path d="M9 8.5c.4 2.8 2.7 5.1 5.5 5.5l1.2-1.2 2 .8"/></svg></span><span><small>WHATSAPP</small><strong>Chat with Rigweda</strong></span><span className="contact-method-arrow" aria-hidden="true">↗</span></a>
+            </div>
+            <div className="contact-response-note"><span /> We typically respond within one business day.</div>
+          </div>
+          <form id="contact-form" className="contact-form" onSubmit={submitEnquiry} noValidate>
+            <div className="contact-form-heading"><p className="section-kicker">PROJECT ENQUIRY</p><h2>Tell us about your project</h2><p>Complete the details and we’ll follow up soon.</p></div>
+            <label>Name<input name="name" placeholder="Your name" autoComplete="name" minLength={2} maxLength={80} pattern="[A-Za-z][A-Za-z .'-]{1,79}" aria-invalid={Boolean(formErrors.name)} required />{formErrors.name && <span className="field-error">{formErrors.name}</span>}</label>
+            <label>Email<input name="email" type="email" placeholder="you@example.com" autoComplete="email" maxLength={120} aria-invalid={Boolean(formErrors.email)} required />{formErrors.email && <span className="field-error">{formErrors.email}</span>}</label>
+            <label>Phone Number<input name="phone" type="tel" inputMode="tel" placeholder="+91 98765 43210" autoComplete="tel" minLength={8} maxLength={20} pattern="[+]?[0-9\\s()\\-]{8,20}" aria-invalid={Boolean(formErrors.phone)} required />{formErrors.phone && <span className="field-error">{formErrors.phone}</span>}</label>
+            <label>Project Need<select name="need" aria-invalid={Boolean(formErrors.need)} required>{enquiryNeeds.map((need) => <option key={need}>{need}</option>)}</select>{formErrors.need && <span className="field-error">{formErrors.need}</span>}</label>
+            <label className="contact-message-field">Message<textarea name="message" rows={5} placeholder="Share a short project brief" minLength={20} maxLength={1000} aria-invalid={Boolean(formErrors.message)} required />{formErrors.message && <span className="field-error">{formErrors.message}</span>}</label>
+            {submitStatus && <p className="form-status" role="alert">{submitStatus}</p>}
+            <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending...' : 'Send Enquiry'} <span aria-hidden="true">→</span></button>
+          </form>
+        </section>
+      </div>
     </>
   );
 }
@@ -1200,7 +1281,7 @@ function Footer() {
     ['AI Development Services', '/ai-services']
   ];
   const socialLinks = [
-    ['mail', 'Email', 'mailto:sales@rigweda.com'],
+    ['mail', 'Email', 'mailto:info@rigweda.com'],
     ['call', 'Call', 'tel:+917989076809'],
     ['wa', 'WhatsApp', 'https://wa.me/917989076809']
   ];
@@ -1219,7 +1300,13 @@ function Footer() {
           <Link className="footer-brand" to="/" aria-label="Rigweda Technologies home"><img src={logoLockup} alt="" /></Link>
           <p>Rigweda Technologies delivers UI/UX, web design and development, ecommerce, software, AI, analytics, and digital marketing services across India and globally.</p>
           <div className="footer-socials">
-            {socialLinks.map(([short, label, href]) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>{short}</a>)}
+            {socialLinks.map(([icon, label, href]) => <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {icon === 'mail' && <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></>}
+                {icon === 'call' && <path d="M7 3h3l1.5 4-2 1.5a15 15 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 5 7.2 2 2 0 0 1 7 5Z"/>}
+                {icon === 'wa' && <><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L4 20l1.2-3.8a8.2 8.2 0 1 1 15-4.5Z"/><path d="M9 8.5c.4 2.8 2.7 5.1 5.5 5.5l1.2-1.2 2 .8c-.2 1.4-1.3 2.3-2.7 2.2-3.7-.4-6.9-3.6-7.3-7.3-.1-1.4.8-2.5 2.2-2.7l.8 2Z"/></>}
+              </svg>
+            </a>)}
           </div>
         </div>
         <nav className="footer-column" aria-label="Footer quick links">
