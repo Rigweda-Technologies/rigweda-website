@@ -8,7 +8,7 @@ const logoLockup = '/assets/rigweda-logo.png';
 
 const renderImages = {
   website: '/renders/webapplication.png',
-  interface: '/renders/ui-ux-img.png',
+  interface: '/renders/uiux-3d%20(2).png',
   cms: '/renders/wordpressdevelopment.png',
   commerce: '/renders/ecommerce.png',
   mobile: '/renders/mobile-3d.png',
@@ -59,7 +59,7 @@ const services = [
 ];
 
 const serviceArtwork = {
-  'ui-ux-solutions': '/renders/ui-ux-img.png',
+  'ui-ux-solutions': '/renders/uiux-3d%20(2).png',
   webdesign: '/renders/web-design.png',
   'web-development': '/renders/webapplication.png',
   'wordpress-development': '/renders/wordpressdevelopment.png',
@@ -171,6 +171,8 @@ function setCanonical(href) {
 }
 
 function SceneBackground() {
+  const location = useLocation();
+
   useEffect(() => {
     const canvas = document.querySelector('#rigweda-field');
     if (!canvas) return undefined;
@@ -210,10 +212,12 @@ function SceneBackground() {
     const lineGeometry = new THREE.BufferGeometry();
     lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     group.add(new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial({ color: '#1b7fb6', transparent: true, opacity: 0.16 })));
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.35, 0.022, 10, 160), new THREE.MeshBasicMaterial({ color: '#48d8ff', transparent: true, opacity: 0.18 }));
-    ring.rotation.x = 1.2;
-    ring.rotation.y = 0.55;
-    group.add(ring);
+    const ring = location.pathname === '/web-development' ? null : new THREE.Mesh(new THREE.TorusGeometry(3.35, 0.022, 10, 160), new THREE.MeshBasicMaterial({ color: '#48d8ff', transparent: true, opacity: 0.18 }));
+    if (ring) {
+      ring.rotation.x = 1.2;
+      ring.rotation.y = 0.55;
+      group.add(ring);
+    }
     scene.add(new THREE.AmbientLight('#ffffff', 1.25));
     const keyLight = new THREE.PointLight('#e9fbff', 18, 25);
     keyLight.position.set(-3.5, 2.5, 5);
@@ -238,7 +242,7 @@ function SceneBackground() {
       const tick = time * 0.001;
       group.rotation.y = tick * 0.08 + pointerX;
       group.rotation.x = Math.sin(tick * 0.35) * 0.08 + pointerY;
-      ring.rotation.z = tick * 0.16;
+      if (ring) ring.rotation.z = tick * 0.16;
       nodes.forEach((node, index) => {
         node.scale.setScalar(1 + Math.sin(tick * node.userData.velocity + index) * 0.2);
         node.material.color.lerpColors(cyan, gold, (Math.sin(tick + index) + 1) / 2);
@@ -256,7 +260,7 @@ function SceneBackground() {
       geometry.dispose();
       lineGeometry.dispose();
     };
-  }, []);
+  }, [location.pathname]);
 
   return <canvas id="rigweda-field" aria-hidden="true" />;
 }
@@ -335,6 +339,17 @@ function AnimatedRoutes() {
         <Route path="/aboutus" element={<About />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/applications" element={<ApplicationsPage />} />
+        <Route path="/ui-ux-solutions" element={<UiUxSolutionsPage />} />
+        <Route path="/web-development" element={<WebApplicationDevelopmentPage />} />
+        <Route path="/wordpress-development" element={<WordPressDevelopmentPage />} />
+        <Route path="/ecommerce-development" element={<EcommerceDevelopmentPage />} />
+        <Route path="/digital-marketing" element={<DigitalMarketingPage />} />
+        <Route path="/seo-services" element={<SeoServicesPage />} />
+        <Route path="/smm-services" element={<SocialMediaMarketingPage />} />
+        <Route path="/ppc-services" element={<PpcServicesPage />} />
+        <Route path="/software-development" element={<SoftwareDevelopmentPage />} />
+        <Route path="/powerbi-services" element={<PowerBiServicesPage />} />
+        <Route path="/ai-services" element={<AiDevelopmentServicesPage />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/careers" element={<Careers />} />
@@ -669,6 +684,20 @@ function Navigation() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if (!open || !window.matchMedia('(max-width: 680px)').matches) return undefined;
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const nav = document.querySelector<HTMLElement>('.nav-links');
+    if (nav) nav.scrollTop = 0;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
     const header = document.querySelector<HTMLElement>('.site-header');
     const update = () => {
       if (header) header.dataset.elevated = window.scrollY > 16 ? 'true' : 'false';
@@ -725,19 +754,19 @@ function Visual3D({ type = 'website', image }) {
   );
 }
 
-function Hero({ eyebrow, title, text, action = 'Explore Services', actionTo = '/services', visual = 'website', image, featured = false }) {
+function Hero({ eyebrow, title, text, action = 'Explore Services', actionTo = '/services', secondaryAction = 'View Projects', secondaryTo = '/portfolio', visual = 'website', image, featured = false, pageClass = '' }) {
   // If the action is for contact, append #contact-form to scroll to form
   let actionToFinal = actionTo;
   if (typeof actionTo === 'string' && actionTo.match(/contact(us)?$/i)) {
     actionToFinal = actionTo + '#contact-form';
   }
   return (
-    <section className="hero">
+    <section className={`hero ${pageClass}`}>
       <div className="hero-copy">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
         <p className="hero-lede">{text}</p>
-        <div className="hero-actions"><Link className="primary-action" to={actionToFinal}>{action}</Link><Link className="secondary-action" to="/portfolio">View Projects</Link></div>
+        <div className="hero-actions"><Link className="primary-action" to={actionToFinal}>{action}</Link><Link className="secondary-action" to={secondaryTo}>{secondaryAction}</Link></div>
         {featured && (
           <div className="hero-launch-panel" aria-label="Project launch planner">
             <span><strong>Launch</strong> Website / app</span>
@@ -809,7 +838,7 @@ function TeamOrbitGraphic() {
 
 function Home() {
   return (
-    <>
+    <div className="home-page">
       <HeadMeta title="Rigweda Technologies | IT Services, Applications, Web, AI & Cloud" description="Rigweda Technologies builds SEO-friendly websites, applications, mobile apps, AI automation, cloud systems, data analytics, cybersecurity, and digital marketing engines." keywords="Rigweda Technologies, IT services, web development, applications, mobile app development, AI automation" />
       <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image="/renders/herosecimg.png" featured />
       <section className="home-about" aria-labelledby="home-about-title">
@@ -849,56 +878,18 @@ function Home() {
       <ProjectsSection limit={4} />
       <TeamSection />
       <ApplicationsSection compact />
-    </>
+    </div>
   );
 }
 
 function ServiceCard({ service }) {
-  const serviceImage =
-    service.slug === 'web-development'
-      ? '/renders/webapplication.png'
-      : service.slug === 'webdesign'
-        ? '/renders/web-design.png'
-      : service.slug === 'wordpress-development'
-        ? '/renders/wordpressdevelopment.png'
-      : service.slug === 'ecommerce-development'
-          ? '/renders/ecommerce.png'
-          : service.slug === 'digital-marketing'
-            ? '/renders/digitalmarketing.png'
-            : service.slug === 'seo-services'
-              ? '/renders/seo.png'
-              : service.slug === 'smm-services'
-                ? '/renders/smm.png'
-              : service.slug === 'ppc-services'
-                ? '/renders/ppc.png'
-              : service.slug === 'powerbi-services'
-              ? '/renders/powerbi.png'
-              : service.slug === 'ai-services'
-                ? '/renders/ai-servicedesk.png'
-              : service.slug === 'mobile-development'
-                ? '/renders/mobile-3d.png'
-                : service.slug === 'hosting-services'
-                  ? '/renders/hosting-3d.png'
-                  : service.slug === 'aws-services'
-                    ? '/renders/cloud-ai-data-3d.png'
-                    : service.slug === 'networking-solutions-services'
-                      ? '/renders/networking-3d.png'
-                      : service.slug === 'security-services'
-                        ? '/renders/security-network-3d.png'
-                        : service.slug === 'data-services'
-                          ? '/renders/database-3d.png'
-                          : service.slug === 'retail-services'
-                            ? '/renders/ecommerce-3d.png'
-                            : service.slug === 'database-maintenance'
-                              ? '/renders/database-3d.png'
-                              : service.slug === 'data-analytics'
-                                ? '/renders/analytics-bi-3d.png'
-                                : service.slug === 'custom-development'
-                                  ? '/renders/software-development.png'
-                                  : service.slug === 'it-consulting'
-                                    ? '/renders/software-enterprise-3d.png'
-            : undefined;
-  return <article className="service-card"><Visual3D type={service.visual} image={serviceImage} /><span>{service.group}</span><h3>{service.title}</h3><p>{service.summary}</p><Link to={`/${service.slug}`}>Explore service</Link></article>;
+  const serviceImage = serviceArtwork[service.slug] ?? renderImages[service.visual] ?? renderImages.website;
+  return (
+    <article className="related-service-card">
+      <div className={`related-service-art visual-${service.visual}`}><img src={serviceImage} alt="" loading="lazy" /><span className="related-art-orbit" aria-hidden="true" /></div>
+      <div className="related-service-copy"><p className="related-service-group">{service.group}</p><h3>{service.title}</h3><p className="related-service-summary">{service.summary}</p><Link to={`/${service.slug}`}>Explore service <span aria-hidden="true">↗</span></Link></div>
+    </article>
+  );
 }
 
 function ServicesPage() {
@@ -969,6 +960,19 @@ function ServicePage() {
   const { slug } = useParams();
   const service = getService(slug) ?? services[0];
   const related = services.filter((item) => item.group === service.group && item.slug !== service.slug).slice(0, 3);
+  const isWebDesign = slug === 'webdesign';
+  const designTypes = [
+    ['01', 'Business websites', 'A clear, credible presence that explains what you do and guides visitors to the right next step.'],
+    ['02', 'Landing pages', 'Focused pages for campaigns, launches, and services with a strong message and one clear action.'],
+    ['03', 'Product experiences', 'Interfaces for apps, portals, and dashboards shaped around real users and everyday tasks.'],
+    ['04', 'Ecommerce storefronts', 'Product discovery and shopping journeys designed to make browsing and checkout feel simple.']
+  ];
+  const designProcess = [
+    ['Discover', 'Align on your audience, business goals, content, and what success should look like.'],
+    ['Plan', 'Shape the site map and page structure around the questions visitors need answered.'],
+    ['Design', 'Create the visual system and responsive page layouts for desktop, tablet, and mobile.'],
+    ['Handoff', 'Prepare design files, interaction notes, and assets so development can move forward smoothly.']
+  ];
   return (
     <>
       <HeadMeta title={`${service.title} | Rigweda Technologies`} description={`${service.summary} Rigweda Technologies delivers professional ${service.title.toLowerCase()} for businesses that need reliable digital outcomes.`} keywords={service.keywords} path={`/${service.slug}`} />
@@ -977,8 +981,631 @@ function ServicePage() {
         <div className="content-block"><p className="section-kicker">Professional Delivery</p><h2>Built with clarity, performance, and long-term value.</h2><p>{service.summary} We shape each engagement around the business goal, the user journey, the technology stack, and the measurable result expected after launch.</p><p>Every Rigweda service page is designed to be SEO-friendly and customer-friendly: clear title, useful content, structured sections, internal links, and visible proof through projects and applications.</p></div>
         <ul className="rich-list">{service.bullets.map((bullet) => <li key={bullet}><strong>{bullet}</strong><p>Planned with practical implementation steps, clean communication, and maintainable delivery.</p></li>)}</ul>
       </section>
-      <section className="section compact"><SectionHeading kicker="Related Capabilities" title="Connected services for stronger outcomes." text="Most projects need more than one service. Rigweda connects the surrounding pieces so the final result feels complete." /><div className="rich-grid">{related.map((item) => <ServiceCard key={item.slug} service={item} />)}</div></section>
+      {isWebDesign && <>
+        <section className="webdesign-types-section section" aria-labelledby="webdesign-types-title">
+          <div className="webdesign-section-heading"><p className="section-kicker">Design for the way you work</p><h2 id="webdesign-types-title">The right experience for <span>every kind of website.</span></h2><p>Start with the pages your audience needs, then build a consistent experience around your brand and goals.</p></div>
+          <div className="webdesign-types-grid">{designTypes.map(([number, title, text]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+        </section>
+        <section className="webdesign-principles-section section" aria-labelledby="webdesign-principles-title">
+          <div><p className="section-kicker">What good web design supports</p><h2 id="webdesign-principles-title">Make every visit feel <span>clear and useful.</span></h2><p>Strong design brings content, visual hierarchy, and interaction together, so visitors can understand your offer and move forward with confidence.</p></div>
+          <ul>{['Responsive layouts that work across screen sizes', 'Accessible color, type, navigation, and focus states', 'Clear calls to action and conversion paths', 'Search-friendly page structure and content hierarchy', 'Consistent brand patterns and reusable components', 'Performance-aware image and interface choices'].map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul>
+        </section>
+        <section className="webdesign-process-section section" aria-labelledby="webdesign-process-title">
+          <div className="webdesign-section-heading"><p className="section-kicker">From brief to build-ready</p><h2 id="webdesign-process-title">A collaborative design process, <span>step by step.</span></h2><p>Review the direction early and keep decisions connected to your users, content, and development plan.</p></div>
+          <div className="webdesign-process-grid">{designProcess.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+        </section>
+        <section className="webdesign-faq-section section" aria-labelledby="webdesign-faq-title">
+          <div className="webdesign-section-heading"><p className="section-kicker">Web design FAQs</p><h2 id="webdesign-faq-title">A few things teams <span>often ask.</span></h2></div>
+          <div className="webdesign-faq-list"><details><summary>Can you redesign our existing website?<span aria-hidden="true">+</span></summary><p>Yes. We can review your current pages, identify usability and content gaps, and plan a redesign around the highest-priority journeys.</p></details><details><summary>Will the design work on mobile?<span aria-hidden="true">+</span></summary><p>Yes. Responsive behavior is considered throughout the design so layouts and interactions adapt to mobile, tablet, and desktop.</p></details><details><summary>Can you work with our development team?<span aria-hidden="true">+</span></summary><p>Yes. We prepare organized design files and handoff notes, and can collaborate with your developers as the site is built.</p></details></div>
+        </section>
+        <section className="webdesign-cta"><div><p className="section-kicker">Ready to improve your website?</p><h2>Let’s shape a clearer digital experience.</h2><p>Tell us what your website needs to do and who it needs to serve.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss your website <span aria-hidden="true">→</span></Link></section>
+      </>}
+      <section className="related-services-section section compact"><SectionHeading kicker="Related Capabilities" title="Connected services for stronger outcomes." text="Most projects need more than one service. Rigweda connects the surrounding pieces so the final result feels complete." /><div className="related-services-grid">{related.map((item) => <ServiceCard key={item.slug} service={item} />)}</div><Link className="related-services-more" to="/services">Explore all services <span aria-hidden="true">↗</span></Link></section>
     </>
+  );
+}
+
+function UiUxSolutionsPage() {
+  const capabilities = [
+    ['01', 'UX research & journeys', 'Clarify user needs, map key tasks, and identify friction in the current experience.'],
+    ['02', 'Information architecture', 'Organize content and navigation so people can find the next step without guesswork.'],
+    ['03', 'UI & interaction design', 'Design responsive screens, meaningful states, and interactions for web and mobile products.'],
+    ['04', 'Design systems & handoff', 'Create reusable patterns and clear design notes that help teams build consistently.']
+  ];
+  const process = [
+    ['Discover', 'Align on business goals, users, constraints, and the main tasks the product must support.'],
+    ['Structure', 'Prioritize content and map the core journeys before moving into detailed screens.'],
+    ['Prototype', 'Explore visual directions and connect key screens into a prototype for review.'],
+    ['Validate & hand off', 'Refine from feedback, document behavior, and prepare the agreed designs for development.']
+  ];
+  const deliverables = [
+    'User flows and journey maps',
+    'Information architecture and navigation',
+    'Wireframes and responsive screen designs',
+    'Clickable prototypes for key journeys',
+    'Reusable components and design patterns',
+    'Interaction states and developer handoff notes'
+  ];
+  const faqs = [
+    ['Can you improve an existing product?', 'Yes. We can review the current experience, identify friction in important journeys, and prioritize a practical redesign.'],
+    ['Do you design for mobile and desktop?', 'Yes. We plan responsive behavior across the screen sizes and devices that matter to your users.'],
+    ['What will our team receive?', 'Deliverables are agreed at kickoff and can include flows, wireframes, interface designs, prototypes, reusable components, and handoff notes.'],
+    ['Can you work with our developers?', 'Yes. We can review designs with your team, explain interaction details, and help resolve design questions during implementation.']
+  ];
+
+  return (
+    <main className="uiux-page">
+      <HeadMeta title="UI/UX Design Solutions | Rigweda Technologies" description="Research-led UI/UX design for websites, apps, dashboards, and digital products. Rigweda creates clear, accessible experiences centered on your users and business goals." keywords="UI UX design services, product design, user research, interface design, design systems" path="/ui-ux-solutions" />
+      <Hero eyebrow="UI/UX Solutions" title={<>Design that feels <span>clear and effortless.</span></>} text="We turn complex ideas into intuitive digital experiences—designed around the people who use them and the goals your business needs to reach." visual="interface" action="Discuss Your Product" actionTo="/contactus" secondaryAction="Explore Our Approach" secondaryTo="#uiux-approach" image="/renders/uiux-3d%20(2).png" pageClass="hero-uiux" />
+      <section className="uiux-intro section" aria-labelledby="uiux-intro-title">
+        <div className="uiux-intro-copy"><p className="section-kicker">Designed around real tasks</p><h2 id="uiux-intro-title">Help people get where they need to go. <span>Make every screen count.</span></h2></div>
+        <p>Good UI/UX starts with understanding what users need to do. We simplify important journeys, make information easier to scan, and give your product a consistent visual language across screens.</p>
+      </section>
+      <section className="uiux-capabilities section" aria-labelledby="uiux-capabilities-title">
+        <div className="uiux-section-heading"><p className="section-kicker">What we help you solve</p><h2 id="uiux-capabilities-title">From user journey to <span>ready-to-build interface.</span></h2><p>Choose focused design support or bring us in across the full product experience.</p></div>
+        <div className="uiux-capability-grid">{capabilities.map(([number, title, text]) => <article className="uiux-capability" key={number}><span className="uiux-number">{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      </section>
+      <section className="uiux-deliverables section" aria-labelledby="uiux-deliverables-title">
+        <div className="uiux-deliverables-copy"><p className="section-kicker">Clear, useful outputs</p><h2 id="uiux-deliverables-title">Design your team can <span>move forward with.</span></h2><p>We agree on the right scope together, then shape the deliverables around your product, timeline, and development workflow.</p></div>
+        <ul className="uiux-deliverables-list">{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul>
+      </section>
+      <section className="uiux-process section" id="uiux-approach" aria-labelledby="uiux-process-title">
+        <div className="uiux-section-heading"><p className="section-kicker">Our approach</p><h2 id="uiux-process-title">A clear path from <span>idea to interface.</span></h2><p>Collaborative design with regular checkpoints, so decisions stay connected to user needs and project goals.</p></div>
+        <div className="uiux-process-grid">{process.map(([title, text], index) => <article className="uiux-process-step" key={title}><span className="uiux-step-index">0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      </section>
+      <section className="uiux-accessibility section" aria-labelledby="uiux-accessibility-title"><div><p className="section-kicker">Usability in the details</p><h2 id="uiux-accessibility-title">Inclusive, responsive, <span>and consistent by design.</span></h2></div><p>We consider readable type, color contrast, clear focus and interaction states, touch-friendly controls, and responsive layouts as part of the design—not as finishing touches.</p></section>
+      <section className="uiux-faq section" aria-labelledby="uiux-faq-title"><div className="uiux-section-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="uiux-faq-title">A few things teams <span>often ask.</span></h2></div><div className="uiux-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+      <section className="uiux-cta"><div><p className="section-kicker">Let’s make it feel right</p><h2>Ready to improve your digital experience?</h2><p>Tell us about your product, users, and what you want to make easier.</p></div><Link className="primary-action" to="/contactus#contact-form">Talk with our design team <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function WebApplicationDevelopmentPage() {
+  const useCases = [
+    ['Customer portals', 'Let customers manage accounts, submit requests, access documents, and follow service updates.'],
+    ['Operations dashboards', 'Bring tasks, inventory, sales, support, and business activity into a role-aware workspace.'],
+    ['Workflow applications', 'Coordinate approvals, assignments, notifications, and recurring processes across teams.'],
+    ['Booking & service platforms', 'Manage availability, appointments, customer details, and service workflows in one place.']
+  ];
+  const capabilities = [
+    ['Product planning', 'Define user roles, requirements, priorities, and a focused first release.'],
+    ['Responsive interfaces', 'Build clear browser experiences for desktop, tablet, and mobile use.'],
+    ['Application logic & data', 'Support the rules, records, and workflows your product depends on.'],
+    ['Integrations', 'Connect agreed APIs and business services to reduce repeated data entry.'],
+    ['Quality & performance', 'Review important flows, loading behavior, and error states before release.'],
+    ['Release & handoff', 'Prepare deployment guidance and documentation for your team.']
+  ];
+  const stages = [
+    ['Discover', 'Understand your business goals, users, current workflows, and technical constraints.'],
+    ['Plan', 'Prioritize features, map the application structure, and agree on a practical delivery sequence.'],
+    ['Build', 'Develop the application in reviewable increments and share progress at agreed checkpoints.'],
+    ['Launch', 'Review key journeys, prepare the release, and hand over the agreed documentation.']
+  ];
+  const deliverables = ['Scope and feature plan', 'User roles and workflow map', 'Responsive web interface', 'Application logic and agreed integrations', 'Review and release checklist', 'Technical and user handoff notes'];
+  const faqs = [
+    ['What kinds of web applications can you build?', 'We work on customer portals, dashboards, workflow tools, booking systems, and other browser-based products shaped around specific business needs.'],
+    ['Can the app connect to our existing software?', 'We can scope integrations with systems that provide suitable APIs or other supported connection methods. The exact approach depends on access and technical requirements.'],
+    ['Can we start with a smaller first release?', 'Yes. We can prioritize essential user journeys for an initial release and plan additional features as later phases.'],
+    ['Will the application work on mobile?', 'We design responsive browser interfaces for the agreed devices and screen sizes. Native iOS or Android apps are scoped separately.'],
+    ['What happens after launch?', 'Post-launch support and future improvements can be planned based on your team’s needs and the project scope.']
+  ];
+  const related = ['ui-ux-solutions', 'software-development', 'ai-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page web-development-page">
+      <HeadMeta title="Web Application Development | Rigweda Technologies" description="Custom web application development for customer portals, dashboards, workflow tools, and service platforms. Plan, build, and grow a browser-based product around your business." keywords="web application development, custom web applications, customer portals, business dashboards, workflow applications" path="/web-development" />
+      <Hero eyebrow="Web Application Development" title={<>Web applications built <span>around your business.</span></>} text="Bring customer services, team workflows, and business information together in a browser-based product designed for the way your people work." visual="website" action="Discuss Your Application" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#webdev-capabilities" image="/renders/webapplication.png" pageClass="hero-webdev" />
+
+      <section className="webdev-intro section" aria-labelledby="webdev-intro-title"><div><p className="section-kicker">Purpose-built digital tools</p><h2 id="webdev-intro-title">Make complex workflows <span>easier to manage.</span></h2></div><p>We help turn business requirements into useful web software: clear interfaces for people, organized information for teams, and workflows that support daily operations.</p></section>
+
+      <section className="webdev-usecases section" aria-labelledby="webdev-usecases-title"><div className="webdev-heading"><p className="section-kicker">What we build</p><h2 id="webdev-usecases-title">A web application for <span>the work you need to do.</span></h2><p>Start with one important workflow, then extend the product as your needs change.</p></div><div className="webdev-usecase-grid">{useCases.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" id="webdev-capabilities" aria-labelledby="webdev-capabilities-title"><div className="webdev-heading"><p className="section-kicker">Development capabilities</p><h2 id="webdev-capabilities-title">Plan, build, and prepare <span>for what comes next.</span></h2><p>We shape the technical work around the users, workflows, integrations, and release goals agreed for your project.</p></div><div className="webdev-capability-grid">{capabilities.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="webdev-principles section" aria-labelledby="webdev-principles-title"><div><p className="section-kicker">Built for real use</p><h2 id="webdev-principles-title">Clear experiences. <span>Dependable foundations.</span></h2></div><div className="webdev-principle-list"><article><h3>Responsive by design</h3><p>Keep important tasks usable across agreed desktop and mobile screen sizes.</p></article><article><h3>Accessible interactions</h3><p>Consider readable content, keyboard focus, contrast, and clear feedback in key flows.</p></article><article><h3>Thoughtful data handling</h3><p>Plan user roles, permissions, and data access around the needs of the application.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="webdev-deliverables-title"><div><p className="section-kicker">Scope & handoff</p><h2 id="webdev-deliverables-title">Know what your team <span>will receive.</span></h2><p>Deliverables are agreed during planning and tailored to your application and release scope.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="webdev-process-title"><div className="webdev-heading"><p className="section-kicker">Our process</p><h2 id="webdev-process-title">A practical route from <span>requirements to release.</span></h2><p>Regular reviews keep scope, decisions, and progress visible throughout delivery.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="webdev-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="webdev-faq-title">Planning an application? <span>Start with these.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Bring the right expertise together." text="Web applications often connect product design, software engineering, and automation. Explore related services for your project." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with your workflow</p><h2>Let’s plan a web application that fits your business.</h2><p>Share the users, tasks, and systems your product needs to support.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss your application <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function WordPressDevelopmentPage() {
+  const siteTypes = [
+    ['Business websites', 'Present your services, team, and business information in a clear, easy-to-manage site.'],
+    ['Content & publishing', 'Organize articles, resources, and editorial content with practical publishing workflows.'],
+    ['Campaign landing pages', 'Create focused pages for services, launches, and marketing campaigns.'],
+    ['Online stores', 'Plan a WordPress commerce experience around product discovery, checkout, and store management.']
+  ];
+  const capabilities = [
+    ['Theme design & customization', 'Shape page layouts and visual details around your brand and content needs.'],
+    ['CMS setup', 'Configure page types, menus, editing patterns, and content structure for your team.'],
+    ['Plugin & service integration', 'Select and configure agreed extensions and connect supported business services.'],
+    ['Responsive implementation', 'Make core pages and interactions work across desktop, tablet, and mobile screens.'],
+    ['Performance & technical SEO', 'Plan page speed, metadata, indexing basics, and clean site structure.'],
+    ['Security & maintenance planning', 'Set up practical update, backup, and access practices for ongoing site care.']
+  ];
+  const stages = [
+    ['Plan', 'Agree on audiences, page structure, content needs, functionality, and project scope.'],
+    ['Design', 'Establish page layouts and visual direction before implementation.'],
+    ['Build', 'Configure WordPress, implement templates, and add agreed content and integrations.'],
+    ['Review & launch', 'Check responsive pages, forms, navigation, and handoff details before launch.']
+  ];
+  const deliverables = ['Page map and content structure', 'Custom or customized theme and templates', 'CMS editing setup', 'Responsive page implementation', 'Agreed plugins and integrations', 'Launch, backup, and maintenance guidance'];
+  const faqs = [
+    ['Can our team update the website after launch?', 'Yes. We can set up WordPress editing patterns for agreed page types and provide handoff guidance for routine content updates.'],
+    ['Can you redesign or improve an existing WordPress site?', 'Yes. We can review the current site and scope updates to its structure, design, content management, or functionality.'],
+    ['Can you migrate content from our current site?', 'Migration can be included after we review your current platform, content volume, and any special functionality.'],
+    ['Will the website work on mobile?', 'We plan and review responsive layouts across the screen sizes that matter to your audience.'],
+    ['Do you provide ongoing WordPress maintenance?', 'Maintenance can be scoped separately and may include updates, backups, and routine site checks based on your needs.']
+  ];
+  const related = ['ui-ux-solutions', 'ecommerce-development', 'seo-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page wordpress-page">
+      <HeadMeta title="WordPress Development Services | Rigweda Technologies" description="Custom WordPress website design and development for business sites, publishing, landing pages, and online stores. Get a manageable, responsive website built around your content and goals." keywords="WordPress development, WordPress website design, custom WordPress websites, WordPress CMS, WordPress maintenance" path="/wordpress-development" />
+      <Hero eyebrow="WordPress Development" title={<>A WordPress website <span>built around your needs.</span></>} text="Create a polished, manageable website for your business, content, or online store—with page structure and editing workflows suited to your team." visual="cms" action="Discuss Your Website" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#wp-capabilities" image="/renders/wordpressdevelopment.png" pageClass="hero-webdev hero-wordpress" />
+
+      <section className="webdev-intro section" aria-labelledby="wp-intro-title"><div><p className="section-kicker">A flexible content platform</p><h2 id="wp-intro-title">A site your visitors can use <span>and your team can manage.</span></h2></div><p>We organize your pages, content, and site functionality so customers can find useful information and your team can keep the website current.</p></section>
+
+      <section className="webdev-usecases section" aria-labelledby="wp-sites-title"><div className="webdev-heading"><p className="section-kicker">WordPress for your business</p><h2 id="wp-sites-title">Build the kind of site <span>your goals call for.</span></h2><p>We plan the site structure and editing experience around your content, services, and audience.</p></div><div className="webdev-usecase-grid">{siteTypes.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" id="wp-capabilities" aria-labelledby="wp-capabilities-title"><div className="webdev-heading"><p className="section-kicker">What we can help with</p><h2 id="wp-capabilities-title">From first layout to <span>site management.</span></h2><p>Choose a complete website build or get help with specific parts of your WordPress site.</p></div><div className="webdev-capability-grid">{capabilities.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="webdev-principles section" aria-labelledby="wp-principles-title"><div><p className="section-kicker">Ready for everyday use</p><h2 id="wp-principles-title">Thoughtful setup for <span>the long run.</span></h2></div><div className="webdev-principle-list"><article><h3>Content clarity</h3><p>Use page structure and navigation that help visitors understand what you offer.</p></article><article><h3>Manageable editing</h3><p>Give your team practical editing patterns for the content they need to maintain.</p></article><article><h3>Ongoing care</h3><p>Plan updates, backups, and access practices to keep site maintenance on track.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="wp-deliverables-title"><div><p className="section-kicker">Project deliverables</p><h2 id="wp-deliverables-title">A clear handoff for <span>your website team.</span></h2><p>We agree on the scope and handoff materials during planning, based on your site and functionality.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="wp-process-title"><div className="webdev-heading"><p className="section-kicker">How we work</p><h2 id="wp-process-title">A steady path from <span>content plan to launch.</span></h2><p>We review the site with you at key points, so the finished pages match the agreed requirements.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="wp-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="wp-faq-title">WordPress project <span>questions.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Complete your website plan." text="Connect WordPress development with product design, ecommerce, or search optimization to support the goals of your site." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Let’s plan your site</p><h2>Ready for a WordPress website that fits your team?</h2><p>Tell us about your content, audience, and the work your website needs to do.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss your WordPress site <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function EcommerceDevelopmentPage() {
+  const storeTypes = [
+    ['New online stores', 'Build the core shopping experience, from product discovery to checkout and store operations.'],
+    ['Growing product catalogs', 'Organize categories, product details, variants, and collections for easier browsing.'],
+    ['Existing store improvements', 'Review customer journeys and prioritize updates to navigation, product pages, or checkout.'],
+    ['Connected commerce workflows', 'Plan the relationships between orders, inventory, shipping, customer service, and marketing.']
+  ];
+  const capabilities = [
+    ['Store experience & design', 'Shape responsive storefront pages around your brand, catalog, and shopping journeys.'],
+    ['Product catalog setup', 'Organize products, categories, attributes, and variants for browsing and management.'],
+    ['Cart & checkout', 'Plan a clear purchase flow and configure agreed checkout requirements.'],
+    ['Payments & shipping', 'Integrate supported payment and shipping services based on your region and business needs.'],
+    ['Orders & inventory', 'Set up practical workflows for order handling and stock visibility.'],
+    ['Analytics & marketing setup', 'Plan tracking and search-friendly store structure to support ongoing promotion and review.']
+  ];
+  const stages = [
+    ['Understand', 'Review your catalog, customers, operations, platform needs, and launch goals.'],
+    ['Plan', 'Map store structure, purchase flows, integrations, and the content and product data required.'],
+    ['Build & configure', 'Implement storefront pages, catalog structure, checkout, and agreed services.'],
+    ['Review & launch', 'Check key shopping and order flows, prepare handoff, and coordinate the launch plan.']
+  ];
+  const deliverables = ['Store structure and shopping journeys', 'Responsive storefront pages', 'Product and category setup', 'Agreed checkout and payment integrations', 'Order and shipping workflow configuration', 'Launch and store management handoff'];
+  const faqs = [
+    ['Can you build a new online store or improve an existing one?', 'We can scope either a new store or improvements to an existing storefront, catalog, checkout, or operational workflow.'],
+    ['Which ecommerce platform do you use?', 'Platform selection depends on your catalog, integrations, content needs, operations, and budget. We can discuss suitable options during project planning.'],
+    ['Can you connect payment and shipping services?', 'We can configure supported providers based on your location, provider account, and project requirements. Provider availability and terms vary.'],
+    ['Can you help with product and order setup?', 'Yes. We can plan catalog structure, product data requirements, and the workflows your team uses to manage orders. The amount of data migration is scoped separately.'],
+    ['Will the store be mobile-friendly?', 'We plan responsive storefront and checkout experiences for the devices your customers use.'],
+    ['Do you provide ongoing store support?', 'Ongoing updates and improvements can be planned as a separate support scope around your store and operating needs.']
+  ];
+  const related = ['ui-ux-solutions', 'wordpress-development', 'digital-marketing'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page ecommerce-page">
+      <HeadMeta title="Ecommerce Development Services | Rigweda Technologies" description="Ecommerce website design and development for online stores, product catalogs, checkout, payment and shipping integrations, and order workflows." keywords="ecommerce development, online store development, ecommerce website design, product catalog, checkout integration" path="/ecommerce-development" />
+      <Hero eyebrow="Ecommerce Development" title={<>Create a better way <span>to shop online.</span></>} text="We build ecommerce experiences that help customers discover products, complete purchases, and stay connected—while giving your team practical tools to manage the store." visual="commerce" action="Plan Your Online Store" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#ecommerce-capabilities" image="/renders/ecommerce%20hero.png" pageClass="hero-webdev hero-ecommerce" />
+
+      <section className="webdev-intro section" aria-labelledby="ecommerce-intro-title"><div><p className="section-kicker">Commerce shaped around your business</p><h2 id="ecommerce-intro-title">Connect the shopping journey <span>to the work behind it.</span></h2></div><p>Your storefront is one part of a larger operation. We plan the customer experience alongside product data, checkout, orders, and the services your business uses.</p></section>
+
+      <section className="webdev-usecases section" aria-labelledby="ecommerce-types-title"><div className="webdev-heading"><p className="section-kicker">Store projects we support</p><h2 id="ecommerce-types-title">Build, improve, or connect <span>your online store.</span></h2><p>Start with your customers’ shopping needs and the workflows your team needs to manage.</p></div><div className="webdev-usecase-grid">{storeTypes.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" id="ecommerce-capabilities" aria-labelledby="ecommerce-capabilities-title"><div className="webdev-heading"><p className="section-kicker">Ecommerce capabilities</p><h2 id="ecommerce-capabilities-title">The key pieces of <span>a useful store.</span></h2><p>We scope features and integrations around your products, customers, region, and operations.</p></div><div className="webdev-capability-grid">{capabilities.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="webdev-principles section" aria-labelledby="ecommerce-principles-title"><div><p className="section-kicker">A store that works end to end</p><h2 id="ecommerce-principles-title">Customer journeys and <span>store operations, together.</span></h2></div><div className="webdev-principle-list"><article><h3>Easy product discovery</h3><p>Make categories, product information, and next steps clear across screens.</p></article><article><h3>Clear checkout steps</h3><p>Present cart, delivery, payment, and confirmation details in a straightforward flow.</p></article><article><h3>Manageable operations</h3><p>Consider how your team updates products, reviews orders, and handles routine store tasks.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="ecommerce-deliverables-title"><div><p className="section-kicker">Scope & handoff</p><h2 id="ecommerce-deliverables-title">Know what’s included <span>in your store build.</span></h2><p>Project deliverables depend on the selected platform, catalog, integrations, and launch scope.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="ecommerce-process-title"><div className="webdev-heading"><p className="section-kicker">Our process</p><h2 id="ecommerce-process-title">From product plan <span>to store launch.</span></h2><p>We review the essential shopping and management journeys at key points during delivery.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="ecommerce-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="ecommerce-faq-title">Planning an online store? <span>Let’s clarify the details.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Build a stronger commerce experience." text="Connect ecommerce development with user experience, content management, or digital marketing as your store needs grow." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with your catalog and goals</p><h2>Ready to plan your online store?</h2><p>Tell us what you sell, who you serve, and how your team manages orders today.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss your ecommerce project <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function DigitalMarketingPage() {
+  const channels = [
+    ['Search engine optimization', 'Improve technical foundations, page structure, and search-focused content for relevant discovery.'],
+    ['Paid campaigns', 'Plan and manage paid search or social campaigns around your audience, offer, and budget.'],
+    ['Social media marketing', 'Build a practical publishing and campaign approach for the channels your audience uses.'],
+    ['Landing pages & analytics', 'Connect campaign messages to focused landing pages and useful conversion measurement.']
+  ];
+  const stages = [
+    ['Understand', 'Review your business goals, audience, offer, current channels, and available performance data.'],
+    ['Plan', 'Set priorities, define channel roles, and agree on campaign measures and budget boundaries.'],
+    ['Launch', 'Prepare campaigns, content, landing pages, tracking, and review checkpoints.'],
+    ['Learn & refine', 'Review performance with context, share findings, and adjust the next round of activity.']
+  ];
+  const deliverables = ['Channel and campaign plan', 'Audience and keyword priorities', 'Campaign and content schedule', 'Landing page recommendations', 'Conversion tracking plan', 'Regular performance summaries'];
+  const faqs = [
+    ['Which digital marketing channels do you support?', 'We support SEO, paid campaigns, social media marketing, landing pages, and performance measurement. The right mix depends on your audience and goals.'],
+    ['Can you work with our existing campaigns?', 'Yes. We can review existing channel activity and identify practical improvements or a clearer plan for ongoing work.'],
+    ['How soon will we see results?', 'Timing varies by channel, competition, budget, offer, and starting point. We set realistic review periods and use performance data to guide decisions; specific outcomes cannot be guaranteed.'],
+    ['Do you need access to our accounts?', 'Access requirements depend on the services in scope. We agree on the platforms, permissions, and reporting setup before work begins.'],
+    ['Can you help us measure leads and enquiries?', 'Yes. We can plan conversion events and reporting for agreed website actions, subject to the available analytics and account setup.']
+  ];
+  const related = ['seo-services', 'ppc-services', 'smm-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page digital-marketing-page">
+      <HeadMeta title="Digital Marketing Services | Rigweda Technologies" description="Digital marketing services for SEO, paid campaigns, social media, landing pages, and measurement. Plan connected campaigns around your audience and business goals." keywords="digital marketing services, SEO, PPC campaigns, social media marketing, campaign analytics" path="/digital-marketing" />
+      <Hero eyebrow="Digital Marketing" title={<>Reach the right people. <span>Make every campaign count.</span></>} text="Connect search, paid campaigns, social media, and landing pages in a focused marketing plan shaped around your audience and business goals." visual="marketing" action="Plan Your Marketing" actionTo="/contactus" secondaryAction="Explore Services" secondaryTo="#digital-channels" image="/renders/digitalmarketing.png" pageClass="hero-webdev hero-digital-marketing" />
+
+      <section className="webdev-intro section" aria-labelledby="marketing-intro-title"><div><p className="section-kicker">Marketing with a clear purpose</p><h2 id="marketing-intro-title">Bring your channels <span>together around your goals.</span></h2></div><p>Useful digital marketing starts with a clear audience, a relevant offer, and a way to understand what happens next. We connect channel activity to the customer journey and review what the data can tell us.</p></section>
+
+      <section className="webdev-usecases section" id="digital-channels" aria-labelledby="marketing-channels-title"><div className="webdev-heading"><p className="section-kicker">Services & channels</p><h2 id="marketing-channels-title">A connected mix of <span>digital marketing support.</span></h2><p>Choose the channels that fit your audience, current priorities, and available resources.</p></div><div className="webdev-usecase-grid">{channels.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" aria-labelledby="marketing-plan-title"><div className="webdev-heading"><p className="section-kicker">From strategy to execution</p><h2 id="marketing-plan-title">Clear priorities for <span>each stage of the journey.</span></h2><p>Campaigns work best when messaging, destination pages, and measurement support one another.</p></div><div className="webdev-capability-grid"><article><span>01</span><div><h3>Audience & offer</h3><p>Clarify who you want to reach, what they need, and what action you want them to take.</p></div></article><article><span>02</span><div><h3>Channel roles</h3><p>Set the job for each channel and coordinate activity around shared campaign priorities.</p></div></article><article><span>03</span><div><h3>Campaign experience</h3><p>Keep ad, search, social, and landing page messages aligned with the intended next step.</p></div></article><article><span>04</span><div><h3>Measurement & learning</h3><p>Track agreed actions and use performance reviews to guide ongoing improvements.</p></div></article></div></section>
+
+      <section className="webdev-principles section" aria-labelledby="marketing-measure-title"><div><p className="section-kicker">Measure what matters</p><h2 id="marketing-measure-title">Make decisions with <span>useful performance signals.</span></h2></div><div className="webdev-principle-list"><article><h3>Business-relevant measures</h3><p>Focus reporting on agreed actions such as qualified enquiries, purchases, or sign-ups.</p></article><article><h3>Channel context</h3><p>Read campaign activity alongside spend, audience, offer, seasonality, and landing page behavior.</p></article><article><h3>Clear next steps</h3><p>Summarize what is working, what needs review, and what to test or adjust next.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="marketing-deliverables-title"><div><p className="section-kicker">Planning & reporting</p><h2 id="marketing-deliverables-title">Know what your <span>marketing work includes.</span></h2><p>Deliverables are agreed based on channels, campaign cadence, account access, and the scope of support.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="marketing-process-title"><div className="webdev-heading"><p className="section-kicker">How we work</p><h2 id="marketing-process-title">Plan, launch, review, <span>and keep learning.</span></h2><p>Regular reviews keep the campaign direction connected to your goals and changing performance signals.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="marketing-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="marketing-faq-title">Digital marketing <span>questions.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section digital-marketing-related"><SectionHeading kicker="Related Capabilities" title="Connect marketing to your digital experience." text="Strong campaigns rely on a useful destination. Pair marketing support with search, product design, or website development." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with your audience and goals</p><h2>Let’s plan your next marketing campaign.</h2><p>Tell us who you want to reach, what you want to promote, and how you measure success today.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss digital marketing <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function SeoServicesPage() {
+  const services = [
+    ['Technical SEO', 'Review crawling, indexing, site structure, metadata, sitemaps, and technical issues affecting search discovery.'],
+    ['On-page SEO', 'Improve page titles, headings, internal links, and content structure around the page’s purpose.'],
+    ['Content & keyword planning', 'Map topics and search intent to useful pages, then identify content gaps and priorities.'],
+    ['Local SEO', 'Improve local business information, location pages, and profile consistency for relevant local discovery.']
+  ];
+  const principles = [
+    ['Make pages discoverable', 'Support clear crawling and indexing with useful structure, internal links, and technical basics.'],
+    ['Serve the search intent', 'Create helpful, original page content that answers the questions visitors are trying to resolve.'],
+    ['Measure meaningful progress', 'Review visibility, site visits, and agreed business actions together for context.']
+  ];
+  const stages = [
+    ['Audit', 'Review the website, search visibility, priority pages, and current measurement setup.'],
+    ['Prioritize', 'Identify issues and opportunities, then agree on work based on impact and effort.'],
+    ['Improve', 'Apply the agreed technical, page, content, and local search updates.'],
+    ['Review', 'Track changes over time, explain what the data shows, and plan the next improvements.']
+  ];
+  const deliverables = ['SEO audit findings and priorities', 'Keyword and search-intent map', 'Page title and content recommendations', 'Technical fixes and structured data scope', 'Internal link and site structure plan', 'Progress reporting and next-step recommendations'];
+  const faqs = [
+    ['How long does SEO take to show progress?', 'Timing depends on your site, competition, market, and the work required. SEO is ongoing, and no provider can guarantee a specific ranking or timeline.'],
+    ['Can you work with our existing website?', 'Yes. We can review your current website and prioritize changes to technical setup, content, page structure, and local search presence.'],
+    ['Do you support local SEO?', 'Yes. Local work can include location and service page recommendations, business profile improvements, and consistency checks for business information.'],
+    ['Will you write or update website content?', 'Content planning and page recommendations can be part of the scope. Writing and publishing are agreed based on the pages and resources required.'],
+    ['How do you report SEO performance?', 'Reporting can include search impressions, clicks, relevant landing page activity, and agreed enquiries or conversions, depending on measurement access and setup.']
+  ];
+  const related = ['digital-marketing', 'web-development', 'webdesign'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page seo-page">
+      <HeadMeta title="SEO Services | Rigweda Technologies" description="Technical, on-page, content, and local SEO services to improve website discoverability. Rigweda helps businesses prioritize search improvements and measure meaningful progress." keywords="SEO services, search engine optimization, technical SEO, on-page SEO, local SEO" path="/seo-services" />
+      <Hero eyebrow="Search Engine Optimization" title={<>Help the right people <span>find your business.</span></>} text="Build a stronger search foundation with technical improvements, useful content, and local visibility—planned around your audience and business priorities." visual="seo" action="Discuss Your SEO Plan" actionTo="/contactus" secondaryAction="Explore SEO Services" secondaryTo="#seo-services" image="/renders/seo-hero.png" pageClass="hero-webdev hero-seo" />
+
+      <section className="webdev-intro section" aria-labelledby="seo-intro-title"><div><p className="section-kicker">Search visibility with a purpose</p><h2 id="seo-intro-title">Help people discover <span>useful pages on your site.</span></h2></div><p>SEO brings together website structure, page content, and technical foundations. We identify practical improvements that make your pages easier to discover and more useful to visitors.</p></section>
+
+      <section className="webdev-usecases section" id="seo-services" aria-labelledby="seo-services-title"><div className="webdev-heading"><p className="section-kicker">SEO services</p><h2 id="seo-services-title">Improve the foundations <span>behind search visibility.</span></h2><p>SEO work is prioritized for your current site, audience, market, and business goals.</p></div><div className="webdev-usecase-grid">{services.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" aria-labelledby="seo-principles-title"><div className="webdev-heading"><p className="section-kicker">A practical SEO foundation</p><h2 id="seo-principles-title">Technical clarity, helpful content, <span>measured progress.</span></h2></div><div className="webdev-principle-list">{principles.map(([title, text], index) => <article key={title}><span className="webdev-card-index">0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="seo-deliverables-title"><div><p className="section-kicker">Audit to action plan</p><h2 id="seo-deliverables-title">Know what to fix <span>and what to do next.</span></h2><p>We turn findings into an ordered set of recommendations your team can review and implement.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="seo-process-title"><div className="webdev-heading"><p className="section-kicker">How we work</p><h2 id="seo-process-title">A steady cycle of <span>review and improvement.</span></h2><p>SEO priorities can change as your site, market, and customer needs evolve.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-principles section seo-measurement" aria-labelledby="seo-measurement-title"><div><p className="section-kicker">Reporting without guesswork</p><h2 id="seo-measurement-title">Understand the signals <span>behind your progress.</span></h2></div><div className="webdev-principle-list"><article><h3>Search visibility</h3><p>Review impressions, clicks, and the queries bringing visitors to priority pages.</p></article><article><h3>Landing page activity</h3><p>Understand how organic visitors interact with the pages they reach.</p></article><article><h3>Business actions</h3><p>Where measurement is configured, review relevant enquiries, purchases, or other agreed conversions.</p></article></div></section>
+
+      <section className="webdev-faq section" aria-labelledby="seo-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="seo-faq-title">SEO questions, <span>answered clearly.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Connect SEO with the rest of your digital experience." text="Search visibility works alongside useful websites and coordinated campaigns. Explore related services to support your next steps." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with an SEO review</p><h2>Let’s find the next useful improvement for your website.</h2><p>Tell us about your site, audience, and the search goals you are working toward.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss SEO services <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function SocialMediaMarketingPage() {
+  const contentWork = [
+    ['Brand voice & platform plan', 'Set a clear tone and decide how your brand should show up for each audience and channel.'],
+    ['Content pillars', 'Choose recurring themes that balance useful information, product stories, proof, and conversation.'],
+    ['Creative direction', 'Plan visual ideas and messaging for short video, carousels, stories, and other agreed formats.'],
+    ['Publishing calendar', 'Create a realistic schedule with topics, formats, owners, and approval checkpoints.']
+  ];
+  const communityWork = [
+    ['Conversation guidelines', 'Agree how the brand responds, what needs escalation, and how sensitive issues are handled.'],
+    ['Audience engagement', 'Support timely, on-brand replies and meaningful participation in relevant conversations.'],
+    ['Campaign coordination', 'Connect social posts to launches, events, promotions, and wider marketing activity.']
+  ];
+  const stages = [
+    ['Listen', 'Understand your audience, brand voice, current channels, and business priorities.'],
+    ['Plan', 'Choose content themes, formats, publishing cadence, and review responsibilities.'],
+    ['Create & publish', 'Prepare content for review, schedule approved posts, and coordinate campaign activity.'],
+    ['Engage & learn', 'Review audience response, handle agreed interactions, and improve the next content cycle.']
+  ];
+  const deliverables = ['Social channel and audience review', 'Brand voice and content pillars', 'Monthly or campaign content calendar', 'Post concepts and creative direction', 'Community response guidelines', 'Performance summary and next steps'];
+  const faqs = [
+    ['Which social channels do you manage?', 'The channel mix is selected around your audience, content resources, and goals. We agree on supported accounts and scope before work begins.'],
+    ['How often will you publish?', 'Publishing cadence is planned around your goals, content capacity, and approval process. We agree on a realistic schedule rather than a fixed one-size-fits-all volume.'],
+    ['Do you create the posts and visuals?', 'Creative direction and agreed post assets can be included in the scope. We confirm formats, source materials, review steps, and production needs during planning.'],
+    ['Who responds to comments and messages?', 'We can define community management responsibilities and response guidelines with your team. Account access and escalation rules are agreed before engagement begins.'],
+    ['How do you measure social media performance?', 'Reporting can cover reach, engagement, video or content interactions, clicks, and agreed business actions where platform and analytics data are available. We do not guarantee follower or engagement totals.']
+  ];
+  const related = ['digital-marketing', 'ppc-services', 'seo-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page social-page">
+      <HeadMeta title="Social Media Marketing Services | Rigweda Technologies" description="Social media strategy, content planning, creative direction, publishing, and community management tailored to your brand and audience." keywords="social media marketing services, social media management, content planning, community management, SMM" path="/smm-services" />
+      <Hero eyebrow="Social Media Marketing" title={<>Give your brand a <span>meaningful voice online.</span></>} text="Build a consistent social presence with a clear brand voice, thoughtful content, and genuine audience engagement—planned around your team and goals." visual="smm" action="Plan Your Social Strategy" actionTo="/contactus" secondaryAction="Explore What We Do" secondaryTo="#social-content" image="/renders/smm-3d.png" pageClass="hero-webdev hero-social" />
+
+      <section className="webdev-intro section" aria-labelledby="social-intro-title"><div><p className="section-kicker">More than a posting schedule</p><h2 id="social-intro-title">Create a presence people <span>recognize and return to.</span></h2></div><p>Strong social media management brings together a recognizable voice, useful content, and consistent community care. We help shape a practical system your team can sustain.</p></section>
+
+      <section className="webdev-usecases section" id="social-content" aria-labelledby="social-content-title"><div className="webdev-heading"><p className="section-kicker">Content & publishing</p><h2 id="social-content-title">Make every post part of <span>a clear brand story.</span></h2><p>Plan a varied mix of content that reflects your brand and gives your audience a reason to pay attention.</p></div><div className="webdev-usecase-grid">{contentWork.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" aria-labelledby="social-community-title"><div className="webdev-heading"><p className="section-kicker">Community & coordination</p><h2 id="social-community-title">Support the conversations <span>around your brand.</span></h2><p>Engagement needs a clear voice, sensible boundaries, and a plan for responses that need your team’s attention.</p></div><div className="webdev-principle-list">{communityWork.map(([title, text], index) => <article key={title}><span className="webdev-card-index">0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-principles section" aria-labelledby="social-success-title"><div><p className="section-kicker">A sustainable social system</p><h2 id="social-success-title">Consistent content, <span>without losing your voice.</span></h2></div><div className="webdev-principle-list"><article><h3>Content people value</h3><p>Balance product news with useful, relevant, and audience-centered content.</p></article><article><h3>A clear approval flow</h3><p>Set owners, review timelines, and escalation steps before content goes live.</p></article><article><h3>Learn from response</h3><p>Use audience feedback and platform insights to guide future topics and formats.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="social-deliverables-title"><div><p className="section-kicker">What you can expect</p><h2 id="social-deliverables-title">A clear content rhythm <span>for your team.</span></h2><p>Deliverables are tailored to the chosen channels, publishing cadence, and creative scope.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="social-process-title"><div className="webdev-heading"><p className="section-kicker">How we work</p><h2 id="social-process-title">Listen, plan, publish, <span>and stay connected.</span></h2><p>Regular reviews help keep the content relevant and the workflow manageable.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="social-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="social-faq-title">Social media <span>questions.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Connect social with your wider marketing." text="Bring social content together with paid campaigns, search visibility, and a consistent digital marketing plan." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with your audience and voice</p><h2>Let’s build a social presence that feels like your brand.</h2><p>Tell us who you want to reach, what you want to share, and how your team works today.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss social media support <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function PpcServicesPage() {
+  const campaignTypes = [
+    ['Paid search', 'Reach people searching for relevant products or services with carefully structured search campaigns.'],
+    ['Paid social', 'Plan audience-led campaigns and creative for the social platforms that fit your goals.'],
+    ['Remarketing', 'Reconnect with eligible visitors or audiences where platform policies and consent setup allow.'],
+    ['Lead & sales campaigns', 'Align campaign objectives, landing pages, and conversion measurement to the action you want.']
+  ];
+  const campaignFoundations = [
+    ['Audience & intent', 'Define who the campaign should reach and what need or action it should address.'],
+    ['Budget & structure', 'Set spend boundaries and organize campaigns so performance can be reviewed clearly.'],
+    ['Ads & landing pages', 'Keep ad messaging relevant to the page people reach after clicking.'],
+    ['Tracking & review', 'Measure agreed actions and review spend, traffic quality, and campaign performance together.']
+  ];
+  const stages = [
+    ['Assess', 'Review your goals, audience, offer, current accounts, landing pages, and tracking.'],
+    ['Plan', 'Choose channels, campaign structure, budgets, targeting, and success measures.'],
+    ['Launch', 'Prepare approved ads, configure tracking, and launch campaigns with agreed spend limits.'],
+    ['Optimize', 'Review performance, identify issues, and make documented adjustments over time.']
+  ];
+  const deliverables = ['Account and campaign review', 'Channel, audience, and budget plan', 'Campaign and ad group structure', 'Ad copy and creative direction', 'Landing page and conversion tracking recommendations', 'Performance reporting and optimization notes'];
+  const faqs = [
+    ['Which paid advertising platforms do you support?', 'Platform selection depends on your audience, goals, region, and available account setup. We agree on the campaign channels during planning.'],
+    ['How much should we spend on ads?', 'A suitable budget depends on your market, goals, competition, and testing needs. We discuss spend limits before launch and review pacing during campaign management.'],
+    ['Is the advertising spend included in your service fee?', 'Media spend is paid to the advertising platform. Management fees and the campaign budget are scoped and agreed separately.'],
+    ['Can you set up conversion tracking?', 'We can plan and configure agreed conversion events where account access, website setup, and consent requirements allow. Tracking should be reviewed before relying on campaign results.'],
+    ['Can you guarantee leads or sales?', 'No. Campaign results depend on factors such as the offer, audience, competition, landing page, budget, and platform delivery. We focus on clear setup, measurement, and ongoing optimization.']
+  ];
+  const related = ['digital-marketing', 'seo-services', 'smm-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="webdev-page ppc-page">
+      <HeadMeta title="PPC & Paid Advertising Services | Rigweda Technologies" description="PPC campaign planning and management for paid search and social advertising, including account structure, targeting, landing pages, conversion tracking, and reporting." keywords="PPC services, paid search management, paid social campaigns, conversion tracking, advertising campaign management" path="/ppc-services" />
+      <Hero eyebrow="PPC & Paid Campaigns" title={<>Spend with a plan. <span>Learn from every campaign.</span></>} text="Reach relevant audiences through paid search and social campaigns, with clear budgets, focused landing pages, and measurement tied to your goals." visual="ads" action="Plan a Paid Campaign" actionTo="/contactus" secondaryAction="Explore Campaign Types" secondaryTo="#ppc-campaign-types" image="/renders/ppcimg.png" pageClass="hero-webdev hero-ppc" />
+
+      <section className="webdev-intro section" aria-labelledby="ppc-intro-title"><div><p className="section-kicker">Paid media with clear boundaries</p><h2 id="ppc-intro-title">Connect campaign spend <span>to an intentional next step.</span></h2></div><p>Paid campaigns need a clear audience, relevant messaging, a useful destination, and dependable measurement. We plan these pieces together and review performance against agreed goals.</p></section>
+
+      <section className="webdev-usecases section" id="ppc-campaign-types" aria-labelledby="ppc-types-title"><div className="webdev-heading"><p className="section-kicker">Campaign types</p><h2 id="ppc-types-title">Choose the right paid <span>route to your audience.</span></h2><p>Campaign mix depends on how customers discover, evaluate, and act on your offer.</p></div><div className="webdev-usecase-grid">{campaignTypes.map(([title, text], index) => <article className="webdev-usecase" key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-capabilities section" aria-labelledby="ppc-foundations-title"><div className="webdev-heading"><p className="section-kicker">What goes into a campaign</p><h2 id="ppc-foundations-title">Strong foundations for <span>smarter campaign decisions.</span></h2></div><div className="webdev-capability-grid">{campaignFoundations.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="webdev-principles section" aria-labelledby="ppc-management-title"><div><p className="section-kicker">Campaign management</p><h2 id="ppc-management-title">Control spend. <span>Keep the work accountable.</span></h2></div><div className="webdev-principle-list"><article><h3>Agreed budget limits</h3><p>Set campaign spend boundaries and review pacing with your team.</p></article><article><h3>Relevant destinations</h3><p>Check that ad messages lead to useful, consistent landing page experiences.</p></article><article><h3>Transparent reporting</h3><p>Review spend, clicks, conversions, and limitations in the available data.</p></article></div></section>
+
+      <section className="webdev-deliverables section" aria-labelledby="ppc-deliverables-title"><div><p className="section-kicker">What’s included</p><h2 id="ppc-deliverables-title">Clear setup, ownership, <span>and reporting.</span></h2><p>Scope is agreed around campaign channels, account access, creative needs, and tracking requirements.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="webdev-process section" aria-labelledby="ppc-process-title"><div className="webdev-heading"><p className="section-kicker">How we work</p><h2 id="ppc-process-title">Plan, launch, review, <span>and optimize.</span></h2><p>Regular checks keep campaigns aligned with your agreed budget and business priorities.</p></div><div className="webdev-process-grid">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="webdev-faq section" aria-labelledby="ppc-faq-title"><div className="webdev-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="ppc-faq-title">Paid campaign <span>questions.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Connect paid campaigns with the full customer journey." text="Combine PPC with search optimization, social media, and a wider digital marketing plan to support each stage of discovery and decision." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="webdev-cta"><div><p className="section-kicker">Start with your goals and budget</p><h2>Let’s plan a paid campaign with clear measures.</h2><p>Tell us who you want to reach, what action matters, and what budget boundaries you have in mind.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss PPC services <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function SoftwareDevelopmentPage() {
+  const solutions = [
+    ['Business workflow systems', 'Coordinate approvals, assignments, records, and recurring work across teams.'],
+    ['Operations & management platforms', 'Bring business processes, role-based tools, and operational information together.'],
+    ['Data & system integrations', 'Connect services and data sources around agreed workflows and reporting needs.']
+  ];
+  const foundations = [
+    ['Architecture that fits', 'Choose a practical structure based on requirements, current systems, and future change.'],
+    ['Roles & access', 'Plan user roles and permissions around the tasks and information each team needs.'],
+    ['Integration boundaries', 'Define how data moves between the software and connected systems.'],
+    ['Maintainable delivery', 'Keep the solution understandable with agreed documentation, review, and handoff practices.']
+  ];
+  const lifecycle = [
+    ['Understand the operation', 'Map the business process, users, information, constraints, and desired outcomes.'],
+    ['Design the solution', 'Agree on system boundaries, workflows, feature priorities, and a practical technical plan.'],
+    ['Build in increments', 'Develop and review the solution in manageable stages, incorporating feedback at checkpoints.'],
+    ['Prepare for ownership', 'Review the release, document key decisions, and plan support or future improvements.']
+  ];
+  const questions = [
+    ['When is custom software a good fit?', 'It can be useful when important workflows need tailored logic, connected information, or tools that fit the way your teams operate. We can help assess scope and alternatives.'],
+    ['Can you extend our existing software?', 'Potentially. We first review the current system, available interfaces, ownership, and technical constraints to understand what can be integrated or extended.'],
+    ['Can the work be delivered in phases?', 'Yes. We can prioritize core workflows for an initial release and plan further capabilities in later phases.'],
+    ['How are hosting and software ownership handled?', 'Hosting, access, intellectual property, and handoff arrangements are agreed as part of the project scope and contract.'],
+    ['Do you support the system after launch?', 'Post-launch support and future development can be scoped based on the software and your team’s needs.']
+  ];
+  const related = ['web-development', 'ui-ux-solutions', 'ai-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="software-dev-page">
+      <HeadMeta title="Custom Software Development | Rigweda Technologies" description="Custom software development for business workflows, operations platforms, system integrations, and data-driven tools. Plan and build software around your team and processes." keywords="software development services, custom business software, workflow automation, software integration, operations platforms" path="/software-development" />
+      <Hero eyebrow="Custom Software Development" title={<>Software shaped for <span>the way your business works.</span></>} text="Design and build business software around your people, processes, and systems—with a practical plan for implementation, integration, and long-term ownership." visual="software" action="Discuss a Software Project" actionTo="/contactus" secondaryAction="See Our Approach" secondaryTo="#software-lifecycle" image="/renders/software-development-img.png" pageClass="hero-software" />
+
+      <section className="software-dev-intro section" aria-labelledby="software-intro-title"><div><p className="section-kicker">Engineering around your operation</p><h2 id="software-intro-title">Bring important work into <span>one coherent system.</span></h2></div><p>Custom software can connect processes, people, and information that span teams. We start by understanding how the work happens, then shape the right system around the requirements that matter.</p></section>
+
+      <section className="software-solutions section" aria-labelledby="software-solutions-title"><div className="software-heading"><div><p className="section-kicker">Where custom software helps</p><h2 id="software-solutions-title">Build systems for <span>real business operations.</span></h2></div><p>From internal tools to connected platforms, each engagement begins with a specific workflow or business need.</p></div><div className="software-solution-grid">{solutions.map(([title, text], index) => <article key={title}><span className="software-solution-index">0{index + 1}</span><h3>{title}</h3><p>{text}</p><div className="software-solution-rule" /></article>)}</div></section>
+
+      <section className="software-architecture section" aria-labelledby="software-architecture-title"><div className="software-architecture-copy"><p className="section-kicker">Designed to fit together</p><h2 id="software-architecture-title">A system is more than <span>its features.</span></h2><p>We plan how people, data, and connected tools work together, so technical decisions support everyday operations.</p></div><div className="software-architecture-map" aria-label="Software components connected to a shared business platform"><div className="software-node software-node-main"><span>CORE</span><strong>Business platform</strong></div><div className="software-node software-node-one"><span>01</span><strong>Team workflows</strong></div><div className="software-node software-node-two"><span>02</span><strong>Connected systems</strong></div><div className="software-node software-node-three"><span>03</span><strong>Useful reporting</strong></div><i className="software-connector software-connector-one"/><i className="software-connector software-connector-two"/><i className="software-connector software-connector-three"/></div></section>
+
+      <section className="software-foundations section" aria-labelledby="software-foundations-title"><div className="software-heading"><p className="section-kicker">Technical foundations</p><h2 id="software-foundations-title">Make sound choices <span>for today and later.</span></h2></div><div className="software-foundation-grid">{foundations.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="software-lifecycle section" id="software-lifecycle" aria-labelledby="software-lifecycle-title"><div className="software-lifecycle-heading"><div><p className="section-kicker">Project lifecycle</p><h2 id="software-lifecycle-title">From business need <span>to dependable software.</span></h2></div><p>Frequent reviews keep every stage connected to the operation, the people using the system, and the outcomes it needs to support.</p></div><div className="software-lifecycle-list">{lifecycle.map(([title, text], index) => <article key={title}><span className="software-lifecycle-index">0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="software-faq section" aria-labelledby="software-faq-title"><div className="software-heading"><p className="section-kicker">Questions before you start</p><h2 id="software-faq-title">Custom software, <span>clearly explained.</span></h2></div><div className="webdev-faq-list">{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Bring design, engineering, and automation together." text="Explore connected capabilities that can support planning and building your software system." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="software-dev-cta"><div><p className="section-kicker">Start with the process</p><h2>Have a workflow your current tools can’t support?</h2><p>Tell us how the work happens today and what you want your team to do more easily.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss custom software <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function PowerBiServicesPage() {
+  const dashboards = [
+    ['Executive overview', 'Bring agreed business indicators into a concise view for leadership review.'],
+    ['Sales & customer insights', 'Explore sales activity, customer segments, products, and pipeline measures.'],
+    ['Operations & service', 'Monitor workflow volumes, delivery activity, and operational measures.'],
+    ['Finance & performance', 'Organize financial and performance reporting around agreed definitions and periods.']
+  ];
+  const services = [
+    ['Data source review', 'Understand available data sources, ownership, quality, and refresh needs.'],
+    ['Data preparation & modeling', 'Shape data relationships and reusable business definitions for reporting.'],
+    ['Measures & KPIs', 'Define calculations and indicators with stakeholders so reports use consistent logic.'],
+    ['Report & dashboard design', 'Build readable, interactive reports that help answer specific business questions.'],
+    ['Refresh & access planning', 'Plan update schedules, gateways where needed, and audience access based on your environment.'],
+    ['Handoff & enablement', 'Document the report structure and help your team understand how to use and maintain it.']
+  ];
+  const stages = [
+    ['Align on decisions', 'Identify the questions, users, and measures the reporting should support.'],
+    ['Review the data', 'Assess sources, field definitions, data quality, and access constraints.'],
+    ['Model & visualize', 'Build the reporting model and create report pages for agreed audiences and tasks.'],
+    ['Validate & hand off', 'Check calculations with stakeholders, confirm refresh and access setup, and document the result.']
+  ];
+  const deliverables = ['Reporting requirements and KPI definitions', 'Data source and quality review', 'Data model and agreed calculations', 'Power BI reports and dashboards', 'Refresh and access configuration notes', 'Documentation and team handoff'];
+  const faqs = [
+    ['Can Power BI connect to our data sources?', 'Power BI supports many data sources, but connection options depend on your systems, permissions, network, and licensing. We review the environment before confirming scope.'],
+    ['How often can the reports refresh?', 'Refresh frequency depends on data sources, gateway configuration, tenant settings, and licensing or capacity. We plan an appropriate setup for your environment.'],
+    ['Can different teams see different data?', 'Access can be planned for user groups, and row-level security may be appropriate depending on your model, identities, and requirements. We validate the design with your team.'],
+    ['Do we need Power BI licenses?', 'Licensing requirements depend on how reports are built, shared, and consumed in your organization. We can identify considerations, but your organization remains responsible for selecting and maintaining licenses.'],
+    ['Can you improve reports we already have?', 'Yes. We can review existing reports and models, clarify definitions, and prioritize changes to usability, calculations, performance, or maintenance.']
+  ];
+  const related = ['software-development', 'ai-services', 'web-development'].map(getService).filter(Boolean);
+
+  return (
+    <main className="powerbi-page">
+      <HeadMeta title="Power BI Services | Rigweda Technologies" description="Power BI consulting and dashboard development for data modeling, KPI reporting, business dashboards, refresh planning, and report handoff." keywords="Power BI services, Power BI dashboards, data modeling, business intelligence reporting, KPI dashboards" path="/powerbi-services" />
+      <Hero eyebrow="Power BI & Business Intelligence" title={<>Turn business data into <span>clearer decisions.</span></>} text="Plan and build Power BI reports around the questions your teams need to answer, with thoughtful data modeling, consistent measures, and useful views." visual="analytics" action="Discuss Power BI" actionTo="/contactus" secondaryAction="Explore Dashboards" secondaryTo="#powerbi-dashboards" image="/renders/power-bi.png" pageClass="hero-powerbi" />
+
+      <section className="powerbi-intro section" aria-labelledby="powerbi-intro-title"><div><p className="section-kicker">Business intelligence with context</p><h2 id="powerbi-intro-title">Make reporting easier <span>to understand and use.</span></h2></div><p>Useful dashboards start with shared definitions. We work with your team to understand the data, agree on the measures, and organize the report around real decisions.</p></section>
+
+      <section className="powerbi-dashboards section" id="powerbi-dashboards" aria-labelledby="powerbi-dashboards-title"><div className="powerbi-heading"><p className="section-kicker">Reporting for different teams</p><h2 id="powerbi-dashboards-title">Views shaped around <span>the questions people ask.</span></h2><p>Choose a focused dashboard or connect multiple reporting needs through a shared model.</p></div><div className="powerbi-dashboard-grid">{dashboards.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p><i aria-hidden="true" /></article>)}</div></section>
+
+      <section className="powerbi-services section" aria-labelledby="powerbi-services-title"><div className="powerbi-heading"><p className="section-kicker">What we can help with</p><h2 id="powerbi-services-title">From data source <span>to useful report.</span></h2></div><div className="powerbi-service-grid">{services.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="powerbi-model section" aria-labelledby="powerbi-model-title"><div className="powerbi-model-copy"><p className="section-kicker">A dependable reporting layer</p><h2 id="powerbi-model-title">Connect data to <span>shared business definitions.</span></h2><p>We plan how source data is prepared, related, and described so teams can use consistent measures across their reports.</p></div><div className="powerbi-flow" aria-label="Data sources flow into a model and then into reports"><article><span>01</span><strong>Data sources</strong><small>Business systems & files</small></article><i aria-hidden="true">→</i><article className="powerbi-flow-main"><span>02</span><strong>Shared model</strong><small>Relationships & measures</small></article><i aria-hidden="true">→</i><article><span>03</span><strong>Reports</strong><small>Views for each team</small></article></div></section>
+
+      <section className="powerbi-governance section" aria-labelledby="powerbi-governance-title"><div><p className="section-kicker">Trust the numbers</p><h2 id="powerbi-governance-title">Clear definitions. <span>Careful access planning.</span></h2></div><div className="powerbi-governance-grid"><article><h3>Agree on KPI logic</h3><p>Document how important measures are defined, filtered, and interpreted.</p></article><article><h3>Validate the data</h3><p>Check report calculations and source data with the people who own the business process.</p></article><article><h3>Plan who can see what</h3><p>Align workspace and data access with your organization’s roles and environment.</p></article></div></section>
+
+      <section className="powerbi-deliverables section" aria-labelledby="powerbi-deliverables-title"><div><p className="section-kicker">Project outputs</p><h2 id="powerbi-deliverables-title">Reporting your team <span>can maintain.</span></h2><p>Deliverables are set according to the data sources, audience, refresh requirements, and scope.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="powerbi-process section" aria-labelledby="powerbi-process-title"><div className="powerbi-heading"><p className="section-kicker">How we work</p><h2 id="powerbi-process-title">Start with decisions, <span>then shape the data.</span></h2><p>We validate definitions and report behavior with your stakeholders at agreed checkpoints.</p></div><div className="powerbi-process-list">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="powerbi-faq section" aria-labelledby="powerbi-faq-title"><div className="powerbi-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="powerbi-faq-title">Power BI questions, <span>answered.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Connect reporting with your systems." text="Power BI can sit alongside software, data integrations, and automation. Explore related services that may support your reporting goals." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="powerbi-cta"><div><p className="section-kicker">Start with the questions</p><h2>Let’s make your business reporting more useful.</h2><p>Tell us which decisions your teams need to make and where the supporting data lives.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss Power BI services <span aria-hidden="true">→</span></Link></section>
+    </main>
+  );
+}
+
+function AiDevelopmentServicesPage() {
+  const useCases = [
+    ['Knowledge assistants', 'Help teams find answers across approved internal documents and knowledge sources.'],
+    ['Document workflows', 'Extract, classify, summarize, or route information for human review.'],
+    ['Workflow copilots', 'Support staff with contextual suggestions inside agreed business processes.'],
+    ['Customer support tools', 'Draft responses, organize enquiries, or direct requests to the right next step.']
+  ];
+  const safeguards = [
+    ['Grounded information', 'Connect responses to approved sources where appropriate and make source context available for review.'],
+    ['Human review', 'Keep people involved for sensitive, high-impact, or uncertain decisions.'],
+    ['Access & data boundaries', 'Plan which users and systems can provide information to the solution.'],
+    ['Evaluation & monitoring', 'Test representative tasks, review failure cases, and track performance after release.']
+  ];
+  const stages = [
+    ['Select the use case', 'Define the task, users, expected value, risks, and what should remain under human control.'],
+    ['Review data & systems', 'Check source quality, access, privacy requirements, and integration options.'],
+    ['Prototype & evaluate', 'Build a focused version and test it against representative questions or workflows.'],
+    ['Integrate & improve', 'Connect the approved solution to the workflow, document its limits, and plan ongoing review.']
+  ];
+  const deliverables = ['Use-case brief and success measures', 'Data and knowledge-source review', 'Assistant or automation prototype', 'Agreed system integrations', 'Evaluation and human-review plan', 'Technical notes and handoff guidance'];
+  const faqs = [
+    ['Can an AI assistant use our internal documents?', 'It may be possible to connect approved sources, depending on file formats, access controls, data quality, and the selected technical approach. We review these before confirming scope.'],
+    ['Will the AI always give correct answers?', 'No. AI systems can produce incorrect or incomplete responses. We plan testing, source context, clear limitations, and human review for decisions that need it.'],
+    ['How is company data handled?', 'Data access, processing, retention, and provider choices must be reviewed against your requirements and the services involved. These details are agreed before implementation.'],
+    ['Can AI connect to our existing systems?', 'Integrations depend on available APIs, permissions, data formats, and the workflow. We assess feasibility during discovery.'],
+    ['Can we start with a small pilot?', 'Yes. A focused prototype or pilot can help evaluate usefulness, data readiness, and operational fit before a larger rollout.']
+  ];
+  const related = ['software-development', 'web-development', 'powerbi-services'].map(getService).filter(Boolean);
+
+  return (
+    <main className="ai-service-page">
+      <HeadMeta title="AI Development Services | Rigweda Technologies" description="AI assistants and workflow automation designed around your business processes, approved data, system integrations, and human review requirements." keywords="AI development services, AI assistants, business workflow automation, AI integrations, document processing" path="/ai-services" />
+      <Hero eyebrow="AI Development Services" title={<>Put AI to work on <span>the right problems.</span></>} text="Design practical AI assistants and workflow automations around your team, data, and systems—with clear boundaries and people in the loop where they matter." visual="ai" action="Discuss an AI Use Case" actionTo="/contactus" secondaryAction="Explore Use Cases" secondaryTo="#ai-use-cases" image="/renders/uiux-3d.png" pageClass="hero-ai-services" />
+
+      <section className="ai-service-intro section" aria-labelledby="ai-intro-title"><div><p className="section-kicker">Start with the work</p><h2 id="ai-intro-title">Find the task where <span>AI can make a useful difference.</span></h2></div><p>We begin with a specific process, not a technology demo. Together we identify repetitive or information-heavy tasks, check the available data, and decide where automation can help and where human judgment should remain.</p></section>
+
+      <section className="ai-usecases section" id="ai-use-cases" aria-labelledby="ai-usecases-title"><div className="ai-section-heading"><p className="section-kicker">Practical AI applications</p><h2 id="ai-usecases-title">Support people across <span>everyday workflows.</span></h2><p>Choose a focused use case that can be evaluated against real tasks and business needs.</p></div><div className="ai-usecase-grid">{useCases.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="ai-pipeline section" aria-labelledby="ai-pipeline-title"><div className="ai-section-heading"><p className="section-kicker">Built around your context</p><h2 id="ai-pipeline-title">Connect the model to <span>the right information and workflow.</span></h2><p>Useful AI depends on more than the model. Data quality, permissions, integration, and review shape the result.</p></div><div className="ai-pipeline-flow"><article><span>01</span><strong>Approved data</strong><small>Sources & permissions</small></article><i aria-hidden="true">→</i><article><span>02</span><strong>AI capability</strong><small>Assistant or automation</small></article><i aria-hidden="true">→</i><article><span>03</span><strong>Business workflow</strong><small>People & systems</small></article><i aria-hidden="true">→</i><article><span>04</span><strong>Review & improve</strong><small>Evaluation over time</small></article></div></section>
+
+      <section className="ai-safeguards section" aria-labelledby="ai-safeguards-title"><div><p className="section-kicker">Responsible implementation</p><h2 id="ai-safeguards-title">Useful automation needs <span>clear boundaries.</span></h2></div><div className="ai-safeguard-grid">{safeguards.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+
+      <section className="ai-deliverables section" aria-labelledby="ai-deliverables-title"><div><p className="section-kicker">What the project includes</p><h2 id="ai-deliverables-title">A clear path from <span>use case to implementation.</span></h2><p>Deliverables are agreed around the use case, data sources, integrations, and level of human review required.</p></div><ul>{deliverables.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></section>
+
+      <section className="ai-process section" aria-labelledby="ai-process-title"><div className="ai-section-heading"><p className="section-kicker">How we work</p><h2 id="ai-process-title">Start small. <span>Test with real tasks. Improve deliberately.</span></h2><p>Evaluation checkpoints help teams understand where the solution works, where it needs review, and what should happen next.</p></div><div className="ai-process-list">{stages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
+
+      <section className="ai-faq section" aria-labelledby="ai-faq-title"><div className="ai-section-heading"><p className="section-kicker">Frequently asked questions</p><h2 id="ai-faq-title">AI implementation, <span>explained clearly.</span></h2></div><div className="webdev-faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className="webdev-related related-services-section section"><SectionHeading kicker="Related Capabilities" title="Connect AI with your software and data." text="AI solutions can involve application development, system integration, and reporting. Explore connected services for your use case." /><div className="related-services-grid">{related.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></section>
+
+      <section className="ai-cta"><div><p className="section-kicker">Start with a focused use case</p><h2>Let’s find where AI can help your team.</h2><p>Tell us which tasks take time, what information is involved, and where a person needs to stay in control.</p></div><Link className="primary-action" to="/contactus#contact-form">Discuss AI development <span aria-hidden="true">→</span></Link></section>
+    </main>
   );
 }
 
@@ -1070,7 +1697,7 @@ function ApplicationsPage() {
   return (
     <>
       <HeadMeta title="Business Applications | Rigweda Technologies" description="Explore business application concepts by Rigweda Technologies including retail apps, dashboards, AI service desks, and marketing intelligence systems." keywords="business applications, web applications, mobile applications, AI applications" path="/applications" />
-      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image={undefined} />
+      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image="/renders/application.png" pageClass="hero-applications" />
       <ApplicationsSection />
     </>
   );
@@ -1108,8 +1735,8 @@ function Careers() {
   return (
     <>
       <HeadMeta title="Careers | Rigweda Technologies" description="Join Rigweda Technologies across web development, UI UX design, digital marketing, AI, cloud, data, and project delivery roles." keywords="Rigweda careers, IT jobs, web developer jobs, digital marketing careers" path="/careers" />
-      <Hero eyebrow="Careers" title="Build digital products with craft." text="Rigweda looks for people who care about clean execution, useful design, reliable engineering, and measurable customer outcomes." visual="enterprise" action="Send Profile" actionTo="/contactus" image={undefined} />
-      <section className="section"><div className="rich-grid">{['Frontend Developer', 'UI/UX Designer', 'Digital Marketing Executive', 'Cloud & DevOps Associate', 'Data Analyst', 'Project Coordinator'].map((role) => <article className="rich-card" key={role}><h3>{role}</h3><p>Work on real websites, applications, dashboards, campaigns, and automation systems with a quality-first team.</p><Link to="/contactus">Apply now</Link></article>)}</div></section>
+      <Hero eyebrow="Careers" title={<><span>Build Your Career</span><span>at <em>Rigweda</em></span></>} text="Work on real-world products, solve meaningful problems, and grow your skills with a collaborative and supportive team." visual="enterprise" action="Explore Openings" actionTo="#career-openings" secondaryAction="Life at Rigweda" secondaryTo="/aboutus" image="/renders/careers.png" pageClass="hero-careers" />
+      <section className="section" id="career-openings"><div className="rich-grid">{['Frontend Developer', 'UI/UX Designer', 'Digital Marketing Executive', 'Cloud & DevOps Associate', 'Data Analyst', 'Project Coordinator'].map((role) => <article className="rich-card" key={role}><h3>{role}</h3><p>Work on real websites, applications, dashboards, campaigns, and automation systems with a quality-first team.</p><Link to="/contactus">Apply now</Link></article>)}</div></section>
     </>
   );
 }
