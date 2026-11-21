@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BrowserRouter, Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { StaticRouter } from 'react-router';
+import { installClickTracking, trackLead } from './analytics';
 import './styles.css';
 
 const logoLockup = '/assets/rigweda-logo.png';
@@ -304,14 +305,6 @@ export const ssrHead: { current: null | { title: string; description: string; ke
 
 const isBrowser = typeof window !== 'undefined';
 
-// Sends an event to Google Tag Manager (container loaded in index.html). In GTM, use a
-// "Custom Event" trigger with the same event name, e.g. page_view or generate_lead.
-export function trackEvent(name, params = {}) {
-  if (!isBrowser) return;
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: name, ...params });
-}
-
 function HeadMeta({ title, description, keywords = '', path = '/', noindex = false }) {
   const canonical = `${SITE_URL}${path}`;
   if (!isBrowser) ssrHead.current = { title, description, keywords, canonical, noindex };
@@ -327,8 +320,8 @@ function HeadMeta({ title, description, keywords = '', path = '/', noindex = fal
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', description);
     setCanonical(canonical);
-    trackEvent('page_view', { page_title: title, page_location: window.location.href, page_path: path });
-  }, [title, description, keywords, canonical, noindex, path]);
+    // Page views are sent by GA4 Enhanced Measurement (browser-history page changes), not from here.
+  }, [title, description, keywords, canonical, noindex]);
   return null;
 }
 
@@ -352,24 +345,9 @@ function setCanonical(href) {
   tag.setAttribute('href', href);
 }
 
-// Tracks the actions that count as leads: calls, emails, WhatsApp chats, and demo/contact requests.
+// GA4 click events for WhatsApp, phone, and email links (see src/analytics.ts).
 function LeadTracking() {
-  useEffect(() => {
-    const onClick = (event) => {
-      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
-      if (!link) return;
-      const href = link.getAttribute('href') || '';
-      const label = link.textContent.trim().slice(0, 80);
-      if (href.startsWith('tel:')) trackEvent('click_call', { link_text: label });
-      else if (href.startsWith('mailto:')) trackEvent('click_email', { link_text: label });
-      else if (href.includes('wa.me/')) trackEvent('click_whatsapp', { link_text: label });
-      else if (href.startsWith('/contactus')) trackEvent('click_contact_cta', { link_text: label, page_path: window.location.pathname });
-      else if (/^https?:/.test(href) && !href.includes('rigweda.com')) trackEvent('click_outbound', { link_url: href });
-    };
-    // Capture phase: record the click before the router navigates, so page_path is the page clicked on.
-    document.addEventListener('click', onClick, true);
-    return () => document.removeEventListener('click', onClick, true);
-  }, []);
+  useEffect(() => installClickTracking(), []);
   return null;
 }
 
@@ -729,7 +707,7 @@ function SectionHeading({ kicker, title, text }) {
 
 function TeamSection() {
   const teamAreas = [
-    { name: 'Lokesh Reddy', role: 'UI Developer' },
+    { name: 'Lokesh', role: 'UI Developer' },
     { name: 'Sravani', role: 'Full Stack Developer' },
     { name: 'Srinivas', role: 'Digital Marketing' },
     { name: 'Sowmya', role: 'Backend Developer' },
@@ -2080,8 +2058,9 @@ function Contact() {
         subject: `Project enquiry from ${name}`,
         submitted_at: new Date().toISOString()
       });
+      // Reached only after EmailJS confirms the enquiry was sent (sendEmailJsEnquiry throws otherwise).
+      trackLead({ formId: 'contact-form', formName: 'Contact form', leadSource: 'website_contact_form' });
       form.reset();
-      trackEvent('generate_lead', { form: 'contact', project_need: need });
       navigate('/thank-you');
     } catch (error) {
       setSubmitStatus(error instanceof Error ? error.message : 'Could not send the enquiry. Please try again.');

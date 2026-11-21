@@ -69,6 +69,8 @@ web_modules/
 .env
 .env.*
 !.env.example
+# Public production build settings (GA4 measurement ID); never put secrets here.
+!.env.production
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
