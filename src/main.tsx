@@ -116,7 +116,7 @@ const products = [
     features: ['AI daily briefing and smart prioritisation', 'Escalating reminders: push, voice alert, then phone call', 'Focus timer that pauses other reminders', 'Balloon sky that turns tasks into a game', 'Weekly stats, streaks, and your best time of day', 'Quiet hours and per-task reminder control'],
     platforms: ['iOS', 'Android'],
     image: '/images/products/taskpulse.webp',
-    status: 'Early Access'
+    status: 'Live'
   },
   {
     slug: 'gradesight',
@@ -134,7 +134,7 @@ const products = [
     features: ['Courses and modules with due dates', 'Quizzes, question banks, rubrics, and SpeedGrader', 'Gradebook, attendance, and class insights', 'AI assistant for teachers and students', 'Announcements, calendar, and private inbox', 'Multi-school reporting with each school’s data kept separate'],
     platforms: ['Web'],
     image: '/images/products/gradesight.webp',
-    status: 'Beta'
+    status: 'Live'
   },
   {
     slug: 'rigweda-voice',
@@ -152,7 +152,7 @@ const products = [
     features: ['Multilingual AI voice agents', 'Inbound support and outbound campaigns', 'Live call board with queue and transfer health', 'Phone number pool and WhatsApp journeys', 'Call analytics and tone profiles'],
     platforms: ['Web', 'Phone', 'WhatsApp'],
     image: '/images/products/rigweda-voice.webp',
-    status: 'Beta'
+    status: 'Live'
   },
   {
     slug: 'find-face',
