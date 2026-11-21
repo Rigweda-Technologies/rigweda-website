@@ -1,31 +1,30 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Link, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
-import * as THREE from 'three';
+import { BrowserRouter, Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { StaticRouter } from 'react-router';
 import './styles.css';
 
 const logoLockup = '/assets/rigweda-logo.png';
 
 const renderImages = {
-  website: '/renders/webapplication.png',
+  website: '/renders/webapplication.webp',
   interface: '/renders/uiux-3d%20(2).png',
-  cms: '/renders/wordpressdevelopment.png',
-  commerce: '/renders/ecommerce.png',
-  mobile: '/renders/mobile-3d.png',
-  marketing: '/renders/digitalmarketing.png',
-  seo: '/renders/seo.png',
-  ads: '/renders/ppc.png',
-  smm: '/renders/smm.png',
-  cloud: '/renders/hosting-3d.png',
-  ai: '/renders/cloud-ai-data-3d.png',
-  data: '/renders/cloud-ai-data-3d.png',
-  analytics: '/renders/analytics-bi-3d.png',
-  database: '/renders/database-3d.png',
-  security: '/renders/security-network-3d.png',
-  network: '/renders/networking-3d.png',
-  software: '/renders/software-development.png',
-  enterprise: '/renders/software-enterprise-3d.png',
-  strategy: '/renders/software-development.png'
+  cms: '/renders/wordpressdevelopment.webp',
+  commerce: '/renders/ecommerce.webp',
+  mobile: '/renders/mobile-3d.webp',
+  marketing: '/renders/digitalmarketing.webp',
+  seo: '/renders/seo.webp',
+  ads: '/renders/ppc.webp',
+  smm: '/renders/smm.webp',
+  cloud: '/renders/hosting-3d.webp',
+  ai: '/renders/cloud-ai-data-3d.webp',
+  data: '/renders/cloud-ai-data-3d.webp',
+  analytics: '/renders/analytics-bi-3d.webp',
+  database: '/renders/database-3d.webp',
+  security: '/renders/security-network-3d.webp',
+  network: '/renders/networking-3d.webp',
+  software: '/renders/software-development.webp',
+  enterprise: '/renders/software-enterprise-3d.webp',
+  strategy: '/renders/software-development.webp'
 };
 
 const projects = [
@@ -60,24 +59,180 @@ const services = [
 
 const serviceArtwork = {
   'ui-ux-solutions': '/renders/uiux-3d%20(2).png',
-  webdesign: '/renders/web-design.png',
-  'web-development': '/renders/webapplication.png',
-  'wordpress-development': '/renders/wordpressdevelopment.png',
-  'ecommerce-development': '/renders/ecommerce.png',
-  'digital-marketing': '/renders/digitalmarketing.png',
-  'seo-services': '/renders/seo.png',
-  'smm-services': '/renders/smm.png',
-  'ppc-services': '/renders/ppc.png',
-  'software-development': '/renders/software-development.png',
-  'powerbi-services': '/renders/powerbi.png',
-  'ai-services': '/renders/ai-servicedesk.png'
+  webdesign: '/renders/web-design.webp',
+  'web-development': '/renders/webapplication.webp',
+  'wordpress-development': '/renders/wordpressdevelopment.webp',
+  'ecommerce-development': '/renders/ecommerce.webp',
+  'digital-marketing': '/renders/digitalmarketing.webp',
+  'seo-services': '/renders/seo.webp',
+  'smm-services': '/renders/smm.webp',
+  'ppc-services': '/renders/ppc.webp',
+  'software-development': '/renders/software-development.webp',
+  'powerbi-services': '/renders/powerbi.webp',
+  'ai-services': '/renders/ai-servicedesk.webp'
 };
 
+// Rigweda's own products, shown on the home page and the /products page.
+// To add a product, copy one entry and fill in every field:
+//   slug (used in /products#slug), name, category, tagline, description,
+//   seoTitle / seoDescription / keywords (search result text for the product's own page, /products/<slug>),
+//   accent (brand colour used in the home spotlight), audience (who it is for),
+//   steps (3 "how it works" steps), highlights (2 short chips floating on the screenshot),
+//   features (all shown on the products page),
+//   platforms, image (put files in /public/images/products/ and use '/images/products/your-file.webp'),
+//   status ('Live' | 'Beta' | 'Early Access' | 'Coming Soon').
+const products = [
+  {
+    slug: 'rigweda-monitor',
+    seoTitle: 'Employee Monitoring & HRMS Software | Rigweda Monitor',
+    seoDescription: 'Rigweda Monitor tracks live activity, productivity, attendance, and screen captures, with an employee mobile app and a Windows agent. Book a free demo.',
+    keywords: 'employee monitoring software, HRMS software India, employee activity tracking, productivity monitoring, attendance software',
+    accent: '#f5b83d',
+    audience: 'For HR teams, managers, and remote or hybrid companies.',
+    steps: ['Install the desktop agent on work machines', 'Employees check in from the web or mobile app', 'Managers see live activity, alerts, and reports'],
+    highlights: ['Live monitoring', 'Off-task alerts'],
+    name: 'Rigweda Monitor',
+    category: 'HR & Workforce',
+    tagline: 'Employee monitoring and HRMS in one platform.',
+    description: 'See who is active, how productive the team is, and what needs attention, all in real time. Managers get live dashboards and screen-capture evidence, employees use the mobile app, and a Windows agent records work sessions.',
+    features: ['Live activity and productivity dashboard', 'Screen capture evidence and live screen view', 'Off-task and insider-threat alerts', 'Time tracking and attendance', 'Employee mobile app for iOS and Android'],
+    platforms: ['Web', 'iOS', 'Android', 'Windows'],
+    image: '/images/products/rigweda-monitor.webp',
+    status: 'Live'
+  },
+  {
+    slug: 'taskpulse',
+    seoTitle: 'AI Task Reminder App with Calls | TaskPulse by Rigweda',
+    seoDescription: 'TaskPulse is an AI task reminder app that escalates from push notifications to voice alerts to phone calls until you finish, with focus mode and streaks.',
+    keywords: 'AI task reminder app, task reminder with phone call, AI to-do list, accountability app, productivity app',
+    accent: '#22c55e',
+    audience: 'For students, professionals, and anyone who keeps putting things off.',
+    steps: ['Add a task and its deadline', 'Get an AI daily briefing and nudges at the right time', 'Finish it in focus mode and keep your balloon floating'],
+    highlights: ['Push → voice → call', 'AI daily briefing'],
+    name: 'TaskPulse',
+    category: 'AI Productivity',
+    tagline: 'The AI task app that follows up until it is done.',
+    description: 'TaskPulse is not a passive to-do list. An AI daily briefing sets your priorities, then reminders escalate from a push notification to a voice alert to a real phone call until the task is finished. Every task floats as a balloon in your sky, and it pops if you miss it.',
+    features: ['AI daily briefing and smart prioritisation', 'Escalating reminders: push, voice alert, then phone call', 'Focus timer that pauses other reminders', 'Balloon sky that turns tasks into a game', 'Weekly stats, streaks, and your best time of day', 'Quiet hours and per-task reminder control'],
+    platforms: ['iOS', 'Android'],
+    image: '/images/products/taskpulse.webp',
+    status: 'Early Access'
+  },
+  {
+    slug: 'gradesight',
+    seoTitle: 'Learning Management System for Schools | GradeSight',
+    seoDescription: 'GradeSight is a learning platform for K–12 schools and colleges: courses, quizzes, gradebook, attendance, an AI assistant, and school-wide reporting.',
+    keywords: 'learning management system, LMS for schools, school learning platform, online gradebook, K-12 LMS, college LMS',
+    accent: '#e85d9a',
+    audience: 'For K–12 schools, colleges, and school districts.',
+    steps: ['Your school creates accounts for teachers and students', 'Teachers build courses, assignments, and quizzes', 'Everyone sees progress, grades, and what needs attention today'],
+    highlights: ['SpeedGrader', 'AI class assistant'],
+    name: 'GradeSight',
+    category: 'Education & LMS',
+    tagline: 'One place to teach, learn, and see how every student is doing.',
+    description: 'Courses, assignments, quizzes, grades, calendars, and messages in one platform. Teachers grade faster with SpeedGrader and an AI assistant, students always know what is next, and school leaders see who needs help today.',
+    features: ['Courses and modules with due dates', 'Quizzes, question banks, rubrics, and SpeedGrader', 'Gradebook, attendance, and class insights', 'AI assistant for teachers and students', 'Announcements, calendar, and private inbox', 'Multi-school reporting with each school’s data kept separate'],
+    platforms: ['Web'],
+    image: '/images/products/gradesight.webp',
+    status: 'Beta'
+  },
+  {
+    slug: 'rigweda-voice',
+    seoTitle: 'AI Voice Agent & AI Calling Software | Rigweda Voice',
+    seoDescription: 'Rigweda Voice deploys multilingual AI voice agents for inbound support and outbound calls, with live call monitoring, WhatsApp journeys, and analytics.',
+    keywords: 'AI voice agent, AI calling software, AI call center, voice bot India, automated calling software',
+    accent: '#a879ff',
+    audience: 'For support centres, sales teams, and service businesses.',
+    steps: ['Create an agent and choose its voice and languages', 'Connect your phone numbers and call flows', 'Watch live calls and review call analytics'],
+    highlights: ['Multilingual agents', 'Live call board'],
+    name: 'Rigweda Voice',
+    category: 'AI Voice Calling',
+    tagline: 'AI voice agents that answer and make calls for your business.',
+    description: 'Deploy natural-sounding AI voice agents for inbound support and outbound campaigns in multiple languages, then watch live calls, queues, and transfers from one console.',
+    features: ['Multilingual AI voice agents', 'Inbound support and outbound campaigns', 'Live call board with queue and transfer health', 'Phone number pool and WhatsApp journeys', 'Call analytics and tone profiles'],
+    platforms: ['Web', 'Phone', 'WhatsApp'],
+    image: '/images/products/rigweda-voice.webp',
+    status: 'Beta'
+  },
+  {
+    slug: 'find-face',
+    seoTitle: 'Face Recognition & CCTV Software | Find Face by Rigweda',
+    seoDescription: 'Find Face identifies registered people in photos and live CCTV feeds, keeps an automatic entry log, and alerts you to unknown faces with snapshots.',
+    keywords: 'face recognition software, CCTV face recognition, face attendance system, facial recognition India',
+    accent: '#2fd8ff',
+    audience: 'For offices, campuses, and secured facilities.',
+    steps: ['Register people with a few photos', 'Connect your CCTV or IP cameras', 'Get matches, entry logs, and unknown-person alerts'],
+    highlights: ['Real-time CCTV', 'Automatic entry log'],
+    name: 'Find Face',
+    category: 'Computer Vision',
+    tagline: 'Face recognition for photos and live CCTV.',
+    description: 'Register people once, then identify them instantly in photos or live CCTV feeds. Every match is written to an entry log, and unknown faces trigger alerts with incident snapshots.',
+    features: ['Real-time CCTV face matching', 'Match faces in uploaded photos', 'Automatic entry log', 'Unknown-person alerts with snapshots', 'Face registration and face login'],
+    platforms: ['Windows', 'CCTV / IP cameras'],
+    image: '/images/products/find-face.webp',
+    status: 'Beta'
+  },
+  {
+    slug: 'workhub',
+    seoTitle: 'Project & Task Management Software | WorkHub by Rigweda',
+    seoDescription: 'WorkHub brings projects, tasks, boards, calendars, documents, and reports into one workspace so teams always know what to do next. Book a demo.',
+    keywords: 'project management software, task management tool, team workspace, work management software India',
+    accent: '#4f8cff',
+    audience: 'For product, agency, and operations teams.',
+    steps: ['Create projects and invite your team', 'Plan tasks with owners, priorities, and due dates', 'Track progress on boards, calendars, and reports'],
+    highlights: ['Projects & tasks', 'Team activity feed'],
+    name: 'WorkHub',
+    category: 'Project & Task Management',
+    tagline: 'One workspace for projects, tasks, and team workflows.',
+    description: 'Track every project’s progress, assign and prioritise tasks, and follow team activity from a single dashboard, with boards, calendars, documents, and reports alongside.',
+    features: ['Project overview with progress and due dates', 'Tasks with priority, status, and assignees', 'Boards, calendar, and goals', 'Documents and knowledge base', 'Reports, automation, and team activity feed'],
+    platforms: ['Web'],
+    image: '/images/products/workhub.webp',
+    status: 'Early Access'
+  },
+  {
+    slug: 'itr-filing',
+    seoTitle: 'Online ITR Filing & CA Compliance Platform | Rigweda',
+    seoDescription: 'File ITR, manage GST and payroll compliance, upload documents securely, and chat with an assigned CA, all in one online tax platform. Book a demo.',
+    keywords: 'online ITR filing, CA assisted tax filing, GST compliance software, income tax filing platform India',
+    accent: '#18c29c',
+    audience: 'For salaried individuals, businesses, and CA firms.',
+    steps: ['Choose a service and upload your documents', 'Your assigned CA reviews and chats with you', 'Track your filing until it is complete'],
+    highlights: ['CA-assisted filing', 'GST & payroll'],
+    name: 'ITR Filing',
+    category: 'Tax & Compliance',
+    tagline: 'File taxes and manage compliance with a CA by your side.',
+    description: 'Individuals and businesses file ITR, handle GST and payroll compliance, and work with an assigned chartered accountant, from document upload to final review.',
+    features: ['CA-assisted ITR filing', 'GST, payroll, and business compliance', 'Secure document upload and CA review', 'Chat with your assigned CA', 'Service requests, invoices, and payments'],
+    platforms: ['Web'],
+    image: '/images/products/itr-filing.webp',
+    status: 'Early Access'
+  },
+  {
+    slug: 'rydngo',
+    seoTitle: 'Self-Drive Car Rental Software | RydNGo by Rigweda',
+    seoDescription: 'RydNGo is a self-drive car rental platform with hourly, daily, and weekly bookings, coupons, protection plans, owner payouts, and an admin panel.',
+    keywords: 'car rental software, self drive car rental platform, car rental booking system, fleet rental software India',
+    accent: '#ff8a3d',
+    audience: 'For self-drive rental operators and their customers.',
+    steps: ['Customers pick a car and rental period', 'Apply coupons and protection, then confirm', 'The car is delivered to the customer’s doorstep'],
+    highlights: ['Hourly · daily · weekly', 'Doorstep delivery'],
+    name: 'RydNGo',
+    category: 'Mobility & Rentals',
+    tagline: 'Self-drive car rentals by the hour, day, or week.',
+    description: 'Customers book hatchbacks, sedans, and SUVs online with doorstep delivery and 24/7 support. Operators manage the fleet, pricing, coupons, and owner payouts from one admin panel.',
+    features: ['Hourly, daily, and weekly bookings', 'Hatchbacks, sedans, and SUVs', 'Coupons, credits, and protection plans', 'Owner payouts and customer reviews', 'Role-based admin panel'],
+    platforms: ['Web'],
+    image: '/images/products/rydngo.webp',
+    status: 'Early Access'
+  }
+];
+
 const applications = [
-  { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/retail-commerce.png', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
-  { title: 'Operations Dashboard', visual: 'analytics', image: '/renders/operation-dashboard.png', text: 'Role-based dashboards for tracking leads, inventory, tasks, sales, and support workflows.' },
-  { title: 'AI Service Desk', visual: 'ai', image: '/renders/ai-servicedesk.png', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
-  { title: 'Marketing Intelligence Hub', visual: 'seo', image: '/renders/marketing-intelligence.png', text: 'SEO, campaign, enquiry, and conversion reporting in one growth workspace.' }
+  { title: 'Retail Commerce Application', visual: 'commerce', image: '/renders/retail-commerce.webp', text: 'Customer app, catalog, checkout, loyalty, admin panel, and analytics for retail teams.' },
+  { title: 'Operations Dashboard', visual: 'analytics', image: '/renders/operation-dashboard.webp', text: 'Role-based dashboards for tracking leads, inventory, tasks, sales, and support workflows.' },
+  { title: 'AI Service Desk', visual: 'ai', image: '/renders/ai-servicedesk.webp', text: 'Knowledge assistant for customer questions, internal SOPs, document lookup, and escalation.' },
+  { title: 'Marketing Intelligence Hub', visual: 'seo', image: '/renders/marketing-intelligence.webp', text: 'SEO, campaign, enquiry, and conversion reporting in one growth workspace.' }
 ];
 
 const serviceGroups = [
@@ -140,21 +295,48 @@ const sendEmailJsEnquiry = async (templateParams) => {
   }
 };
 
-function HeadMeta({ title, description, keywords, path = '/' }) {
+// The one official address of the site. Canonical links, the sitemap, and social tags all use it.
+export const SITE_URL = 'https://www.rigweda.com';
+
+// While pages are pre-rendered at build time, HeadMeta records each page's tags here
+// so scripts/prerender.mjs can write them into that page's HTML.
+export const ssrHead: { current: null | { title: string; description: string; keywords: string; canonical: string; noindex: boolean } } = { current: null };
+
+const isBrowser = typeof window !== 'undefined';
+
+// Sends an event to Google Tag Manager (container loaded in index.html). In GTM, use a
+// "Custom Event" trigger with the same event name, e.g. page_view or generate_lead.
+export function trackEvent(name, params = {}) {
+  if (!isBrowser) return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: name, ...params });
+}
+
+function HeadMeta({ title, description, keywords = '', path = '/', noindex = false }) {
+  const canonical = `${SITE_URL}${path}`;
+  if (!isBrowser) ssrHead.current = { title, description, keywords, canonical, noindex };
+
   useEffect(() => {
     document.title = title;
-    setMeta('description', description);
-    setMeta('keywords', keywords);
-    setCanonical(`https://rigweda.com${path}`);
-  }, [title, description, keywords, path]);
+    setMeta('name', 'description', description);
+    setMeta('name', 'keywords', keywords);
+    setMeta('name', 'robots', noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large');
+    setMeta('property', 'og:title', title);
+    setMeta('property', 'og:description', description);
+    setMeta('property', 'og:url', canonical);
+    setMeta('name', 'twitter:title', title);
+    setMeta('name', 'twitter:description', description);
+    setCanonical(canonical);
+    trackEvent('page_view', { page_title: title, page_location: window.location.href, page_path: path });
+  }, [title, description, keywords, canonical, noindex, path]);
   return null;
 }
 
-function setMeta(name, content) {
-  let tag = document.querySelector(`meta[name="${name}"]`);
+function setMeta(attribute, key, content) {
+  let tag = document.querySelector(`meta[${attribute}="${key}"]`);
   if (!tag) {
     tag = document.createElement('meta');
-    tag.setAttribute('name', name);
+    tag.setAttribute(attribute, key);
     document.head.appendChild(tag);
   }
   tag.setAttribute('content', content);
@@ -170,95 +352,128 @@ function setCanonical(href) {
   tag.setAttribute('href', href);
 }
 
+// Tracks the actions that count as leads: calls, emails, WhatsApp chats, and demo/contact requests.
+function LeadTracking() {
+  useEffect(() => {
+    const onClick = (event) => {
+      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      const label = link.textContent.trim().slice(0, 80);
+      if (href.startsWith('tel:')) trackEvent('click_call', { link_text: label });
+      else if (href.startsWith('mailto:')) trackEvent('click_email', { link_text: label });
+      else if (href.includes('wa.me/')) trackEvent('click_whatsapp', { link_text: label });
+      else if (href.startsWith('/contactus')) trackEvent('click_contact_cta', { link_text: label, page_path: window.location.pathname });
+      else if (/^https?:/.test(href) && !href.includes('rigweda.com')) trackEvent('click_outbound', { link_url: href });
+    };
+    // Capture phase: record the click before the router navigates, so page_path is the page clicked on.
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, []);
+  return null;
+}
+
+function startScene(THREE, canvas) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 9);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const cyan = new THREE.Color('#48d8ff');
+  const gold = new THREE.Color('#f2b84b');
+  const material = new THREE.MeshStandardMaterial({ color: cyan, emissive: '#48d8ff', emissiveIntensity: 0.22, metalness: 0.5, roughness: 0.2 });
+  const geometry = new THREE.SphereGeometry(0.052, 18, 18);
+  const nodes = [];
+  for (let i = 0; i < 88; i += 1) {
+    const radius = 2.4 + Math.random() * 3.2;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const node = new THREE.Mesh(geometry, material.clone());
+    node.position.set(radius * Math.sin(phi) * Math.cos(theta), radius * Math.sin(phi) * Math.sin(theta), radius * Math.cos(phi));
+    node.userData.velocity = 0.55 + Math.random() * 0.6;
+    nodes.push(node);
+    group.add(node);
+  }
+  const positions = [];
+  for (let i = 0; i < nodes.length; i += 1) {
+    for (let j = i + 1; j < nodes.length; j += 1) {
+      if (nodes[i].position.distanceTo(nodes[j].position) < 1.45) {
+        positions.push(nodes[i].position.x, nodes[i].position.y, nodes[i].position.z, nodes[j].position.x, nodes[j].position.y, nodes[j].position.z);
+      }
+    }
+  }
+  const lineGeometry = new THREE.BufferGeometry();
+  lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  group.add(new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial({ color: '#1b7fb6', transparent: true, opacity: 0.16 })));
+  const ring = location.pathname === '/web-development' ? null : new THREE.Mesh(new THREE.TorusGeometry(3.35, 0.022, 10, 160), new THREE.MeshBasicMaterial({ color: '#48d8ff', transparent: true, opacity: 0.18 }));
+  if (ring) {
+    ring.rotation.x = 1.2;
+    ring.rotation.y = 0.55;
+    group.add(ring);
+  }
+  scene.add(new THREE.AmbientLight('#ffffff', 1.25));
+  const keyLight = new THREE.PointLight('#e9fbff', 18, 25);
+  keyLight.position.set(-3.5, 2.5, 5);
+  scene.add(keyLight);
+
+  let pointerX = 0;
+  let pointerY = 0;
+  const move = (event) => {
+    pointerX = (event.clientX / window.innerWidth - 0.5) * 0.55;
+    pointerY = (event.clientY / window.innerHeight - 0.5) * 0.35;
+  };
+  const resize = () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  };
+  window.addEventListener('pointermove', move);
+  window.addEventListener('resize', resize);
+
+  let frame = 0;
+  const animate = (time) => {
+    const tick = time * 0.001;
+    group.rotation.y = tick * 0.08 + pointerX;
+    group.rotation.x = Math.sin(tick * 0.35) * 0.08 + pointerY;
+    if (ring) ring.rotation.z = tick * 0.16;
+    nodes.forEach((node, index) => {
+      node.scale.setScalar(1 + Math.sin(tick * node.userData.velocity + index) * 0.2);
+      node.material.color.lerpColors(cyan, gold, (Math.sin(tick + index) + 1) / 2);
+    });
+    renderer.render(scene, camera);
+    frame = requestAnimationFrame(animate);
+  };
+  frame = requestAnimationFrame(animate);
+
+  return () => {
+    cancelAnimationFrame(frame);
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('resize', resize);
+    renderer.dispose();
+    geometry.dispose();
+    lineGeometry.dispose();
+  };
+}
+
 function SceneBackground() {
   const location = useLocation();
 
   useEffect(() => {
     const canvas = document.querySelector('#rigweda-field');
     if (!canvas) return undefined;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 9);
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    const group = new THREE.Group();
-    scene.add(group);
-
-    const cyan = new THREE.Color('#48d8ff');
-    const gold = new THREE.Color('#f2b84b');
-    const material = new THREE.MeshStandardMaterial({ color: cyan, emissive: '#48d8ff', emissiveIntensity: 0.22, metalness: 0.5, roughness: 0.2 });
-    const geometry = new THREE.SphereGeometry(0.052, 18, 18);
-    const nodes = [];
-    for (let i = 0; i < 88; i += 1) {
-      const radius = 2.4 + Math.random() * 3.2;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const node = new THREE.Mesh(geometry, material.clone());
-      node.position.set(radius * Math.sin(phi) * Math.cos(theta), radius * Math.sin(phi) * Math.sin(theta), radius * Math.cos(phi));
-      node.userData.velocity = 0.55 + Math.random() * 0.6;
-      nodes.push(node);
-      group.add(node);
-    }
-    const positions = [];
-    for (let i = 0; i < nodes.length; i += 1) {
-      for (let j = i + 1; j < nodes.length; j += 1) {
-        if (nodes[i].position.distanceTo(nodes[j].position) < 1.45) {
-          positions.push(nodes[i].position.x, nodes[i].position.y, nodes[i].position.z, nodes[j].position.x, nodes[j].position.y, nodes[j].position.z);
-        }
-      }
-    }
-    const lineGeometry = new THREE.BufferGeometry();
-    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    group.add(new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial({ color: '#1b7fb6', transparent: true, opacity: 0.16 })));
-    const ring = location.pathname === '/web-development' ? null : new THREE.Mesh(new THREE.TorusGeometry(3.35, 0.022, 10, 160), new THREE.MeshBasicMaterial({ color: '#48d8ff', transparent: true, opacity: 0.18 }));
-    if (ring) {
-      ring.rotation.x = 1.2;
-      ring.rotation.y = 0.55;
-      group.add(ring);
-    }
-    scene.add(new THREE.AmbientLight('#ffffff', 1.25));
-    const keyLight = new THREE.PointLight('#e9fbff', 18, 25);
-    keyLight.position.set(-3.5, 2.5, 5);
-    scene.add(keyLight);
-
-    let pointerX = 0;
-    let pointerY = 0;
-    const move = (event) => {
-      pointerX = (event.clientX / window.innerWidth - 0.5) * 0.55;
-      pointerY = (event.clientY / window.innerHeight - 0.5) * 0.35;
-    };
-    const resize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('resize', resize);
-
-    let frame = 0;
-    const animate = (time) => {
-      const tick = time * 0.001;
-      group.rotation.y = tick * 0.08 + pointerX;
-      group.rotation.x = Math.sin(tick * 0.35) * 0.08 + pointerY;
-      if (ring) ring.rotation.z = tick * 0.16;
-      nodes.forEach((node, index) => {
-        node.scale.setScalar(1 + Math.sin(tick * node.userData.velocity + index) * 0.2);
-        node.material.color.lerpColors(cyan, gold, (Math.sin(tick + index) + 1) / 2);
-      });
-      renderer.render(scene, camera);
-      frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-
+    let cancelled = false;
+    let cleanup = () => {};
+    // three.js is loaded on demand so the page content paints before the 3D scene starts.
+    import('three').then((THREE) => {
+      if (!cancelled) cleanup = startScene(THREE, canvas);
+    });
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('resize', resize);
-      renderer.dispose();
-      geometry.dispose();
-      lineGeometry.dispose();
+      cancelled = true;
+      cleanup();
     };
   }, [location.pathname]);
 
@@ -272,7 +487,7 @@ function PageEffects({ routeKey = '' }) {
     let observer: IntersectionObserver | null = null;
     const timer = window.setTimeout(() => {
       const elements = document.querySelectorAll(
-        '.hero-copy, .hero-launch-panel, .visual3d, .trust-strip, .section-heading, .service-card, .rich-card, .application-card, .project-card, .gallery-card, .content-block, .rich-list li, .contact-form, .team-heading-copy, .team-orbit-graphic, .team-card, .team-section .center-action'
+        '.hero-copy, .hero-launch-panel, .visual3d, .trust-strip, .section-heading, .product-stat, .spotlights-heading, .spotlight-visual, .spotlight-copy, .roadmap-road, .journey-panel, .journey-step, .service-card, .rich-card, .application-card, .project-card, .gallery-card, .content-block, .rich-list li, .contact-form, .team-heading-copy, .team-orbit-graphic, .team-card, .team-section .center-action'
       );
 
       observer = new IntersectionObserver(
@@ -288,6 +503,11 @@ function PageEffects({ routeKey = '' }) {
       );
 
       elements.forEach((element, index) => {
+        const bounds = element.getBoundingClientRect();
+        if (bounds.top < window.innerHeight && bounds.bottom > 0) {
+          element.classList.add('reveal', 'is-visible');
+          return;
+        }
         element.classList.add('reveal');
         if (element instanceof HTMLElement) {
           element.style.setProperty('--reveal-delay', `${Math.min(index * 28, 260)}ms`);
@@ -308,7 +528,9 @@ function PageEffects({ routeKey = '' }) {
 function AnimatedRoutes() {
   const location = useLocation();
   const [displayLocation, setDisplayLocation] = useState(location);
-  const [transitionStage, setTransitionStage] = useState('page-enter');
+  // No entrance animation on the first page load, so the pre-rendered content paints immediately;
+  // the fade/blur transition runs only when moving between pages.
+  const [transitionStage, setTransitionStage] = useState('');
   const currentRoute = `${location.pathname}${location.search}`;
   const displayedRoute = `${displayLocation.pathname}${displayLocation.search}`;
 
@@ -338,6 +560,8 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/:productSlug" element={<ProductPage />} />
         <Route path="/applications" element={<ApplicationsPage />} />
         <Route path="/ui-ux-solutions" element={<UiUxSolutionsPage />} />
         <Route path="/web-development" element={<WebApplicationDevelopmentPage />} />
@@ -350,7 +574,8 @@ function AnimatedRoutes() {
         <Route path="/software-development" element={<SoftwareDevelopmentPage />} />
         <Route path="/powerbi-services" element={<PowerBiServicesPage />} />
         <Route path="/ai-services" element={<AiDevelopmentServicesPage />} />
-        <Route path="/portfolio" element={<Portfolio />} />
+        {/* Portfolio is hidden for now. To bring it back, use element={<Portfolio />} and restore the nav, footer, and sitemap links. */}
+        <Route path="/portfolio" element={<Navigate to="/products" replace />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/blog" element={<Blog />} />
@@ -358,317 +583,9 @@ function AnimatedRoutes() {
         <Route path="/privacy-policy" element={<SimplePage kind="privacy-policy" />} />
         <Route path="/thank-you" element={<SimplePage kind="thank-you" />} />
         <Route path="/:slug" element={<ServicePage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
-  );
-}
-
-function RobotCompanion() {
-  const [running, setRunning] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const runModeRef = useRef(false);
-  const directionRef = useRef(1);
-  const walkIntensityRef = useRef(0);
-
-  useEffect(() => {
-    const robot = document.querySelector<HTMLElement>('.robo-companion');
-    if (!robot) return undefined;
-
-    let motionFrame = 0;
-    let waypointTimer = 0;
-    let sprintTimer = 0;
-    const compact = () => window.innerWidth <= 680;
-    const size = () => compact() ? { width: 154, height: 214 } : { width: 232, height: 314 };
-    const clampPosition = (x, y) => {
-      const robotSize = size();
-      return {
-        x: Math.max(12, Math.min(window.innerWidth - robotSize.width - 8, x)),
-        y: Math.max(76, Math.min(window.innerHeight - robotSize.height - 8, y))
-      };
-    };
-    const current = clampPosition(window.innerWidth - size().width - 30, window.innerHeight - size().height - 24);
-    const target = { ...current };
-    robot.style.setProperty('--robo-x', `${current.x}px`);
-    robot.style.setProperty('--robo-y', `${current.y}px`);
-    robot.style.setProperty('--robo-direction', '1');
-    robot.style.setProperty('--robo-speed', '0.62');
-
-    const setRunMode = (value) => {
-      runModeRef.current = value;
-      setRunning(value);
-      robot.style.setProperty('--robo-speed', value ? '1.15' : '0.62');
-    };
-
-    const chooseWaypoint = (fast = false) => {
-      const robotSize = size();
-      const lanes = [
-        92 + Math.random() * Math.max(70, window.innerHeight * 0.2),
-        window.innerHeight * (0.38 + Math.random() * 0.24),
-        window.innerHeight - robotSize.height - 32 - Math.random() * 90
-      ];
-      const next = clampPosition(
-        18 + Math.random() * Math.max(1, window.innerWidth - robotSize.width - 36),
-        lanes[Math.floor(Math.random() * lanes.length)]
-      );
-      target.x = next.x;
-      target.y = next.y;
-      window.clearTimeout(waypointTimer);
-      waypointTimer = window.setTimeout(() => chooseWaypoint(), fast ? 2600 : 5200 + Math.random() * 5200);
-    };
-
-    const targetRef = target;
-    chooseWaypoint();
-
-    const walk = () => {
-      const easing = runModeRef.current ? 0.023 : 0.011;
-      current.x += (targetRef.x - current.x) * easing;
-      current.y += (targetRef.y - current.y) * easing;
-      const distance = Math.hypot(targetRef.x - current.x, targetRef.y - current.y);
-      if (Math.abs(targetRef.x - current.x) > 3) {
-        directionRef.current = targetRef.x > current.x ? 1 : -1;
-      }
-      robot.style.setProperty('--robo-x', `${current.x.toFixed(2)}px`);
-      robot.style.setProperty('--robo-y', `${current.y.toFixed(2)}px`);
-      robot.style.setProperty('--robo-walk', `${Math.min(1, distance / 90).toFixed(2)}`);
-      robot.style.setProperty('--robo-direction', `${directionRef.current}`);
-      walkIntensityRef.current = Math.min(1, distance / 90);
-      if (distance < 10) chooseWaypoint();
-      motionFrame = window.requestAnimationFrame(walk);
-    };
-
-    const resize = () => {
-      const next = clampPosition(current.x, current.y);
-      current.x = next.x;
-      current.y = next.y;
-      targetRef.x = next.x;
-      targetRef.y = next.y;
-    };
-
-    const emote = () => {
-      chooseWaypoint(true);
-      setRunMode(true);
-      window.clearTimeout(sprintTimer);
-      sprintTimer = window.setTimeout(() => setRunMode(false), 1500);
-    };
-    robot.addEventListener('click', emote);
-    window.addEventListener('resize', resize);
-    motionFrame = window.requestAnimationFrame(walk);
-
-    return () => {
-      window.cancelAnimationFrame(motionFrame);
-      window.clearTimeout(waypointTimer);
-      window.clearTimeout(sprintTimer);
-      robot.removeEventListener('click', emote);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return undefined;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-    camera.position.set(0, 0.2, 7.2);
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(220, 300, false);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-    const root = new THREE.Group();
-    root.position.y = -0.05;
-    scene.add(root);
-
-    const white = new THREE.MeshPhysicalMaterial({ color: '#f8fbff', roughness: 0.24, metalness: 0.04, clearcoat: 0.8, clearcoatRoughness: 0.22 });
-    const whiteSoft = new THREE.MeshPhysicalMaterial({ color: '#e8f0f6', roughness: 0.32, metalness: 0.1, clearcoat: 0.5 });
-    const orange = new THREE.MeshPhysicalMaterial({ color: '#f2b84b', roughness: 0.28, metalness: 0.22, clearcoat: 0.7 });
-    const dark = new THREE.MeshPhysicalMaterial({ color: '#061826', roughness: 0.16, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.08 });
-    const joint = new THREE.MeshPhysicalMaterial({ color: '#26313a', roughness: 0.22, metalness: 0.65, clearcoat: 0.35 });
-    const cyan = new THREE.MeshBasicMaterial({ color: '#55f3ff' });
-    const cyanGlow = new THREE.MeshBasicMaterial({ color: '#7af8ff', transparent: true, opacity: 0.42, blending: THREE.AdditiveBlending, depthWrite: false });
-    const eyeRing = new THREE.MeshBasicMaterial({ color: '#1ee8ff', transparent: true, opacity: 0.86 });
-
-    const addMesh = (parent, geometry, material, position, scale = [1, 1, 1], rotation = [0, 0, 0]) => {
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(...position);
-      mesh.scale.set(...scale);
-      mesh.rotation.set(...rotation);
-      parent.add(mesh);
-      return mesh;
-    };
-
-    const roundedRect = (width, height, radius) => {
-      const x = -width / 2;
-      const y = -height / 2;
-      const shape = new THREE.Shape();
-      shape.moveTo(x + radius, y);
-      shape.lineTo(x + width - radius, y);
-      shape.quadraticCurveTo(x + width, y, x + width, y + radius);
-      shape.lineTo(x + width, y + height - radius);
-      shape.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      shape.lineTo(x + radius, y + height);
-      shape.quadraticCurveTo(x, y + height, x, y + height - radius);
-      shape.lineTo(x, y + radius);
-      shape.quadraticCurveTo(x, y, x + radius, y);
-      return new THREE.ShapeGeometry(shape, 20);
-    };
-
-    const head = new THREE.Group();
-    head.position.y = 1.55;
-    root.add(head);
-    addMesh(head, new THREE.SphereGeometry(1, 48, 32), white, [0, 0, 0], [1.42, 0.86, 0.78]);
-    addMesh(head, new THREE.SphereGeometry(0.22, 24, 16), whiteSoft, [-1.22, -0.02, 0.03], [0.58, 1.2, 0.72]);
-    addMesh(head, new THREE.SphereGeometry(0.22, 24, 16), whiteSoft, [1.22, -0.02, 0.03], [0.58, 1.2, 0.72]);
-    addMesh(head, new THREE.SphereGeometry(0.14, 24, 16), orange, [-1.34, -0.02, 0.04], [0.55, 1, 0.45]);
-    addMesh(head, new THREE.SphereGeometry(0.14, 24, 16), orange, [1.34, -0.02, 0.04], [0.55, 1, 0.45]);
-    addMesh(head, roundedRect(1.64, 0.56, 0.18), dark, [0, -0.04, 0.78], [1, 1, 1]);
-
-    addMesh(head, new THREE.TorusGeometry(0.16, 0.018, 12, 40), eyeRing, [-0.48, -0.03, 0.825], [1, 1, 1]);
-    addMesh(head, new THREE.TorusGeometry(0.16, 0.018, 12, 40), eyeRing, [0.48, -0.03, 0.825], [1, 1, 1]);
-    const leftEye = addMesh(head, new THREE.CircleGeometry(0.105, 32), cyan, [-0.48, -0.03, 0.835], [1, 1, 1]);
-    const rightEye = addMesh(head, new THREE.CircleGeometry(0.105, 32), cyan, [0.48, -0.03, 0.835], [1, 1, 1]);
-    const leftEyeGlow = addMesh(head, new THREE.CircleGeometry(0.24, 32), cyanGlow, [-0.48, -0.03, 0.83], [1, 1, 1]);
-    const rightEyeGlow = addMesh(head, new THREE.CircleGeometry(0.24, 32), cyanGlow, [0.48, -0.03, 0.83], [1, 1, 1]);
-    addMesh(head, new THREE.SphereGeometry(0.04, 16, 8), orange, [0, 0.56, 0.69], [1, 1, 0.5]);
-    addMesh(head, new THREE.BoxGeometry(0.46, 0.08, 0.05, 4, 1, 1), dark, [0, 0.42, 0.71], [1, 1, 1]);
-
-    [-0.82, 0.82].forEach((x) => {
-      const antenna = new THREE.Group();
-      antenna.position.set(x, 0.72, 0.02);
-      antenna.rotation.z = x < 0 ? 0.2 : -0.2;
-      head.add(antenna);
-      addMesh(antenna, new THREE.CylinderGeometry(0.025, 0.035, 0.78, 16), joint, [0, 0.36, 0], [1, 1, 1]);
-      addMesh(antenna, new THREE.SphereGeometry(0.13, 24, 16), white, [0, 0.79, 0], [1, 1, 1]);
-      addMesh(antenna, new THREE.SphereGeometry(0.075, 20, 12), cyan, [0, 0.79, 0.04], [1, 1, 1]);
-    });
-
-    const body = new THREE.Group();
-    body.position.y = 0.24;
-    root.add(body);
-    addMesh(body, new THREE.SphereGeometry(0.62, 40, 24), white, [0, 0, 0], [0.86, 1, 0.62]);
-    addMesh(body, new THREE.BoxGeometry(0.34, 0.34, 0.08, 4, 4, 1), dark, [0, 0.04, 0.49], [1, 1, 1]);
-    addMesh(body, new THREE.SphereGeometry(0.16, 32, 16), cyan, [0, 0.04, 0.55], [1, 1, 0.18]);
-    addMesh(body, new THREE.SphereGeometry(0.28, 32, 16), cyanGlow, [0, 0.04, 0.54], [1, 1, 0.08]);
-    addMesh(body, new THREE.CylinderGeometry(0.3, 0.3, 0.18, 32), joint, [0, 0.72, 0], [1, 1, 1], [Math.PI / 2, 0, 0]);
-
-    const makeArm = (side) => {
-      const arm = new THREE.Group();
-      arm.position.set(side * 0.67, 0.34, 0);
-      body.add(arm);
-      addMesh(arm, new THREE.SphereGeometry(0.17, 24, 16), joint, [0, 0, 0]);
-      const upper = addMesh(arm, new THREE.CapsuleGeometry(0.09, 0.42, 8, 16), whiteSoft, [side * 0.24, -0.24, 0.03], [1, 1, 1], [0, 0, side * 0.55]);
-      const hand = addMesh(arm, new THREE.SphereGeometry(0.14, 24, 16), white, [side * 0.44, -0.5, 0.04], [1, 0.86, 0.72]);
-      for (let i = -1; i <= 1; i += 1) {
-        addMesh(hand, new THREE.CapsuleGeometry(0.025, 0.16, 4, 8), joint, [side * 0.07, -0.08, i * 0.055], [1, 1, 1], [0.6, 0, side * 0.2]);
-      }
-      return { arm, upper, hand };
-    };
-
-    const leftArm = makeArm(-1);
-    const rightArm = makeArm(1);
-    rightArm.arm.rotation.z = -0.7;
-    rightArm.arm.position.y = 0.42;
-
-    const makeLeg = (side) => {
-      const leg = new THREE.Group();
-      leg.position.set(side * 0.32, -0.56, 0);
-      body.add(leg);
-      addMesh(leg, new THREE.SphereGeometry(0.16, 24, 16), joint, [0, 0, 0]);
-      const shin = addMesh(leg, new THREE.CapsuleGeometry(0.12, 0.42, 8, 16), whiteSoft, [side * 0.08, -0.33, 0], [1, 1, 1], [0, 0, side * 0.15]);
-      const foot = addMesh(leg, new THREE.SphereGeometry(0.2, 24, 16), white, [side * 0.13, -0.65, 0.12], [1.28, 0.58, 0.88]);
-      const sole = addMesh(leg, new THREE.BoxGeometry(0.3, 0.08, 0.15, 4, 1, 1), orange, [side * 0.13, -0.68, 0.22], [1, 1, 1]);
-      return { leg, shin, foot, sole, baseX: side * 0.32 };
-    };
-    const leftLeg = makeLeg(-1);
-    const rightLeg = makeLeg(1);
-
-    const floorMaterial = new THREE.MeshBasicMaterial({ color: '#48d8ff', transparent: true, opacity: 0.42 });
-    const floorGlow = addMesh(root, new THREE.TorusGeometry(1.15, 0.018, 10, 96), floorMaterial, [0, -1.28, -0.15], [1, 0.36, 1], [Math.PI / 2, 0, 0]);
-
-    scene.add(new THREE.AmbientLight('#ffffff', 1.5));
-    const key = new THREE.DirectionalLight('#ffffff', 4.5);
-    key.position.set(-2.5, 3, 5);
-    scene.add(key);
-    const rim = new THREE.PointLight('#55f3ff', 10, 8);
-    rim.position.set(1.9, 1.2, 2.5);
-    scene.add(rim);
-    const warm = new THREE.PointLight('#f2b84b', 8, 8);
-    warm.position.set(-1.5, -1.4, 2.6);
-    scene.add(warm);
-
-    let frame = 0;
-    const animate = (time) => {
-      const tick = time * 0.001;
-      const blink = Math.sin(tick * 2.8) > 0.985 ? 0.08 : 1;
-      const speed = runModeRef.current ? 1.25 : 0.72;
-      const stride = Math.max(0.16, walkIntensityRef.current);
-      const step = Math.sin(tick * 3.15 * speed);
-      const counterStep = Math.sin(tick * 3.15 * speed + Math.PI);
-      const leftLift = Math.max(0, step) * stride;
-      const rightLift = Math.max(0, counterStep) * stride;
-      root.rotation.y += ((directionRef.current * 0.18) - root.rotation.y) * 0.05;
-      root.rotation.x += ((Math.sin(tick * 0.45) * 0.015) + (stride * 0.035) - root.rotation.x) * 0.08;
-      root.rotation.z = Math.sin(tick * 3.15 * speed) * 0.018 * stride;
-      head.rotation.y = Math.sin(tick * 0.8) * 0.06 + directionRef.current * 0.1;
-      head.rotation.x = Math.sin(tick * 0.62) * 0.018;
-      body.rotation.z = Math.sin(tick * 3.15 * speed) * 0.045 * stride;
-      body.rotation.x = 0.05 * stride;
-      root.position.y = -0.05 + Math.abs(Math.sin(tick * 3.15 * speed)) * 0.032 * stride;
-
-      rightArm.arm.rotation.z = -0.62 + step * 0.32 * stride;
-      rightArm.arm.rotation.x = -0.12 + counterStep * 0.22 * stride;
-      rightArm.hand.position.y = -0.5 - Math.abs(step) * 0.05 * stride;
-      leftArm.arm.rotation.z = 0.62 + counterStep * 0.32 * stride;
-      leftArm.arm.rotation.x = -0.12 + step * 0.22 * stride;
-      leftArm.hand.position.y = -0.5 - Math.abs(counterStep) * 0.05 * stride;
-
-      leftLeg.leg.rotation.z = step * 0.34 * stride;
-      leftLeg.leg.rotation.x = -step * 0.22 * stride;
-      leftLeg.leg.position.x = leftLeg.baseX + step * 0.035 * stride;
-      leftLeg.leg.position.y = -0.56 + leftLift * 0.14;
-      leftLeg.shin.rotation.z = -step * 0.12 * stride;
-      leftLeg.foot.rotation.z = -step * 0.18 * stride;
-      leftLeg.foot.rotation.x = leftLift * 0.38;
-      leftLeg.sole.rotation.x = leftLift * 0.45;
-
-      rightLeg.leg.rotation.z = counterStep * 0.34 * stride;
-      rightLeg.leg.rotation.x = -counterStep * 0.22 * stride;
-      rightLeg.leg.position.x = rightLeg.baseX + counterStep * 0.035 * stride;
-      rightLeg.leg.position.y = -0.56 + rightLift * 0.14;
-      rightLeg.shin.rotation.z = -counterStep * 0.12 * stride;
-      rightLeg.foot.rotation.z = -counterStep * 0.18 * stride;
-      rightLeg.foot.rotation.x = rightLift * 0.38;
-      rightLeg.sole.rotation.x = rightLift * 0.45;
-      [leftEye, rightEye, leftEyeGlow, rightEyeGlow].forEach((eye) => {
-        eye.scale.y = blink;
-      });
-      floorGlow.rotation.z = tick * 0.7 * speed;
-      renderer.render(scene, camera);
-      frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      renderer.dispose();
-      scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.geometry.dispose();
-        }
-      });
-      [white, whiteSoft, orange, dark, joint, cyan, cyanGlow, eyeRing, floorMaterial].forEach((material) => material.dispose());
-    };
-  }, []);
-
-  return (
-    <button className={`robo-companion ${running ? 'is-running' : ''}`} type="button" aria-label="Robot companion">
-      <div className="robo-shadow" />
-      <div className="robo-stage">
-        <canvas ref={canvasRef} className="robo-canvas" />
-      </div>
-    </button>
   );
 }
 
@@ -680,8 +597,32 @@ function Navigation() {
   useEffect(() => {
     setOpen(false);
     setServicesOpen(false);
+    // A clicked menu link keeps focus after navigation; release it so the submenu can close.
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && active.closest('.site-header')) active.blur();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!servicesOpen) return undefined;
+    const closeOnOutsideClick = (event) => {
+      if (!(event.target instanceof Element) || !event.target.closest('.nav-dropdown')) setServicesOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    return () => document.removeEventListener('pointerdown', closeOnOutsideClick);
+  }, [servicesOpen]);
+
+  useEffect(() => {
+    // Escape closes the submenu whether it was opened by the toggle or by keyboard focus.
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return;
+      setServicesOpen(false);
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active.closest('.nav-dropdown')) active.blur();
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, []);
 
   useEffect(() => {
     if (!open || !window.matchMedia('(max-width: 680px)').matches) return undefined;
@@ -713,6 +654,7 @@ function Navigation() {
       <button className="menu-button" type="button" onClick={() => setOpen((value) => !value)}>{open ? 'Close' : 'Menu'}</button>
       <nav className={`nav-links ${open ? 'is-open' : ''}`} aria-label="Primary navigation">
         <NavLink to="/">Home</NavLink>
+        <NavLink to="/products">Products</NavLink>
         <NavLink to="/aboutus">About</NavLink>
         <div className="nav-dropdown" onMouseEnter={() => { if (window.matchMedia('(min-width: 1241px)').matches) setServicesOpen(true); }} onMouseLeave={() => { if (window.matchMedia('(min-width: 1241px)').matches) setServicesOpen(false); }}>
           <div className="services-nav-row">
@@ -729,7 +671,6 @@ function Navigation() {
           </div>
         </div>
         <NavLink to="/applications">Applications</NavLink>
-        <NavLink to="/portfolio">Portfolio</NavLink>
         <NavLink to="/gallery">Our Gallery</NavLink>
         <NavLink to="/careers">Careers</NavLink>
         <NavLink to="/contactus">Contact</NavLink>
@@ -739,14 +680,15 @@ function Navigation() {
   );
 }
 
-function Visual3D({ type = 'website', image }) {
+function Visual3D({ type = 'website', image, priority = false }) {
   const renderImage = image ?? renderImages[type] ?? renderImages.website;
   return (
     <div className={`visual3d visual-${type}`}>
       <div className="shape-orbit one" />
       <div className="shape-orbit two" />
       <div className="visual-core">
-        <img src={renderImage} alt="" loading="lazy" />
+        {/* The hero image is usually the largest element on screen, so it loads first instead of lazily. */}
+        <img src={renderImage} alt="" loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
       </div>
       <div className="float-chip chip-a">{type}</div>
       <div className="float-chip chip-b">3D</div>
@@ -754,7 +696,7 @@ function Visual3D({ type = 'website', image }) {
   );
 }
 
-function Hero({ eyebrow, title, text, action = 'Explore Services', actionTo = '/services', secondaryAction = 'View Projects', secondaryTo = '/portfolio', visual = 'website', image, featured = false, pageClass = '' }) {
+function Hero({ eyebrow, title, text, action = 'Explore Services', actionTo = '/services', secondaryAction = 'View Products', secondaryTo = '/products', visual = 'website', image, featured = false, pageClass = '' }) {
   // If the action is for contact, append #contact-form to scroll to form
   let actionToFinal = actionTo;
   if (typeof actionTo === 'string' && actionTo.match(/contact(us)?$/i)) {
@@ -776,7 +718,7 @@ function Hero({ eyebrow, title, text, action = 'Explore Services', actionTo = '/
           </div>
         )}
       </div>
-      <Visual3D type={visual} image={image} />
+      <Visual3D type={visual} image={image} priority />
     </section>
   );
 }
@@ -791,9 +733,10 @@ function TeamSection() {
     { name: 'Sravani', role: 'Full Stack Developer' },
     { name: 'Srinivas', role: 'Digital Marketing' },
     { name: 'Sowmya', role: 'Backend Developer' },
-    { name: 'Chaitanya', role: 'Full Stack Developer' },
+    { name: 'Chaitanya', role: 'AI/ML Engineer' },
     { name: 'Pavan', role: 'Designer' },
-    { name: 'Sivaramakrishna', role: 'Full Stack Developer' },
+    { name: 'Shivaramakrishna', role: 'Full Stack Developer' },
+    { name: 'Rohith', role: 'Mobile App Developer' },
   ];
 
   return (
@@ -839,8 +782,13 @@ function TeamOrbitGraphic() {
 function Home() {
   return (
     <div className="home-page">
-      <HeadMeta title="Rigweda Technologies | IT Services, Applications, Web, AI & Cloud" description="Rigweda Technologies builds SEO-friendly websites, applications, mobile apps, AI automation, cloud systems, data analytics, cybersecurity, and digital marketing engines." keywords="Rigweda Technologies, IT services, web development, applications, mobile app development, AI automation" />
-      <Hero eyebrow="Innovate • Integrate • Inspire" title="Your digital systems, elevated in 3D." text="Rigweda Technologies designs websites, applications, mobile apps, AI tools, cloud platforms, and growth systems with a polished glass-cloud digital presence." visual="website" image="/renders/herosecimg.png" featured />
+      <HeadMeta title="Rigweda Technologies | HRMS, AI Voice & Business Software" description="Rigweda Technologies builds its own software: Rigweda Monitor, TaskPulse, GradeSight for schools, Rigweda Voice AI calling, Find Face recognition, WorkHub, ITR Filing, and RydNGo, plus web, app, and AI services." keywords="Rigweda Technologies, Rigweda products, HRMS software, employee monitoring, AI voice agent, face recognition, task management, ITR filing, car rental software" />
+      <Hero eyebrow="Rigweda Products" title="Software that runs your business." text="Rigweda Technologies builds and supports its own products for HR and workforce monitoring, AI task reminders, school learning, AI voice calling, face recognition, project management, tax filing, and car rentals." visual="software" image="/renders/herosecimg.webp" action="Explore Products" actionTo="/products" secondaryAction="Request a demo" secondaryTo="/contactus#contact-form" />
+      <section className="trust-strip"><span>Rigweda Monitor</span><span>TaskPulse</span><span>GradeSight</span><span>Rigweda Voice</span><span>Find Face</span><span>WorkHub</span><span>ITR Filing</span><span>RydNGo</span></section>
+      <ProductStats />
+      <ProductSpotlights />
+      <ProductRoadmap />
+      <DemoJourney />
       <section className="home-about" aria-labelledby="home-about-title">
         <div className="home-about-copy">
           <p className="home-about-eyebrow">ABOUT RIGWEDA</p>
@@ -852,32 +800,13 @@ function Home() {
         </div>
         <div className="home-about-visual" aria-label="Rigweda digital workspace">
           <div className="home-about-glow" />
-          <img src="/renders/home-aboutsec.png" alt="Digital workspace with technology solutions and business growth" />
+          <img src="/renders/home-aboutsec.webp" alt="Digital workspace with technology solutions and business growth" />
           <div className="home-about-card home-about-card-one"><span className="about-card-icon">✦</span>Innovative Solutions</div>
           <div className="home-about-card home-about-card-two"><span className="about-card-icon">↗</span>Scalable Technology</div>
           <div className="home-about-card home-about-card-three"><span className="about-card-icon">◎</span>Business-Focused Approach</div>
         </div>
       </section>
-      <section className="trust-strip"><span>SEO-ready websites</span><span>Applications</span><span>Mobile apps</span><span>AI automation</span><span>Cloud & security</span><span>Portfolio-proven delivery</span></section>
-      <section className="services-showcase services-home">
-        <section className="services-intro">
-          <div className="services-intro-copy">
-            <p className="services-kicker">OUR SERVICES <span /></p>
-            <h1>Digital solutions<br />for business <span>growth.</span></h1>
-            <p className="services-intro-lede">Design, development, and marketing to move your business forward.</p>
-            <Link className="services-cta" to="#home-services-catalog">Explore All Services <span aria-hidden="true">→</span></Link>
-          </div>
-          <div className="services-intro-art" aria-label="Digital workspace illustration">
-            <img src="/renders/our-services.png" alt="Digital services workspace illustration" loading="lazy" />
-          </div>
-        </section>
-        <ServiceShowcaseCards id="home-services-catalog" />
-        <div className="services-more-link"><Link className="services-cta" to="/services">Explore All Services <span aria-hidden="true">→</span></Link></div>
-        <ServicesPromises />
-      </section>
-      <ProjectsSection limit={4} />
       <TeamSection />
-      <ApplicationsSection compact />
     </div>
   );
 }
@@ -905,7 +834,7 @@ function ServicesPage() {
             <Link className="services-cta" to="#all-services">Explore All Services <span aria-hidden="true">→</span></Link>
           </div>
           <div className="services-intro-art" aria-label="Digital workspace illustration">
-            {/* <img src="/renders/herosecimg.png" alt="Laptop and connected digital workspace" /> */}
+            {/* <img src="/renders/herosecimg.webp" alt="Laptop and connected digital workspace" /> */}
           </div>
         </section>
         <ServiceShowcaseCards id="all-services" />
@@ -958,7 +887,20 @@ function ServicesPromises() {
 
 function ServicePage() {
   const { slug } = useParams();
-  const service = getService(slug) ?? services[0];
+  return getService(slug) ? <ServiceDetail slug={slug} /> : <NotFound />;
+}
+
+function NotFound() {
+  return (
+    <>
+      <HeadMeta title="Page not found | Rigweda Technologies" description="The page you were looking for could not be found. Explore Rigweda Technologies products and services instead." path="/404" noindex />
+      <Hero eyebrow="Error 404" title="We could not find that page." text="It may have moved or no longer exists. Take a look at our products or services instead." visual="software" image="/renders/application.webp" action="Explore Products" actionTo="/products" secondaryAction="Our Services" secondaryTo="/services" />
+    </>
+  );
+}
+
+function ServiceDetail({ slug }) {
+  const service = getService(slug);
   const related = services.filter((item) => item.group === service.group && item.slug !== service.slug).slice(0, 3);
   const isWebDesign = slug === 'webdesign';
   const designTypes = [
@@ -976,7 +918,7 @@ function ServicePage() {
   return (
     <>
       <HeadMeta title={`${service.title} | Rigweda Technologies`} description={`${service.summary} Rigweda Technologies delivers professional ${service.title.toLowerCase()} for businesses that need reliable digital outcomes.`} keywords={service.keywords} path={`/${service.slug}`} />
-      <Hero eyebrow={service.group} title={service.title} text={service.summary} visual={service.visual} action="Request Consultation" actionTo="/contactus" image={service.slug === 'ai-services' ? '/renders/ai-development.png' : undefined} />
+      <Hero eyebrow={service.group} title={service.title} text={service.summary} visual={service.visual} action="Request Consultation" actionTo="/contactus" image={service.slug === 'ai-services' ? '/renders/ai-development.webp' : undefined} />
       <section className="section split">
         <div className="content-block"><p className="section-kicker">Professional Delivery</p><h2>Built with clarity, performance, and long-term value.</h2><p>{service.summary} We shape each engagement around the business goal, the user journey, the technology stack, and the measurable result expected after launch.</p><p>Every Rigweda service page is designed to be SEO-friendly and customer-friendly: clear title, useful content, structured sections, internal links, and visible proof through projects and applications.</p></div>
         <ul className="rich-list">{service.bullets.map((bullet) => <li key={bullet}><strong>{bullet}</strong><p>Planned with practical implementation steps, clean communication, and maintainable delivery.</p></li>)}</ul>
@@ -1094,7 +1036,7 @@ function WebApplicationDevelopmentPage() {
   return (
     <main className="webdev-page web-development-page">
       <HeadMeta title="Web Application Development | Rigweda Technologies" description="Custom web application development for customer portals, dashboards, workflow tools, and service platforms. Plan, build, and grow a browser-based product around your business." keywords="web application development, custom web applications, customer portals, business dashboards, workflow applications" path="/web-development" />
-      <Hero eyebrow="Web Application Development" title={<>Web applications built <span>around your business.</span></>} text="Bring customer services, team workflows, and business information together in a browser-based product designed for the way your people work." visual="website" action="Discuss Your Application" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#webdev-capabilities" image="/renders/webapplication.png" pageClass="hero-webdev" />
+      <Hero eyebrow="Web Application Development" title={<>Web applications built <span>around your business.</span></>} text="Bring customer services, team workflows, and business information together in a browser-based product designed for the way your people work." visual="website" action="Discuss Your Application" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#webdev-capabilities" image="/renders/webapplication.webp" pageClass="hero-webdev" />
 
       <section className="webdev-intro section" aria-labelledby="webdev-intro-title"><div><p className="section-kicker">Purpose-built digital tools</p><h2 id="webdev-intro-title">Make complex workflows <span>easier to manage.</span></h2></div><p>We help turn business requirements into useful web software: clear interfaces for people, organized information for teams, and workflows that support daily operations.</p></section>
 
@@ -1151,7 +1093,7 @@ function WordPressDevelopmentPage() {
   return (
     <main className="webdev-page wordpress-page">
       <HeadMeta title="WordPress Development Services | Rigweda Technologies" description="Custom WordPress website design and development for business sites, publishing, landing pages, and online stores. Get a manageable, responsive website built around your content and goals." keywords="WordPress development, WordPress website design, custom WordPress websites, WordPress CMS, WordPress maintenance" path="/wordpress-development" />
-      <Hero eyebrow="WordPress Development" title={<>A WordPress website <span>built around your needs.</span></>} text="Create a polished, manageable website for your business, content, or online store—with page structure and editing workflows suited to your team." visual="cms" action="Discuss Your Website" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#wp-capabilities" image="/renders/wordpressdevelopment.png" pageClass="hero-webdev hero-wordpress" />
+      <Hero eyebrow="WordPress Development" title={<>A WordPress website <span>built around your needs.</span></>} text="Create a polished, manageable website for your business, content, or online store—with page structure and editing workflows suited to your team." visual="cms" action="Discuss Your Website" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#wp-capabilities" image="/renders/wordpressdevelopment.webp" pageClass="hero-webdev hero-wordpress" />
 
       <section className="webdev-intro section" aria-labelledby="wp-intro-title"><div><p className="section-kicker">A flexible content platform</p><h2 id="wp-intro-title">A site your visitors can use <span>and your team can manage.</span></h2></div><p>We organize your pages, content, and site functionality so customers can find useful information and your team can keep the website current.</p></section>
 
@@ -1209,7 +1151,7 @@ function EcommerceDevelopmentPage() {
   return (
     <main className="webdev-page ecommerce-page">
       <HeadMeta title="Ecommerce Development Services | Rigweda Technologies" description="Ecommerce website design and development for online stores, product catalogs, checkout, payment and shipping integrations, and order workflows." keywords="ecommerce development, online store development, ecommerce website design, product catalog, checkout integration" path="/ecommerce-development" />
-      <Hero eyebrow="Ecommerce Development" title={<>Create a better way <span>to shop online.</span></>} text="We build ecommerce experiences that help customers discover products, complete purchases, and stay connected—while giving your team practical tools to manage the store." visual="commerce" action="Plan Your Online Store" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#ecommerce-capabilities" image="/renders/ecommerce%20hero.png" pageClass="hero-webdev hero-ecommerce" />
+      <Hero eyebrow="Ecommerce Development" title={<>Create a better way <span>to shop online.</span></>} text="We build ecommerce experiences that help customers discover products, complete purchases, and stay connected—while giving your team practical tools to manage the store." visual="commerce" action="Plan Your Online Store" actionTo="/contactus" secondaryAction="Explore Capabilities" secondaryTo="#ecommerce-capabilities" image="/renders/ecommerce%20hero.webp" pageClass="hero-webdev hero-ecommerce" />
 
       <section className="webdev-intro section" aria-labelledby="ecommerce-intro-title"><div><p className="section-kicker">Commerce shaped around your business</p><h2 id="ecommerce-intro-title">Connect the shopping journey <span>to the work behind it.</span></h2></div><p>Your storefront is one part of a larger operation. We plan the customer experience alongside product data, checkout, orders, and the services your business uses.</p></section>
 
@@ -1258,7 +1200,7 @@ function DigitalMarketingPage() {
   return (
     <main className="webdev-page digital-marketing-page">
       <HeadMeta title="Digital Marketing Services | Rigweda Technologies" description="Digital marketing services for SEO, paid campaigns, social media, landing pages, and measurement. Plan connected campaigns around your audience and business goals." keywords="digital marketing services, SEO, PPC campaigns, social media marketing, campaign analytics" path="/digital-marketing" />
-      <Hero eyebrow="Digital Marketing" title={<>Reach the right people. <span>Make every campaign count.</span></>} text="Connect search, paid campaigns, social media, and landing pages in a focused marketing plan shaped around your audience and business goals." visual="marketing" action="Plan Your Marketing" actionTo="/contactus" secondaryAction="Explore Services" secondaryTo="#digital-channels" image="/renders/digitalmarketing.png" pageClass="hero-webdev hero-digital-marketing" />
+      <Hero eyebrow="Digital Marketing" title={<>Reach the right people. <span>Make every campaign count.</span></>} text="Connect search, paid campaigns, social media, and landing pages in a focused marketing plan shaped around your audience and business goals." visual="marketing" action="Plan Your Marketing" actionTo="/contactus" secondaryAction="Explore Services" secondaryTo="#digital-channels" image="/renders/digitalmarketing.webp" pageClass="hero-webdev hero-digital-marketing" />
 
       <section className="webdev-intro section" aria-labelledby="marketing-intro-title"><div><p className="section-kicker">Marketing with a clear purpose</p><h2 id="marketing-intro-title">Bring your channels <span>together around your goals.</span></h2></div><p>Useful digital marketing starts with a clear audience, a relevant offer, and a way to understand what happens next. We connect channel activity to the customer journey and review what the data can tell us.</p></section>
 
@@ -1312,7 +1254,7 @@ function SeoServicesPage() {
   return (
     <main className="webdev-page seo-page">
       <HeadMeta title="SEO Services | Rigweda Technologies" description="Technical, on-page, content, and local SEO services to improve website discoverability. Rigweda helps businesses prioritize search improvements and measure meaningful progress." keywords="SEO services, search engine optimization, technical SEO, on-page SEO, local SEO" path="/seo-services" />
-      <Hero eyebrow="Search Engine Optimization" title={<>Help the right people <span>find your business.</span></>} text="Build a stronger search foundation with technical improvements, useful content, and local visibility—planned around your audience and business priorities." visual="seo" action="Discuss Your SEO Plan" actionTo="/contactus" secondaryAction="Explore SEO Services" secondaryTo="#seo-services" image="/renders/seo-hero.png" pageClass="hero-webdev hero-seo" />
+      <Hero eyebrow="Search Engine Optimization" title={<>Help the right people <span>find your business.</span></>} text="Build a stronger search foundation with technical improvements, useful content, and local visibility—planned around your audience and business priorities." visual="seo" action="Discuss Your SEO Plan" actionTo="/contactus" secondaryAction="Explore SEO Services" secondaryTo="#seo-services" image="/renders/seo-hero.webp" pageClass="hero-webdev hero-seo" />
 
       <section className="webdev-intro section" aria-labelledby="seo-intro-title"><div><p className="section-kicker">Search visibility with a purpose</p><h2 id="seo-intro-title">Help people discover <span>useful pages on your site.</span></h2></div><p>SEO brings together website structure, page content, and technical foundations. We identify practical improvements that make your pages easier to discover and more useful to visitors.</p></section>
 
@@ -1366,7 +1308,7 @@ function SocialMediaMarketingPage() {
   return (
     <main className="webdev-page social-page">
       <HeadMeta title="Social Media Marketing Services | Rigweda Technologies" description="Social media strategy, content planning, creative direction, publishing, and community management tailored to your brand and audience." keywords="social media marketing services, social media management, content planning, community management, SMM" path="/smm-services" />
-      <Hero eyebrow="Social Media Marketing" title={<>Give your brand a <span>meaningful voice online.</span></>} text="Build a consistent social presence with a clear brand voice, thoughtful content, and genuine audience engagement—planned around your team and goals." visual="smm" action="Plan Your Social Strategy" actionTo="/contactus" secondaryAction="Explore What We Do" secondaryTo="#social-content" image="/renders/smm-3d.png" pageClass="hero-webdev hero-social" />
+      <Hero eyebrow="Social Media Marketing" title={<>Give your brand a <span>meaningful voice online.</span></>} text="Build a consistent social presence with a clear brand voice, thoughtful content, and genuine audience engagement—planned around your team and goals." visual="smm" action="Plan Your Social Strategy" actionTo="/contactus" secondaryAction="Explore What We Do" secondaryTo="#social-content" image="/renders/smm-3d.webp" pageClass="hero-webdev hero-social" />
 
       <section className="webdev-intro section" aria-labelledby="social-intro-title"><div><p className="section-kicker">More than a posting schedule</p><h2 id="social-intro-title">Create a presence people <span>recognize and return to.</span></h2></div><p>Strong social media management brings together a recognizable voice, useful content, and consistent community care. We help shape a practical system your team can sustain.</p></section>
 
@@ -1421,7 +1363,7 @@ function PpcServicesPage() {
   return (
     <main className="webdev-page ppc-page">
       <HeadMeta title="PPC & Paid Advertising Services | Rigweda Technologies" description="PPC campaign planning and management for paid search and social advertising, including account structure, targeting, landing pages, conversion tracking, and reporting." keywords="PPC services, paid search management, paid social campaigns, conversion tracking, advertising campaign management" path="/ppc-services" />
-      <Hero eyebrow="PPC & Paid Campaigns" title={<>Spend with a plan. <span>Learn from every campaign.</span></>} text="Reach relevant audiences through paid search and social campaigns, with clear budgets, focused landing pages, and measurement tied to your goals." visual="ads" action="Plan a Paid Campaign" actionTo="/contactus" secondaryAction="Explore Campaign Types" secondaryTo="#ppc-campaign-types" image="/renders/ppcimg.png" pageClass="hero-webdev hero-ppc" />
+      <Hero eyebrow="PPC & Paid Campaigns" title={<>Spend with a plan. <span>Learn from every campaign.</span></>} text="Reach relevant audiences through paid search and social campaigns, with clear budgets, focused landing pages, and measurement tied to your goals." visual="ads" action="Plan a Paid Campaign" actionTo="/contactus" secondaryAction="Explore Campaign Types" secondaryTo="#ppc-campaign-types" image="/renders/ppcimg.webp" pageClass="hero-webdev hero-ppc" />
 
       <section className="webdev-intro section" aria-labelledby="ppc-intro-title"><div><p className="section-kicker">Paid media with clear boundaries</p><h2 id="ppc-intro-title">Connect campaign spend <span>to an intentional next step.</span></h2></div><p>Paid campaigns need a clear audience, relevant messaging, a useful destination, and dependable measurement. We plan these pieces together and review performance against agreed goals.</p></section>
 
@@ -1474,7 +1416,7 @@ function SoftwareDevelopmentPage() {
   return (
     <main className="software-dev-page">
       <HeadMeta title="Custom Software Development | Rigweda Technologies" description="Custom software development for business workflows, operations platforms, system integrations, and data-driven tools. Plan and build software around your team and processes." keywords="software development services, custom business software, workflow automation, software integration, operations platforms" path="/software-development" />
-      <Hero eyebrow="Custom Software Development" title={<>Software shaped for <span>the way your business works.</span></>} text="Design and build business software around your people, processes, and systems—with a practical plan for implementation, integration, and long-term ownership." visual="software" action="Discuss a Software Project" actionTo="/contactus" secondaryAction="See Our Approach" secondaryTo="#software-lifecycle" image="/renders/software-development-img.png" pageClass="hero-software" />
+      <Hero eyebrow="Custom Software Development" title={<>Software shaped for <span>the way your business works.</span></>} text="Design and build business software around your people, processes, and systems—with a practical plan for implementation, integration, and long-term ownership." visual="software" action="Discuss a Software Project" actionTo="/contactus" secondaryAction="See Our Approach" secondaryTo="#software-lifecycle" image="/renders/software-development-img.webp" pageClass="hero-software" />
 
       <section className="software-dev-intro section" aria-labelledby="software-intro-title"><div><p className="section-kicker">Engineering around your operation</p><h2 id="software-intro-title">Bring important work into <span>one coherent system.</span></h2></div><p>Custom software can connect processes, people, and information that span teams. We start by understanding how the work happens, then shape the right system around the requirements that matter.</p></section>
 
@@ -1529,7 +1471,7 @@ function PowerBiServicesPage() {
   return (
     <main className="powerbi-page">
       <HeadMeta title="Power BI Services | Rigweda Technologies" description="Power BI consulting and dashboard development for data modeling, KPI reporting, business dashboards, refresh planning, and report handoff." keywords="Power BI services, Power BI dashboards, data modeling, business intelligence reporting, KPI dashboards" path="/powerbi-services" />
-      <Hero eyebrow="Power BI & Business Intelligence" title={<>Turn business data into <span>clearer decisions.</span></>} text="Plan and build Power BI reports around the questions your teams need to answer, with thoughtful data modeling, consistent measures, and useful views." visual="analytics" action="Discuss Power BI" actionTo="/contactus" secondaryAction="Explore Dashboards" secondaryTo="#powerbi-dashboards" image="/renders/power-bi.png" pageClass="hero-powerbi" />
+      <Hero eyebrow="Power BI & Business Intelligence" title={<>Turn business data into <span>clearer decisions.</span></>} text="Plan and build Power BI reports around the questions your teams need to answer, with thoughtful data modeling, consistent measures, and useful views." visual="analytics" action="Discuss Power BI" actionTo="/contactus" secondaryAction="Explore Dashboards" secondaryTo="#powerbi-dashboards" image="/renders/power-bi.webp" pageClass="hero-powerbi" />
 
       <section className="powerbi-intro section" aria-labelledby="powerbi-intro-title"><div><p className="section-kicker">Business intelligence with context</p><h2 id="powerbi-intro-title">Make reporting easier <span>to understand and use.</span></h2></div><p>Useful dashboards start with shared definitions. We work with your team to understand the data, agree on the measures, and organize the report around real decisions.</p></section>
 
@@ -1586,7 +1528,7 @@ function AiDevelopmentServicesPage() {
   return (
     <main className="ai-service-page">
       <HeadMeta title="AI Development Services | Rigweda Technologies" description="AI assistants and workflow automation designed around your business processes, approved data, system integrations, and human review requirements." keywords="AI development services, AI assistants, business workflow automation, AI integrations, document processing" path="/ai-services" />
-      <Hero eyebrow="AI Development Services" title={<>Put AI to work on <span>the right problems.</span></>} text="Design practical AI assistants and workflow automations around your team, data, and systems—with clear boundaries and people in the loop where they matter." visual="ai" action="Discuss an AI Use Case" actionTo="/contactus" secondaryAction="Explore Use Cases" secondaryTo="#ai-use-cases" image="/renders/uiux-3d.png" pageClass="hero-ai-services" />
+      <Hero eyebrow="AI Development Services" title={<>Put AI to work on <span>the right problems.</span></>} text="Design practical AI assistants and workflow automations around your team, data, and systems—with clear boundaries and people in the loop where they matter." visual="ai" action="Discuss an AI Use Case" actionTo="/contactus" secondaryAction="Explore Use Cases" secondaryTo="#ai-use-cases" image="/renders/uiux-3d.webp" pageClass="hero-ai-services" />
 
       <section className="ai-service-intro section" aria-labelledby="ai-intro-title"><div><p className="section-kicker">Start with the work</p><h2 id="ai-intro-title">Find the task where <span>AI can make a useful difference.</span></h2></div><p>We begin with a specific process, not a technology demo. Together we identify repetitive or information-heavy tasks, check the available data, and decide where automation can help and where human judgment should remain.</p></section>
 
@@ -1673,12 +1615,12 @@ function About() {
 
   return (
     <div className="about-page">
-      <HeadMeta title="About Rigweda Technologies | Digital Solutions & Software Development" description="Meet Rigweda Technologies: a technology partner building custom software, web and mobile applications, cloud solutions, and business-focused digital products." keywords="about Rigweda Technologies, software development, web applications, mobile applications, cloud solutions" path="/aboutus" />
+      <HeadMeta title="About Rigweda Technologies | Software & Digital Solutions" description="Meet Rigweda Technologies: a technology partner building custom software, web and mobile applications, cloud solutions, and business-focused digital products." keywords="about Rigweda Technologies, software development, web applications, mobile applications, cloud solutions" path="/aboutus" />
       <section className="about-hero" aria-labelledby="about-title">
         <div className="about-hero-copy"><p className="about-eyebrow"><span /> TECHNOLOGY WITH PURPOSE</p><h1 id="about-title">Building Digital Solutions That <span>Drive Innovation</span></h1><p className="about-hero-lede">Rigweda Technologies helps businesses turn ideas into useful digital products through software, applications, cloud solutions, and thoughtful engineering.</p><div className="about-hero-actions"><Link className="primary-action" to="/services">Explore Our Services <span aria-hidden="true">→</span></Link><Link className="secondary-action" to="/contactus">Contact Us</Link></div><div className="about-hero-note"><span className="about-note-dot" /> From business challenge to dependable digital solution</div></div>
-        <div className="about-hero-visual"><div className="about-visual-orbit about-orbit-one"/><div className="about-visual-orbit about-orbit-two"/><div className="about-image-frame"><img src="/renders/aboutsec.png" alt="Rigweda Technologies digital solutions illustration"/></div><div className="about-visual-tag"><AboutIcon name="layers"/><span>Ideas into<br/><strong>digital products</strong></span></div></div>
+        <div className="about-hero-visual"><div className="about-visual-orbit about-orbit-one"/><div className="about-visual-orbit about-orbit-two"/><div className="about-image-frame"><img src="/renders/aboutsec.webp" alt="Rigweda Technologies digital solutions illustration"/></div><div className="about-visual-tag"><AboutIcon name="layers"/><span>Ideas into<br/><strong>digital products</strong></span></div></div>
       </section>
-      <section className="about-section about-who" aria-labelledby="about-who-title"><div className="about-who-visual"><img src="/renders/webapplication.png" alt="Web application interface representing digital product development" loading="lazy"/><span className="about-who-caption">Technology shaped around your business</span></div><div className="about-who-copy"><p className="about-eyebrow">WHO WE ARE</p><h2 id="about-who-title">A technology partner for what comes next.</h2><p>Rigweda Technologies works with businesses to plan and build digital solutions that make work clearer, services more accessible, and ideas easier to bring to life.</p><p>We bring software development, web and mobile applications, integrations, and cloud capabilities together around each project’s needs. Our approach pairs practical business understanding with thoughtful design and reliable engineering.</p><Link className="about-inline-link" to="/services">Explore our capabilities <span aria-hidden="true">→</span></Link></div></section>
+      <section className="about-section about-who" aria-labelledby="about-who-title"><div className="about-who-visual"><img src="/renders/webapplication.webp" alt="Web application interface representing digital product development" loading="lazy"/><span className="about-who-caption">Technology shaped around your business</span></div><div className="about-who-copy"><p className="about-eyebrow">WHO WE ARE</p><h2 id="about-who-title">A technology partner for what comes next.</h2><p>Rigweda Technologies works with businesses to plan and build digital solutions that make work clearer, services more accessible, and ideas easier to bring to life.</p><p>We bring software development, web and mobile applications, integrations, and cloud capabilities together around each project’s needs. Our approach pairs practical business understanding with thoughtful design and reliable engineering.</p><Link className="about-inline-link" to="/services">Explore our capabilities <span aria-hidden="true">→</span></Link></div></section>
       <section className="about-section about-purpose" aria-label="Our mission and vision"><article className="about-purpose-card"><div className="about-card-icon"><AboutIcon name="target"/></div><p className="about-eyebrow">OUR MISSION</p><h2>Make technology useful.</h2><p>We create accessible, dependable digital solutions that help businesses solve meaningful problems and serve people better.</p></article><article className="about-purpose-card about-vision-card"><div className="about-card-icon"><AboutIcon name="spark"/></div><p className="about-eyebrow">OUR VISION</p><h2>Build for lasting progress.</h2><p>We aim to be a trusted technology partner, helping organizations adapt and grow through considered digital innovation.</p></article></section>
       <section className="about-section" aria-labelledby="about-values-title"><div className="about-section-heading"><div><p className="about-eyebrow">WHAT GUIDES US</p><h2 id="about-values-title">Our core values</h2></div><p>The principles behind how we think, collaborate, and deliver.</p></div><div className="about-value-grid">{values.map(([icon, title, text]) => <article className="about-value-card" key={title}><AboutIcon name={icon}/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
       <section className="about-section about-why" aria-labelledby="about-why-title"><div className="about-section-heading"><div><p className="about-eyebrow">THE RIGWEDA APPROACH</p><h2 id="about-why-title">Why choose Rigweda?</h2></div><p>Clear communication and thoughtful delivery keep the work connected to what matters to your business.</p></div><div className="about-strength-grid">{strengths.map(([icon, title, text], index) => <article className="about-strength-card" key={title}><span className="about-index">0{index + 1}</span><AboutIcon name={icon}/><h3>{title}</h3><p>{text}</p></article>)}</div></section>
@@ -1686,6 +1628,257 @@ function About() {
       <section className="about-section about-process" aria-labelledby="about-process-title"><div className="about-section-heading"><div><p className="about-eyebrow">HOW WE WORK</p><h2 id="about-process-title">A clear path from idea to impact</h2></div><p>Each project follows a collaborative process, shaped to fit its goals and scope.</p></div><ol className="about-process-grid">{process.map(([icon, title, text], index) => <li className="about-process-step" key={title}><div className="about-step-top"><span className="about-step-number">0{index + 1}</span><AboutIcon name={icon}/></div><h3>{title}</h3><p>{text}</p></li>)}</ol></section>
       <section className="about-cta" aria-labelledby="about-cta-title"><div><p className="about-eyebrow">LET’S START A CONVERSATION</p><h2 id="about-cta-title">Let’s Build Something Great Together</h2><p>Let’s turn your ideas into meaningful digital solutions.</p></div><Link className="primary-action" to="/contactus">Contact Us <span aria-hidden="true">→</span></Link></section>
     </div>
+  );
+}
+
+const productStatusClass = (status) => `product-status status-${status.toLowerCase().replace(/\s+/g, '-')}`;
+
+function ProductAction() {
+  return <Link className="product-link" to="/contactus#contact-form">Request a demo <span aria-hidden="true">→</span></Link>;
+}
+
+function ProductPage() {
+  const { productSlug } = useParams();
+  const product = products.find((item) => item.slug === productSlug);
+  if (!product) return <NotFound />;
+  const others = products.filter((item) => item.slug !== product.slug);
+  return (
+    <>
+      <HeadMeta title={product.seoTitle} description={product.seoDescription} keywords={product.keywords} path={`/products/${product.slug}`} />
+      <section className="section product-page-hero">
+        <nav className="breadcrumbs" aria-label="Breadcrumb"><Link to="/">Home</Link><span aria-hidden="true">/</span><Link to="/products">Products</Link><span aria-hidden="true">/</span><span aria-current="page">{product.name}</span></nav>
+        <article className="spotlight" style={{ '--accent': product.accent } as React.CSSProperties}>
+          <div className="spotlight-copy">
+            <span className="product-category">{product.category} · {product.status}</span>
+            <h1>{product.name}</h1>
+            <p className="spotlight-tagline">{product.tagline}</p>
+            <p className="spotlight-audience">{product.audience}</p>
+            <p>{product.description}</p>
+            <div className="product-actions">
+              <Link className="spotlight-cta" to="/contactus#contact-form">Request a demo <span aria-hidden="true">→</span></Link>
+              <Link className="product-link" to="/products">All products</Link>
+            </div>
+          </div>
+          <div className="spotlight-visual">
+            <div className="spotlight-glow" aria-hidden="true" />
+            <div className="spotlight-frame">
+              <div className="spotlight-bar" aria-hidden="true"><i /><i /><i /><span>{product.name}</span></div>
+              <img src={product.image} alt={`${product.name} screen`} fetchPriority="high" />
+            </div>
+            {product.highlights.map((chip, chipIndex) => <span className={`spotlight-chip chip-${chipIndex + 1}`} key={chip}><b aria-hidden="true" />{chip}</span>)}
+          </div>
+        </article>
+      </section>
+      <section className="section product-page-details" style={{ '--accent': product.accent } as React.CSSProperties}>
+        <div className="product-page-block">
+          <p className="section-kicker">How it works</p>
+          <h2>Up and running in three steps.</h2>
+          <ol className="spotlight-steps">{product.steps.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
+        </div>
+        <div className="product-page-block">
+          <p className="section-kicker">Key features</p>
+          <h2>What {product.name} gives your team.</h2>
+          <ul className="product-feature-list">{product.features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
+          <div className="product-platforms" aria-label="Platforms">{product.platforms.map((platform) => <span key={platform}>{platform}</span>)}</div>
+        </div>
+      </section>
+      <DemoJourney />
+      <section className="section product-page-others" aria-labelledby="other-products-title">
+        <p className="section-kicker">More from Rigweda</p>
+        <h2 id="other-products-title">Explore our other products.</h2>
+        <div className="other-products">
+          {others.map((item) => (
+            <Link className="other-product" key={item.slug} to={`/products/${item.slug}`} style={{ '--accent': item.accent } as React.CSSProperties}>
+              <img src={item.image} alt="" loading="lazy" />
+              <span className="product-category">{item.category}</span>
+              <strong>{item.name}</strong>
+              <span>{item.tagline}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ProductsPage() {
+  const location = useLocation();
+  useEffect(() => {
+    if (!location.hash) return;
+    const timer = window.setTimeout(() => document.getElementById(location.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    return () => window.clearTimeout(timer);
+  }, [location.hash]);
+  return (
+    <>
+      <HeadMeta title="Our Products | Rigweda Technologies" description="Rigweda Technologies products: Rigweda Monitor employee monitoring and HRMS, TaskPulse AI reminders, GradeSight learning platform, Rigweda Voice AI calling, Find Face recognition, WorkHub, ITR Filing, and RydNGo." keywords="Rigweda products, HRMS software, employee monitoring, task management, ITR filing software, car rental software, AI voice agent, face recognition, LMS for schools, AI task reminder app" path="/products" />
+      <Hero eyebrow="Rigweda Products" title="Software products for real business work." text="From HR, AI task reminders, and school learning to AI calling, face recognition, project management, tax filing, and car rentals, every Rigweda product is built, hosted, and supported by our own team." visual="software" image="/renders/application.webp" action="Request a demo" actionTo="/contactus" secondaryAction="Browse products" secondaryTo="/products#product-list" />
+      <section className="section product-detail-list" id="product-list">
+        <nav className="product-jump" aria-label="Jump to product">{products.map((product) => <a key={product.slug} href={`#${product.slug}`}>{product.name}</a>)}</nav>
+        {products.map((product, index) => (
+          <article className={`product-detail ${index % 2 ? 'reverse' : ''}`} id={product.slug} key={product.slug}>
+            <div className="product-detail-media">
+              <img src={product.image} alt={product.name} loading="lazy" />
+              <span className={productStatusClass(product.status)}>{product.status}</span>
+            </div>
+            <div className="product-detail-copy">
+              <span className="product-category">{product.category}</span>
+              <h2>{product.name}</h2>
+              <p className="product-tagline">{product.tagline}</p>
+              <p>{product.description}</p>
+              <ul className="product-feature-list">{product.features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
+              <div className="product-platforms" aria-label="Platforms">{product.platforms.map((platform) => <span key={platform}>{platform}</span>)}</div>
+              <div className="product-actions">
+                <Link className="spotlight-cta" to={`/products/${product.slug}`}>View {product.name} <span aria-hidden="true">→</span></Link>
+                <ProductAction />
+              </div>
+            </div>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+function ProductSpotlights() {
+  return (
+    <section className="section spotlights" id="products" aria-labelledby="spotlights-title">
+      <div className="spotlights-heading">
+        <p className="section-kicker">Inside our products</p>
+        <h2 id="spotlights-title">See what each product does for your team.</h2>
+        <p>Every Rigweda product solves one clear business problem. Here is who each one is for and how it works, step by step.</p>
+      </div>
+      {products.map((product, index) => (
+        <article className={`spotlight ${index % 2 ? 'reverse' : ''}`} key={product.slug} style={{ '--accent': product.accent } as React.CSSProperties}>
+          <div className="spotlight-visual">
+            <div className="spotlight-glow" aria-hidden="true" />
+            <div className="spotlight-frame">
+              <div className="spotlight-bar" aria-hidden="true"><i /><i /><i /><span>{product.name}</span></div>
+              <img src={product.image} alt={`${product.name} screen`} loading="lazy" />
+            </div>
+            {product.highlights.map((chip, chipIndex) => <span className={`spotlight-chip chip-${chipIndex + 1}`} key={chip}><b aria-hidden="true" />{chip}</span>)}
+          </div>
+          <div className="spotlight-copy">
+            <span className="spotlight-index">{String(index + 1).padStart(2, '0')}</span>
+            <span className="product-category">{product.category} · {product.status}</span>
+            <h3>{product.name}</h3>
+            <p className="spotlight-tagline">{product.tagline}</p>
+            <p className="spotlight-audience">{product.audience}</p>
+            <p>{product.description}</p>
+            <ol className="spotlight-steps" aria-label={`How ${product.name} works`}>
+              {product.steps.map((step, stepIndex) => <li key={step}><span>{stepIndex + 1}</span>{step}</li>)}
+            </ol>
+            <div className="product-actions">
+              <Link className="spotlight-cta" to={`/products/${product.slug}`}>Explore {product.name} <span aria-hidden="true">→</span></Link>
+              <ProductAction />
+            </div>
+          </div>
+        </article>
+      ))}
+      <div className="center-action"><Link className="primary-action" to="/products">View all products</Link></div>
+    </section>
+  );
+}
+
+function CountUp({ value }) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [shown, setShown] = useState(value);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    setShown(0);
+    let frame = 0;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const progress = Math.min((now - start) / 1100, 1);
+        setShown(Math.round(value * (1 - Math.pow(1 - progress, 3))));
+        if (progress < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    observer.observe(element);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [value]);
+  return <span ref={ref}>{shown}</span>;
+}
+
+function ProductStats() {
+  const platforms = new Set(products.flatMap((product) => product.platforms));
+  const stats = [
+    [products.length, '', 'Products built in-house'],
+    [platforms.size, '', 'Platforms covered, from web and mobile to phone and CCTV'],
+    [products.filter((product) => product.status === 'Live' || product.status === 'Beta').length, '', 'Products live or in beta today'],
+    [100, '%', 'Designed, built, and supported by the Rigweda team']
+  ];
+  return (
+    <section className="product-stats" aria-label="Rigweda products in numbers">
+      {stats.map(([value, suffix, label]) => <div className="product-stat" key={label}><strong><CountUp value={value} />{suffix}</strong><span>{label}</span></div>)}
+    </section>
+  );
+}
+
+function ProductRoadmap() {
+  const stages = [
+    { status: 'Live', title: 'Live and in use', text: 'Running for real teams today, with ongoing updates and support.' },
+    { status: 'Beta', title: 'In beta', text: 'Working products being piloted with early customers and refined fast.' },
+    { status: 'Early Access', title: 'Early access', text: 'Built and ready for demos. Join early and help shape the roadmap.' }
+  ];
+  return (
+    <section className="section roadmap" aria-labelledby="roadmap-title">
+      <div className="spotlights-heading">
+        <p className="section-kicker">Product roadmap</p>
+        <h2 id="roadmap-title">Where every Rigweda product is today.</h2>
+        <p>We ship products in stages, from early access to beta to live, so you always know what is ready to use and what is coming next.</p>
+      </div>
+      <div className="roadmap-road">
+        <div className="roadmap-track" aria-hidden="true"><span className="roadmap-progress" /><span className="roadmap-runner" /></div>
+        <ol className="roadmap-stages">
+          {stages.map((stage, index) => (
+            <li className="roadmap-stage" key={stage.status} style={{ '--stage-delay': `${index * 220}ms` } as React.CSSProperties}>
+              <span className="roadmap-dot" aria-hidden="true">{index + 1}</span>
+              <p className="roadmap-label">{stage.title}</p>
+              <p className="roadmap-text">{stage.text}</p>
+              <ul>
+                {products.filter((product) => product.status === stage.status).map((product) => (
+                  <li key={product.slug}><Link to={`/products/${product.slug}`} style={{ '--accent': product.accent } as React.CSSProperties}><b aria-hidden="true" />{product.name}</Link></li>
+                ))}
+              </ul>
+            </li>
+          ))}
+          <li className="roadmap-stage roadmap-next" style={{ '--stage-delay': '660ms' } as React.CSSProperties}>
+            <span className="roadmap-dot" aria-hidden="true">+</span>
+            <p className="roadmap-label">Next: your product</p>
+            <p className="roadmap-text">Have an idea or a workflow that needs software? We can build it with the same team and stack.</p>
+            <Link className="roadmap-next-link" to="/contactus#contact-form">Talk to us <span aria-hidden="true">→</span></Link>
+          </li>
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function DemoJourney() {
+  const steps = [
+    ['Book a demo', 'Tell us which product you are interested in and what your team needs.'],
+    ['Guided walkthrough', 'We show the product on a live call using workflows like yours.'],
+    ['Pilot with your team', 'Try it with a small group and share feedback as you go.'],
+    ['Go live with support', 'Roll out to everyone with onboarding help and ongoing support.']
+  ];
+  return (
+    <section className="section journey" aria-labelledby="journey-title">
+      <div className="journey-panel">
+        <div className="journey-heading">
+          <p className="section-kicker">How to get started</p>
+          <h2 id="journey-title">From first demo to go-live in four steps.</h2>
+        </div>
+        <ol className="journey-steps">
+          {steps.map(([title, text], index) => <li className="journey-step" key={title}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p></li>)}
+        </ol>
+        <div className="journey-actions"><Link className="primary-action" to="/contactus#contact-form">Book a demo</Link><Link className="secondary-action" to="/products">Compare products</Link></div>
+      </div>
+    </section>
   );
 }
 
@@ -1697,7 +1890,7 @@ function ApplicationsPage() {
   return (
     <>
       <HeadMeta title="Business Applications | Rigweda Technologies" description="Explore business application concepts by Rigweda Technologies including retail apps, dashboards, AI service desks, and marketing intelligence systems." keywords="business applications, web applications, mobile applications, AI applications" path="/applications" />
-      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image="/renders/application.png" pageClass="hero-applications" />
+      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image="/renders/application.webp" pageClass="hero-applications" />
       <ApplicationsSection />
     </>
   );
@@ -1725,7 +1918,7 @@ function Gallery() {
   return (
     <>
       <HeadMeta title="Gallery | Rigweda Technologies" description="Explore Rigweda Technologies gallery with project visuals, service concepts, application screens, and 3D digital interface presentation." keywords="Rigweda gallery, IT company gallery, project visuals" path="/gallery" />
-      <Hero eyebrow="Gallery" title="A visual gallery of digital capability." text="Gallery pages should not feel empty. Rigweda uses project visuals and service-focused 3D panels to show creative and technical range." visual="interface" action="View Portfolio" actionTo="/portfolio" image={undefined} />
+      <Hero eyebrow="Gallery" title="A visual gallery of digital capability." text="Gallery pages should not feel empty. Rigweda uses project visuals and service-focused 3D panels to show creative and technical range." visual="interface" action="View Products" actionTo="/products" image={undefined} />
       <section className="section"><div className="gallery-grid">{[...projects, ...applications].map((item) => <article className="gallery-card" key={item.title}><img src={item.image} alt={item.title} /><h3>{item.title}</h3></article>)}</div></section>
     </>
   );
@@ -1735,7 +1928,7 @@ function Careers() {
   return (
     <>
       <HeadMeta title="Careers | Rigweda Technologies" description="Join Rigweda Technologies across web development, UI UX design, digital marketing, AI, cloud, data, and project delivery roles." keywords="Rigweda careers, IT jobs, web developer jobs, digital marketing careers" path="/careers" />
-      <Hero eyebrow="Careers" title={<><span>Build Your Career</span><span>at <em>Rigweda</em></span></>} text="Work on real-world products, solve meaningful problems, and grow your skills with a collaborative and supportive team." visual="enterprise" action="Explore Openings" actionTo="#career-openings" secondaryAction="Life at Rigweda" secondaryTo="/aboutus" image="/renders/careers.png" pageClass="hero-careers" />
+      <Hero eyebrow="Careers" title={<><span>Build Your Career</span><span>at <em>Rigweda</em></span></>} text="Work on real-world products, solve meaningful problems, and grow your skills with a collaborative and supportive team." visual="enterprise" action="Explore Openings" actionTo="#career-openings" secondaryAction="Life at Rigweda" secondaryTo="/aboutus" image="/renders/careers.webp" pageClass="hero-careers" />
       <section className="section" id="career-openings"><div className="rich-grid">{['Frontend Developer', 'UI/UX Designer', 'Digital Marketing Executive', 'Cloud & DevOps Associate', 'Data Analyst', 'Project Coordinator'].map((role) => <article className="rich-card" key={role}><h3>{role}</h3><p>Work on real websites, applications, dashboards, campaigns, and automation systems with a quality-first team.</p><Link to="/contactus">Apply now</Link></article>)}</div></section>
     </>
   );
@@ -1822,6 +2015,7 @@ function Contact() {
         submitted_at: new Date().toISOString()
       });
       form.reset();
+      trackEvent('generate_lead', { form: 'contact', project_need: need });
       navigate('/thank-you');
     } catch (error) {
       setSubmitStatus(error instanceof Error ? error.message : 'Could not send the enquiry. Please try again.');
@@ -1879,15 +2073,15 @@ function SimplePage({ kind }) {
     'thank-you': ['Thank You', 'Your enquiry has been noted. Rigweda Technologies will review the project context and respond with the next step.', 'strategy']
   };
   const [title, text, visual] = map[kind] ?? map['thank-you'];
-  return <><HeadMeta title={`${title} | Rigweda Technologies`} description={text} keywords={`${title}, Rigweda Technologies`} path={`/${kind}`} /><Hero eyebrow={title} title={title} text={text} visual={visual} action="Back Home" actionTo="/" image={undefined} /></>;
+  return <><HeadMeta title={`${title} | Rigweda Technologies`} description={text} keywords={`${title}, Rigweda Technologies`} path={`/${kind}`} noindex={kind === 'thank-you'} /><Hero eyebrow={title} title={title} text={text} visual={visual} action="Back Home" actionTo="/" image={undefined} /></>;
 }
 
 function Footer() {
   const quickLinks = [
     ['Home', '/'],
+    ['Products', '/products'],
     ['About Us', '/aboutus'],
     ['Services', '/services'],
-    ['Portfolio', '/portfolio'],
     ['Contact Us', '/contactus'],
     ['Blog', '/blog'],
     ['Careers', '/careers'],
@@ -1910,7 +2104,10 @@ function Footer() {
   const socialLinks = [
     ['mail', 'Email', 'mailto:info@rigweda.com'],
     ['call', 'Call', 'tel:+917989076809'],
-    ['wa', 'WhatsApp', 'https://wa.me/917989076809']
+    ['wa', 'WhatsApp', 'https://wa.me/917989076809'],
+    ['ig', 'Instagram', 'https://www.instagram.com/rigweda_technologies/'],
+    ['in', 'LinkedIn', 'https://www.linkedin.com/company/132213943/'],
+    ['fb', 'Facebook', 'https://www.facebook.com/profile.php?id=61590733351789']
   ];
 
   return (
@@ -1932,6 +2129,9 @@ function Footer() {
                 {icon === 'mail' && <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></>}
                 {icon === 'call' && <path d="M7 3h3l1.5 4-2 1.5a15 15 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 5 7.2 2 2 0 0 1 7 5Z"/>}
                 {icon === 'wa' && <><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L4 20l1.2-3.8a8.2 8.2 0 1 1 15-4.5Z"/><path d="M9 8.5c.4 2.8 2.7 5.1 5.5 5.5l1.2-1.2 2 .8c-.2 1.4-1.3 2.3-2.7 2.2-3.7-.4-6.9-3.6-7.3-7.3-.1-1.4.8-2.5 2.2-2.7l.8 2Z"/></>}
+                {icon === 'ig' && <><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/></>}
+                {icon === 'fb' && <path d="M14 8h2.5V4.5H14A3.5 3.5 0 0 0 10.5 8v2.5H8V14h2.5v6.5H14V14h2.5l.5-3.5h-3V8.6c0-.3.3-.6.6-.6Z"/>}
+                {icon === 'in' && <><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V16"/><path d="M8 7.6v.01"/><path d="M11.5 16v-5.5"/><path d="M11.5 13a2.5 2.5 0 0 1 5 0v3"/></>}
               </svg>
             </a>)}
           </div>
@@ -1957,15 +2157,37 @@ function Footer() {
   );
 }
 
-function App() {
-  return (
-    <BrowserRouter>
+// Every indexable page: the build pre-renders each one to HTML and lists it in sitemap.xml.
+export const sitePages = [
+  { path: '/', priority: '1.0', changefreq: 'weekly' },
+  { path: '/products', priority: '0.95', changefreq: 'weekly' },
+  ...products.map((product) => ({ path: `/products/${product.slug}`, priority: '0.9', changefreq: 'monthly' })),
+  { path: '/services', priority: '0.9', changefreq: 'monthly' },
+  ...services.map((service) => ({ path: `/${service.slug}`, priority: '0.8', changefreq: 'monthly' })),
+  { path: '/aboutus', priority: '0.7', changefreq: 'monthly' },
+  { path: '/contactus', priority: '0.8', changefreq: 'yearly' },
+  { path: '/applications', priority: '0.6', changefreq: 'monthly' },
+  { path: '/careers', priority: '0.6', changefreq: 'monthly' },
+  { path: '/gallery', priority: '0.4', changefreq: 'monthly' },
+  { path: '/blog', priority: '0.5', changefreq: 'weekly' },
+  { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' }
+];
+
+// Pages that are pre-rendered but kept out of search results and the sitemap.
+export const unlistedPages = ['/thank-you', '/404'];
+
+export { products, services };
+
+// In the browser the app uses BrowserRouter; at build time it renders one URL with StaticRouter.
+export function App({ url }: { url?: string }) {
+  const content = (
+    <>
       <SceneBackground />
       <Navigation />
       <AnimatedRoutes />
       <Footer />
-    </BrowserRouter>
+      <LeadTracking />
+    </>
   );
+  return url === undefined ? <BrowserRouter>{content}</BrowserRouter> : <StaticRouter location={url}>{content}</StaticRouter>;
 }
-
-createRoot(document.getElementById('root')).render(<App />);
