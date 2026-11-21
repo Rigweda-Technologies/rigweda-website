@@ -10,8 +10,8 @@ Do these in order. Each one blocks the next.
 |---|---|---|---|
 | 1 | Deploy the latest code | Vercel | Before this, every inner page on www.rigweda.com returns 404. |
 | 2 | Make the apex redirect permanent | Vercel → Project → Settings → Domains → `rigweda.com` → Edit | Change "Redirect to www.rigweda.com" from **307** to **308 (Permanent)**. |
-| 3 | Connect GA4 inside Google Tag Manager | tagmanager.google.com → container GTM-T5VTVFKN | The container is already installed on every page. Add a **Google tag** with your GA4 ID (G-XXXXXXX) and set the config parameter `send_page_view` to `false`. Then add a **GA4 Event** tag named `{{Event}}`, fired by a **Custom Event** trigger matching `page_view\|generate_lead\|click_call\|click_whatsapp\|click_email\|click_contact_cta\|click_outbound` (regex). Don't add a separate "History Change" page-view tag, or page views will be counted twice. Publish the container. |
-| 4 | Mark lead events as key events | GA4 → Admin → Events | Mark `generate_lead`, `click_call`, `click_whatsapp`, `click_email`, `click_contact_cta` as key events. The site already pushes them to the data layer, with details such as `page_path` and `link_text`. |
+| 3 | Set the GA4 ID in Vercel | Vercel → Project → Settings → Environment Variables | Add `VITE_GA_MEASUREMENT_ID=G-QQSSQQFD9R` for Production, then redeploy. GA4 is loaded by the Google tag in GTM container GTM-T5VTVFKN; this ID lets the site send its custom events to it. Keep GA4 Enhanced Measurement on, including "Page changes based on browser history events": it sends all page views. Don't add page-view tags in GTM. |
+| 4 | Mark the lead event as a key event | GA4 → Admin → Events | Mark `generate_lead` as a key event (sent only after the contact form is confirmed as sent). `whatsapp_click`, `phone_click`, and `email_click` are also sent; mark them as key events only if you want to count contact clicks as conversions too. |
 | 5 | Verify Google Search Console | search.google.com/search-console | Add a **Domain** property for `rigweda.com` (DNS TXT record), or use the HTML tag method with `VITE_GOOGLE_SITE_VERIFICATION`. |
 | 6 | Submit the sitemap | Search Console → Sitemaps | `https://www.rigweda.com/sitemap.xml`, 30 URLs. |
 | 7 | Request indexing for key pages | Search Console → URL inspection | Home, /products, and the 8 /products/... pages. |
@@ -41,6 +41,49 @@ Consistent listings build trust with Google and send referral traffic. Use the s
 **Software directories** (one listing per product, linking to its /products/... page): G2, Capterra, GetApp and Software Advice (one Gartner Digital Markets account covers all three), SaaSworthy, Techjockey (strong in India), SoftwareSuggest (India), AlternativeTo, SourceForge, Product Hunt (plan a launch day for each product).
 
 **Company profiles:** Crunchbase, LinkedIn company page (done), Startup India / DPIIT recognition if eligible, Wellfound (AngelList) for hiring.
+
+### Listing kit (copy exactly into every listing)
+
+Google compares listings character by character, so paste these rather than retyping them.
+
+| Field | Value |
+|---|---|
+| Business name | Rigweda Technologies |
+| Address | Flat No 202, Sivaram Life Style, Pragati Nagar Main Road, Pragati Nagar, Hyderabad, Telangana 500090, India |
+| Phone | +91 79890 76809 |
+| Email | info@rigweda.com |
+| Website | https://www.rigweda.com/ (always with `www` and `https`) |
+| Logo | https://www.rigweda.com/assets/rigweda-logo.png |
+| Cover / social image | https://www.rigweda.com/assets/rigweda-social.png |
+| Main category | Software company |
+| Other categories | Website designer, Internet marketing service, Software developer |
+| Service area | India and worldwide (remote) |
+| Social profiles | instagram.com/rigweda_technologies · linkedin.com/company/132213943 · facebook.com/profile.php?id=61590733351789 |
+
+Use the same phone format (`+91 79890 76809`) everywhere. Before submitting, confirm your opening hours and the year the company was founded; many directories ask for both.
+
+**Short description (≈150 characters):**
+Rigweda Technologies builds business software: employee monitoring, AI task reminders, school learning, AI calling, and face recognition, plus web and app development.
+
+**Long description (≈700 characters):**
+Rigweda Technologies is a Hyderabad software company that builds, hosts, and supports its own products. Rigweda Monitor combines employee monitoring with HRMS. TaskPulse is an AI task app that follows up by push, voice, and phone call until work is done. GradeSight is a learning platform for K–12 schools and colleges. Rigweda Voice runs multilingual AI voice agents for support and sales calls, and Find Face recognises people in photos and live CCTV. WorkHub, ITR Filing, and RydNGo cover project management, tax filing, and self-drive car rentals. The team also delivers UI/UX design, web and mobile app development, AI solutions, and digital marketing for businesses in India and worldwide.
+
+**Product listings** (software directories, Product Hunt, Google Business Profile → Products). Link each one to its own page, not the home page:
+
+| Product | Category to choose | One-line description | URL |
+|---|---|---|---|
+| Rigweda Monitor | HR / Employee monitoring | Employee monitoring and HRMS in one platform. | https://www.rigweda.com/products/rigweda-monitor |
+| TaskPulse | Productivity / Task management | The AI task app that follows up until it is done. | https://www.rigweda.com/products/taskpulse |
+| GradeSight | Education / Learning management system | One place to teach, learn, and see how every student is doing. | https://www.rigweda.com/products/gradesight |
+| Rigweda Voice | AI / Call center software | AI voice agents that answer and make calls for your business. | https://www.rigweda.com/products/rigweda-voice |
+| Find Face | Security / Face recognition | Face recognition for photos and live CCTV. | https://www.rigweda.com/products/find-face |
+| WorkHub | Project management | One workspace for projects, tasks, and team workflows. | https://www.rigweda.com/products/workhub |
+| ITR Filing | Tax / Accounting | File taxes and manage compliance with a CA by your side. | https://www.rigweda.com/products/itr-filing |
+| RydNGo | Car rental software | Self-drive car rentals by the hour, day, or week. | https://www.rigweda.com/products/rydngo |
+
+Screenshots for listings are in `public/images/products/` (also at `https://www.rigweda.com/images/products/<name>.webp`). Some directories need PNG or JPG; convert them first.
+
+**Tracking listing traffic:** add UTM tags to the website link where a directory allows it, e.g. `https://www.rigweda.com/products/rigweda-monitor?utm_source=g2&utm_medium=referral&utm_campaign=listing`. For Google Business Profile, use `https://www.rigweda.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp` so Maps and profile visits show separately in GA4. The pages' canonical tags keep these tagged URLs out of search results.
 
 ## 4. Keyword and page map
 
@@ -139,4 +182,4 @@ Targets for the first 6 months: all 30 pages indexed; GBP in the Hyderabad map p
 - `sitemap.xml` is generated at build time from the page list. The build fails if a listed page is broken, duplicated, missing its H1, or has a title over 65 characters.
 - Unknown URLs return a real 404 with `noindex`; `/thank-you` is `noindex` and blocked in robots.txt; the `*.vercel.app` copy sends `X-Robots-Tag: noindex`.
 - Images are WebP (59.6 MB → 3.4 MB); the 3D background loads after the content; on a slow mobile connection the home page's main content appears in about 1.5 seconds.
-- Google Tag Manager (GTM-T5VTVFKN) is on every page. The site pushes `page_view` on every page change and lead events (`generate_lead`, `click_call`, `click_whatsapp`, `click_email`, `click_contact_cta`, `click_outbound`) to the data layer.
+- GA4 (G-QQSSQQFD9R) is loaded once, by Google Tag Manager (GTM-T5VTVFKN). Enhanced Measurement sends page views, scrolls, outbound clicks, downloads, and form interactions; the site adds `whatsapp_click`, `phone_click`, `email_click`, and `generate_lead` (see `src/analytics.ts`).
