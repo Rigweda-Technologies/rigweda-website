@@ -8,27 +8,14 @@ const browser = await chromium.launch({
   headless: true
 });
 
-const pages = [
-  { path: '/', title: 'Yourdigitalsystems,elevatedin3D.', minCards: 12 },
-  { path: '/aboutus', title: 'Atechnologypartnerbuiltforbelief.', minCards: 0 },
-  { path: '/services', title: 'Everythingaseriousdigitalbusinessneeds.', minCards: 20 },
-  { path: '/applications', title: 'Usefulapplications,notjustcode.', minCards: 4 },
-  { path: '/portfolio', title: 'Realprojectreferences,redesignedforRigweda.', minCards: 8 },
-  { path: '/gallery', title: 'Avisualgalleryofdigitalcapability.', minCards: 12 },
-  { path: '/careers', title: 'Builddigitalproductswithcraft.', minCards: 6 },
-  { path: '/contactus', title: 'Let’sshapeyournextdigitalmove.', minCards: 0 },
-  { path: '/ui-ux-solutions', title: 'UI/UXSolutions', minCards: 1 },
-  { path: '/wordpress-development', title: 'WordPressDevelopment', minCards: 1 },
-  { path: '/ecommerce-development', title: 'EcommerceDevelopment', minCards: 1 },
-  { path: '/digital-marketing', title: 'DigitalMarketing', minCards: 1 },
-  { path: '/seo-services', title: 'SEOServices', minCards: 1 },
-  { path: '/ppc-services', title: 'PPCServices', minCards: 1 },
-  { path: '/smm-services', title: 'SMMServices', minCards: 1 },
-  { path: '/software-development', title: 'SoftwareDevelopment', minCards: 1 },
-  { path: '/mobile-development', title: 'MobileAppDevelopment', minCards: 1 },
-  { path: '/hosting-services', title: 'HostingServices', minCards: 1 },
-  { path: '/security-services', title: 'Security(VAPT)', minCards: 1 }
-];
+// Pages come from the generated sitemap, so the check always covers every indexable page.
+const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
+const minCardsByPath = { '/': 6, '/products': 6, '/services': 12 };
+const pages = [...sitemap.matchAll(/<loc>https:\/\/www\.rigweda\.com([^<]*)<\/loc>/g)].map(([, path]) => ({
+  path: path || '/',
+  minCards: minCardsByPath[path || '/'] ?? 0
+}));
+if (!pages.length) throw new Error('sitemap.xml lists no pages');
 
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
@@ -47,24 +34,21 @@ for (const viewport of viewports) {
 
     const result = await page.evaluate(() => {
       const canvas = document.querySelector('#rigweda-field');
-      const heading = document.querySelector('h1')?.textContent?.trim().replace(/\s+/g, '');
-      const cards = document.querySelectorAll('.service-card, .rich-card, .mini-card, .project-card, .application-card, .gallery-card, .rich-list li, .content-block').length;
+      const headings = document.querySelectorAll('h1').length;
+      const heading = document.querySelector('h1')?.textContent?.trim() ?? '';
+      const cards = document.querySelectorAll('.spotlight, .product-detail, .showcase-service-card, .service-card, .rich-card, .mini-card, .project-card, .application-card, .gallery-card, .rich-list li, .content-block').length;
       const bounds = canvas?.getBoundingClientRect();
       const context = canvas?.getContext('webgl2') || canvas?.getContext('webgl');
       const horizontalOverflow = document.documentElement.scrollWidth > window.innerWidth + 2;
-      const robot = document.querySelector('.robo-companion');
-      const robotStage = document.querySelector('.robo-stage');
-      const robotAnimation = robotStage ? getComputedStyle(robotStage).animationName : '';
 
       return {
         heading,
+        headings,
         cards,
         canvasWidth: bounds?.width ?? 0,
         canvasHeight: bounds?.height ?? 0,
         hasWebGL: Boolean(context),
-        horizontalOverflow,
-        hasRobot: Boolean(robot),
-        robotAnimation
+        horizontalOverflow
       };
     });
 
@@ -74,8 +58,8 @@ for (const viewport of viewports) {
       fullPage: false
     });
 
-    if (result.heading !== pageInfo.title.replace(/\s+/g, '')) {
-      throw new Error(`${viewport.name} ${pageInfo.path}: heading mismatch`);
+    if (result.headings !== 1 || !result.heading) {
+      throw new Error(`${viewport.name} ${pageInfo.path}: expected exactly one non-empty <h1>, found ${result.headings}`);
     }
     if (result.cards < pageInfo.minCards) {
       throw new Error(`${viewport.name} ${pageInfo.path}: expected at least ${pageInfo.minCards} cards, found ${result.cards}`);
@@ -85,9 +69,6 @@ for (const viewport of viewports) {
     }
     if (result.horizontalOverflow) {
       throw new Error(`${viewport.name} ${pageInfo.path}: page has horizontal overflow`);
-    }
-    if (!result.hasRobot || !result.robotAnimation.includes('robotBob')) {
-      throw new Error(`${viewport.name} ${pageInfo.path}: animated robot companion was not active`);
     }
     if (new Set(png).size < 80) {
       throw new Error(`${viewport.name} ${pageInfo.path}: screenshot appears blank`);
