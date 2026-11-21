@@ -779,11 +779,77 @@ function TeamOrbitGraphic() {
   );
 }
 
+function HomeHero() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  // Screens are fetched one ahead of the one on show, not all at once, to keep the first load light.
+  const [loaded, setLoaded] = useState(() => new Set([0, 1]));
+  const live = products.filter((product) => product.status === 'Live');
+  const product = products[active];
+
+  useEffect(() => {
+    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const timer = window.setInterval(() => setActive((index) => (index + 1) % products.length), 4200);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  useEffect(() => {
+    setLoaded((seen) => (seen.has((active + 1) % products.length) ? seen : new Set([...seen, active, (active + 1) % products.length])));
+  }, [active]);
+
+  return (
+    <section className="home-hero" aria-labelledby="home-hero-title" style={{ '--accent': product.accent } as React.CSSProperties}>
+      <div className="home-hero-bg" aria-hidden="true"><span className="aurora aurora-1" /><span className="aurora aurora-2" /><span className="aurora aurora-3" /><span className="home-hero-grid" /></div>
+      <div className="home-hero-copy">
+        <p className="home-hero-pill"><span className="pulse-dot" aria-hidden="true" />{products.length} products · {live.length} live today</p>
+        <h1 id="home-hero-title">Software that <span>runs your business.</span></h1>
+        <p className="home-hero-lede">Rigweda Technologies builds, hosts, and supports its own products: employee monitoring, AI task reminders, school learning, AI voice calling, face recognition, project management, tax filing, and car rentals.</p>
+        <div className="home-hero-actions">
+          <Link className="hero-btn-primary" to="/products">Explore products <span aria-hidden="true">→</span></Link>
+          <Link className="hero-btn-ghost" to="/contactus#contact-form">Book a demo</Link>
+        </div>
+        <div className="home-hero-live">
+          <span>Live now</span>
+          <ul>{live.map((item) => <li key={item.slug}><Link to={`/products/${item.slug}`} style={{ '--accent': item.accent } as React.CSSProperties}><b aria-hidden="true" />{item.name}</Link></li>)}</ul>
+        </div>
+      </div>
+      <div className="home-hero-stage" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+        <div className="stage-glow" aria-hidden="true" />
+        <div className="stage-panel stage-panel-1" aria-hidden="true" />
+        <div className="stage-panel stage-panel-2" aria-hidden="true" />
+        <Link className="stage-frame" to={`/products/${product.slug}`} aria-label={`Open ${product.name}`}>
+          <div className="spotlight-bar" aria-hidden="true"><i /><i /><i /><span>{product.name}</span></div>
+          <div className="stage-screens">
+            {products.map((item, index) => (
+              <img
+                key={item.slug}
+                className={index === active ? 'is-active' : ''}
+                src={loaded.has(index) ? item.image : undefined}
+                alt={index === active ? `${item.name} screen` : ''}
+                aria-hidden={index === active ? undefined : true}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
+              />
+            ))}
+          </div>
+        </Link>
+        <div className="stage-chip stage-chip-top" key={`top-${product.slug}`}><b aria-hidden="true" />{product.name}<em>{product.status}</em></div>
+        <div className="stage-chip stage-chip-bottom" key={`bottom-${product.slug}`}><span className="product-category">{product.category}</span>{product.highlights[0]}</div>
+        <div className="stage-dots" role="group" aria-label="Choose a product to preview">
+          {products.map((item, index) => (
+            <button key={item.slug} type="button" className={index === active ? 'is-active' : ''} aria-label={`Show ${item.name}`} aria-pressed={index === active} onClick={() => setActive(index)} style={{ '--accent': item.accent } as React.CSSProperties} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Home() {
   return (
     <div className="home-page">
       <HeadMeta title="Rigweda Technologies | HRMS, AI Voice & Business Software" description="Rigweda Technologies builds its own software: Rigweda Monitor, TaskPulse, GradeSight for schools, Rigweda Voice AI calling, Find Face recognition, WorkHub, ITR Filing, and RydNGo, plus web, app, and AI services." keywords="Rigweda Technologies, Rigweda products, HRMS software, employee monitoring, AI voice agent, face recognition, task management, ITR filing, car rental software" />
-      <Hero eyebrow="Rigweda Products" title="Software that runs your business." text="Rigweda Technologies builds and supports its own products for HR and workforce monitoring, AI task reminders, school learning, AI voice calling, face recognition, project management, tax filing, and car rentals." visual="software" image="/renders/herosecimg.webp" action="Explore Products" actionTo="/products" secondaryAction="Request a demo" secondaryTo="/contactus#contact-form" />
+      <HomeHero />
       <section className="trust-strip"><span>Rigweda Monitor</span><span>TaskPulse</span><span>GradeSight</span><span>Rigweda Voice</span><span>Find Face</span><span>WorkHub</span><span>ITR Filing</span><span>RydNGo</span></section>
       <ProductStats />
       <ProductSpotlights />
