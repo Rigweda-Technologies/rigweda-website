@@ -1934,7 +1934,7 @@ function ApplicationsPage() {
   return (
     <>
       <HeadMeta title="Business Applications | Rigweda Technologies" description="Explore business application concepts by Rigweda Technologies including retail apps, dashboards, AI service desks, and marketing intelligence systems." keywords="business applications, web applications, mobile applications, AI applications" path="/applications" />
-      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image="/renders/application.webp" pageClass="hero-applications" />
+      <Hero eyebrow="Applications" title="Useful applications, not just code." text="Rigweda builds applications for customers, teams, operations, marketing, reporting, and automation. Each product is planned around real business use." visual="software" action="Discuss Application" actionTo="/contactus" image="/renders/application.png" pageClass="hero-applications" />
       <ApplicationsSection />
     </>
   );
