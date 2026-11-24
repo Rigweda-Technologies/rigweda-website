@@ -2949,16 +2949,47 @@ h2 {
 
 /* Applications hero: bold copy paired with a large, softly blended product visual. */
 .hero.hero-applications {
+  position: relative;
+  isolation: isolate;
   min-height: min(820px, 100vh);
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
   gap: 16px;
   padding: 140px clamp(28px, 5.5vw, 92px) 78px;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 76% 48%, rgba(85, 201, 255, .3), transparent 38%),
-    radial-gradient(ellipse at 4% 12%, rgba(159, 230, 255, .56), transparent 40%),
-    linear-gradient(115deg, #f2fbff 0%, #e7f7ff 48%, #f8fcff 100%);
+  background: transparent;
 }
+.hero-applications::before,
+.hero-applications::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+.hero-applications::before {
+  opacity: .72;
+  background-image:
+    linear-gradient(rgba(30,144,205,.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,144,205,.075) 1px, transparent 1px),
+    linear-gradient(28deg, transparent 49.85%, rgba(25,167,215,.14) 50%, transparent 50.15%),
+    radial-gradient(circle at 61% 16%, rgba(12,154,203,.68) 0 4px, transparent 5px),
+    radial-gradient(circle at 83% 27%, rgba(12,154,203,.6) 0 4px, transparent 5px),
+    radial-gradient(circle at 72% 72%, rgba(12,154,203,.58) 0 5px, transparent 6px),
+    radial-gradient(circle at 52% 58%, rgba(12,154,203,.5) 0 3px, transparent 4px),
+    radial-gradient(circle at 91% 57%, rgba(12,154,203,.48) 0 3px, transparent 4px);
+  background-size: 58px 58px, 58px 58px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  mask-image: linear-gradient(90deg, transparent 25%, #000 48%, #000 100%);
+}
+.hero-applications::after {
+  opacity: .58;
+  background-image:
+    radial-gradient(ellipse 29% 10% at 75% 17%, transparent 96%, rgba(29,177,226,.34) 96.4%, transparent 97%),
+    radial-gradient(ellipse 23% 8% at 75% 17%, transparent 96%, rgba(8,127,245,.26) 96.4%, transparent 97%),
+    radial-gradient(ellipse 24% 10% at 24% 80%, transparent 96%, rgba(29,177,226,.2) 96.4%, transparent 97%),
+    radial-gradient(ellipse at 78% 45%, rgba(72,216,255,.17), transparent 36%);
+}
+.hero-applications > .hero-copy,
+.hero-applications > .visual3d { position: relative; z-index: 1; }
 .hero-applications .hero-copy {
   position: relative;
   z-index: 2;
@@ -3012,10 +3043,18 @@ h2 {
   object-fit: contain;
   opacity: .98;
   mix-blend-mode: multiply;
+  transform: perspective(1300px) rotateY(-7deg) rotateX(2deg) translateZ(18px);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 32px 32px rgba(14, 83, 151, .2));
+  animation: applicationsImageFloat 7s ease-in-out infinite;
   -webkit-mask-image: radial-gradient(ellipse 82% 78% at 50% 50%, #000 48%, rgba(0,0,0,.82) 64%, transparent 100%);
   mask-image: radial-gradient(ellipse 82% 78% at 50% 50%, #000 48%, rgba(0,0,0,.82) 64%, transparent 100%);
   -webkit-mask-composite: source-over;
   mask-composite: add;
+}
+@keyframes applicationsImageFloat {
+  0%, 100% { transform: perspective(1300px) rotateY(-7deg) rotateX(2deg) translate3d(0, 0, 18px); }
+  50% { transform: perspective(1300px) rotateY(-7deg) rotateX(2deg) translate3d(0, -9px, 28px); }
 }
 .hero-applications .float-chip {
   z-index: 2;
@@ -3045,7 +3084,16 @@ h2 {
   .hero-applications .hero-lede { font-size: .98rem; }
   .hero-applications .hero-actions { margin-top: 24px; }
   .hero-applications .visual3d { justify-self: center; width: min(580px, 112vw); min-height: 370px; margin: -28px -8vw -35px; transform: none; }
+  .hero-applications .visual3d .visual-core img { animation-name: applicationsImageFloatMobile; }
+  @keyframes applicationsImageFloatMobile {
+    0%, 100% { transform: perspective(1100px) rotateY(-3deg) rotateX(1deg) translate3d(0, 0, 8px); }
+    50% { transform: perspective(1100px) rotateY(-3deg) rotateX(1deg) translate3d(0, -6px, 14px); }
+  }
   .hero-applications .float-chip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-applications .visual3d .visual-core img { animation: none; }
 }
 
 /* Careers hero inspired by the supplied careers page reference. */
@@ -3056,9 +3104,7 @@ h2 {
   min-height: min(900px, 100vh);
   padding: 140px clamp(28px, 5.5vw, 98px) 90px;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 5% 40%, rgba(255,255,255,.82), rgba(243,249,255,.65) 38%, transparent 72%),
-    linear-gradient(112deg, rgba(232,244,255,.6) 0%, rgba(199,230,255,.38) 49%, rgba(138,200,255,.22) 100%);
+  background: transparent;
 }
 .hero-careers .hero-copy { position: relative; z-index: 2; width: min(100%, 650px); }
 .hero-careers .eyebrow { position: relative; display: inline-flex; align-items: center; gap: 24px; color: #1677ee; font-size: .95rem; font-weight: 900; letter-spacing: .09em; }
@@ -3170,7 +3216,7 @@ h2 {
 .related-service-card:hover { transform: translateY(-5px); border-color: rgba(8,127,245,.42); box-shadow: 0 24px 54px rgba(16,78,117,.14),inset 0 1px 0 #fff; }
 .related-service-art { position: relative; display: grid; height: 205px; place-items: center; overflow: hidden; background: radial-gradient(ellipse at 50% 65%,rgba(72,216,255,.22),transparent 56%),linear-gradient(145deg,#eaf8ff,#f9fdff); }
 .related-service-art::before { position: absolute; inset: 0; background-image: linear-gradient(rgba(8,127,245,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(8,127,245,.035) 1px,transparent 1px); background-size: 32px 32px; content: ""; mask-image: linear-gradient(135deg,#000,transparent 78%); }
-.related-service-art img { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: hue-rotate(154deg) saturate(.78); mix-blend-mode: multiply; transition: transform 250ms ease; }
+.related-service-art img { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; filter: hue-rotate(154deg) saturate(.78); mix-blend-mode: multiply; transition: transform 250ms ease; }
 .related-service-card:hover .related-service-art img { transform: scale(1.045); }
 .related-art-orbit { position: absolute; width: 178px; height: 178px; border: 1px solid rgba(8,127,245,.13); border-radius: 50%; }
 .related-service-copy { display: flex; min-height: 235px; flex-direction: column; align-items: flex-start; padding: 21px 23px 23px; }
@@ -3197,6 +3243,7 @@ h2 {
 .hero-webdev .visual3d { width: min(680px,47vw); min-height: 500px; margin: 0 -3vw 0 -10%; }
 .hero.hero-webdev .visual3d .visual-core { overflow: visible; }
 .hero.hero-webdev .visual3d .visual-core img { object-fit: contain; opacity: 1; filter: none; mix-blend-mode: normal; -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 44%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.48) 74%, transparent 89%); mask-image: radial-gradient(circle at 50% 50%, #000 0 44%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.48) 74%, transparent 89%); }
+.wordpress-page > .hero-wordpress { background: linear-gradient(145deg,rgba(233,248,255,.76),rgba(255,255,255,.72)); }
 .webdev-intro { display: grid; grid-template-columns: minmax(0,1fr) minmax(280px,.72fr); align-items: end; gap: clamp(30px,7vw,100px); padding-top: 84px; padding-bottom: 84px; }
 .webdev-intro h2,.webdev-heading h2,.webdev-deliverables h2 { max-width: 790px; margin: 0; color: #0b2348; font-size: clamp(2.3rem,4.2vw,3.7rem); line-height: 1.08; letter-spacing: -.045em; }
 .webdev-intro h2 span,.webdev-heading h2 span,.webdev-deliverables h2 span { color: #087ff5; }
